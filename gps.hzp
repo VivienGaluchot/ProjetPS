@@ -1,0 +1,24 @@
+<!DOCTYPE CrossStudio_Project_File>
+<solution Name="gps" target="9" version="2">
+  <project Name="gps">
+    <configuration Name="Common" Target="MSP430F149" build_use_hardware_multiplier="16-Bit Multiplier" linker_memory_map_file="C:/Users/Vivien/AppData/Local/Rowley Associates Limited/CrossWorks for MSP430/packages/targets/msp430/MSP430F169.xml" linker_section_placement_file="$(StudioDir)/targets/section_placement_info_ab_iv16.xml" msp430_debug_interface="JTAG" msp430_identify_string="MSP430F149" msp430_insn_set="MSP430" project_directory="" project_type="Executable"/>
+    <folder Name="Source Files">
+      <configuration Name="Common" filter="c;h;s;asm;inc;s43"/>
+      <file Name="main.c" file_name="main.c"/>
+      <file file_name="ports.c"/>
+      <file file_name="ports.h"/>
+      <file file_name="moduleGPS.c"/>
+      <file file_name="moduleGPS.h"/>
+      <file file_name="uart.c"/>
+      <file file_name="uart.h"/>
+    </folder>
+    <folder Name="System Files">
+      <configuration Name="Common" filter="xml"/>
+      <file Name="crt0.asm" file_name="$(StudioDir)/src/crt0.asm"/>
+    </folder>
+    <configuration Name="Debug" Target="MSP430F169" build_use_hardware_multiplier="Yes" linker_memory_map_file="C:/Users/Vivien/AppData/Local/Rowley Associates Limited/CrossWorks for MSP430/packages/targets/msp430/MSP430F169.xml" msp430_debug_interface="JTAG" msp430_identify_string="MSP430F169;Preliminary_MSP430F16x"/>
+    <configuration Name="Release" Target="MSP430F169" build_use_hardware_multiplier="16-Bit Multiplier" linker_memory_map_file="$(PackagesDir)/targets/msp430/MSP430F169.xml" linker_section_placement_file="$(StudioDir)/targets/section_placement_info_ab_iv16.xml" msp430_identify_string="MSP430F169" msp430_insn_set="MSP430"/>
+  </project>
+  <configuration Name="Debug" build_debug_information="Yes"/>
+  <configuration Name="Release" build_debug_information="No" c_preprocessor_definitions="NDEBUG" optimize_block_locality="Yes" optimize_copy_propagation="Yes" optimize_cross_calling="Standard" optimize_cross_jumping="Yes" optimize_dead_code="Yes" optimize_jump_chaining="Yes" optimize_jump_threading="Yes" optimize_tail_merging="Yes"/>
+</solution>
