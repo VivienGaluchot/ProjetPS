@@ -35,5 +35,6 @@
 *.bak
 *.hzs
 *.hzo
+*.hzp
 Debug/*
 Release/*
