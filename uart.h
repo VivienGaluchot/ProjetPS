@@ -21,6 +21,8 @@
 #define PORT_TX_1	0x40	// P3.6
 #define PORT_RX_1	0x80	// P3.7
 
+static int UsbToScreen = 0;
+
 static int nextT0 = 0;
 static int nextT1 = 0;
 static int IT_R0 = 0;
@@ -28,6 +30,8 @@ static int IT_R1_ACK = 0;
 
 void initModule0();
 void initModule1();
+
+void connectUsbToScreen(int etat);
 
 void setIT_RX_0(int etat);
 void setIT_TX_0(int etat);

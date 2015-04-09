@@ -12,29 +12,21 @@ void main(void)
 	char txtWidth[] = {0xFF,0x7C, 0x00,0x03};
 	char putStr[] = {0x00,0x06,'G','P','S',0x00};
 
-	//char commande[] = {0xFF,0xCE,0x00,0x00,0x00,0x00,0x00,0x80,0x00,0x80,0x08,0x24};
-
 	initPortLed();
 	initPortBouton(); 
 	initComPorts();
 
 	resetScreen();
+
 	initSequenceTest();
-
-	//initUartGPS();
-	//activerUartGPS();
-
-	setCMD_SWITCH(1);
 
 	initModule0();
 	initModule1();
 
 	_EINT();
 
-	setIT_RX_0(1);
-	setIT_RX_1(1);
-	setIT_TX_0(1);
-	setIT_TX_1(1);
+	// Commande de l'écran par l'usb
+	connectUsbToScreen(1);
 
 	// cette comande marche pas mais si je l'enlève plus rien de marche
 	sendCharTableTX1(clear,2);
@@ -53,6 +45,5 @@ void main(void)
 
 	while(1){
 		bindBoutonLed();
-		//traiterDataGPS();
 	}
 }

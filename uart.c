@@ -1,12 +1,5 @@
 #include <uart.h>
 
-/*
-1) Set SWRST (BIS.B #SWRST,&UxCTL)
-2) Initialize all USART registers with SWRST=1 (including UxCTL)
-3) Enable USART module via the MEx SFRs (USPIEx)
-4) Clear SWRST via software (BIC.B #SWRST,&UxCTL)
-5) Enable interrupts (optional) via the IEx SFRs (URXIEx and/or UTXIEx)
-*/
 void initModule0(){
 	UCTL0 |= SWRST;                      // Initialize USART state machine
 
@@ -59,6 +52,33 @@ void initModule1(){
 	UCTL1 &= ~SWRST;                      // End initialize USART state machine
 }
 
+void connectUsbToScreen(int etat){
+	if(etat){
+		setCMD_SWITCH(1);
+
+		setIT_RX_0(1);
+		setIT_RX_1(1);
+		setIT_TX_0(1);
+		setIT_TX_1(1);
+
+		UsbToScreen = 1;
+	}
+	else{
+		setCMD_SWITCH(0);
+
+		setIT_RX_0(0);
+		setIT_RX_1(0);
+		setIT_TX_0(0);
+		setIT_TX_1(0);
+
+		UsbToScreen = 0;
+	}
+}
+
+
+/*
+*	INTERRUPTIONS Sets
+*/
 
 void setIT_RX_0(int etat){
 	if(etat){
@@ -153,29 +173,39 @@ void sendCharTableTX1(char* table, int n){
 	}
 }
 
+
 /*
-*	INTERUPTIONS
+*	INTERUPTIONS Fonctions
 */
 
-void usart0_rx (void) __interrupt[UART0RX_VECTOR] 
+// MODULE 1 RX
+#pragma vector=UART0RX_VECTOR
+__interrupt void usart0_rx (void)
 {
-	TXBUF1 = RXBUF0;
+	if(UsbToScreen)
+		TXBUF1 = RXBUF0;
 }
 
-void usart0_tx (void) __interrupt[UART0TX_VECTOR] 
+// MODULE 1 TX
+#pragma vector=UART0TX_VECTOR
+__interrupt void usart0_tx (void)
 {
 	nextT0 = 1;
 }
 
-void usart1_rx (void) __interrupt[UART1RX_VECTOR] 
+// MODULE 1 RX
+#pragma vector=UART1RX_VECTOR
+__interrupt void usart1_rx (void)
 {
-	//debug_printf("IT RX 1\n");
-	TXBUF0 = RXBUF1;
+	if(UsbToScreen)
+		TXBUF0 = RXBUF1;
 
 	IT_R1_ACK = 1;
 }
 
-void usart1_tx (void) __interrupt[UART1TX_VECTOR] 
-{
+// MODULE 1 TX
+#pragma vector=UART1TX_VECTOR 
+__interrupt void usart1_tx (void)
+{ 
 	nextT1 = 1;
 }
