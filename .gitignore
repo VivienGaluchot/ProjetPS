@@ -36,11 +36,13 @@
 *.hzs
 *.hzo
 *.hzp
+*.hzx
+*.map
 
 Debug/*
 Release/*
 MSP430 Debug/*
-
+MSP430 Release/*
 
 # Windows image file caches
 Thumbs.db
