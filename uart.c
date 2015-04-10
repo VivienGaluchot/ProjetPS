@@ -56,18 +56,37 @@ void connectUsbToScreen(int etat){
 	if(etat){
 		setCMD_SWITCH(1);
 
+		itMode = 1;
+
 		setIT_RX_0(1);
 		setIT_RX_1(1);
 		setIT_TX_0(1);
 		setIT_TX_1(1);
-
-		itMode = 1;
 	}
 	else{
 		setIT_RX_0(0);
 		setIT_RX_1(0);
 		setIT_TX_0(0);
 		setIT_TX_1(0);
+
+		itMode = 0;
+	}
+}
+
+void listenGPS(int etat){
+	if(etat){
+		itMode = 2;
+		
+		iBuff0 = 0;
+		iBuff1 = 0;
+		selBuff = 0;
+
+		setCMD_SWITCH(0);
+
+		setIT_RX_0(1);
+	}
+	else{
+		setIT_RX_0(0);
 
 		itMode = 0;
 	}
@@ -185,7 +204,17 @@ __interrupt void usart0_rx (void)
 		TXBUF1 = RXBUF0;
 	
 	// 2 - écoute du gps
-	if(itMode==2);
+	if(itMode==2){
+		if(selBuff==1){
+			bufferUART1[iBuff1] = RXBUF0;
+			iBuff1++;
+		}
+		else
+		{
+			bufferUART0[iBuff0] = RXBUF0;
+			iBuff0++;
+		}
+	}
 }
 
 // MODULE 0 TX
