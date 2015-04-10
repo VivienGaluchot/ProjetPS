@@ -127,7 +127,7 @@ for(j=0;j<2;j++)
 //////////////////
   
   envoicommande(b,10);
-//  envoicommande(Clear,2);
+  envoicommande(Clear,2);
 //  envoicommande(ScreenModeLR,4);
 //  
 //  printe("C'est le test$",1,1);
