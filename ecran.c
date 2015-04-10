@@ -1,9 +1,4 @@
-#include <__cross_studio_io.h>
-#include  <msp430x16x.h>
 #include <ecran.h>
-
-int next;
-int ACK;
 
 void envoicommande(char commande[],int taille)
 {

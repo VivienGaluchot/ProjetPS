@@ -61,17 +61,15 @@ void connectUsbToScreen(int etat){
 		setIT_TX_0(1);
 		setIT_TX_1(1);
 
-		UsbToScreen = 1;
+		itMode = 1;
 	}
 	else{
-		setCMD_SWITCH(0);
-
 		setIT_RX_0(0);
 		setIT_RX_1(0);
 		setIT_TX_0(0);
 		setIT_TX_1(0);
 
-		UsbToScreen = 0;
+		itMode = 0;
 	}
 }
 
@@ -178,15 +176,19 @@ void sendCharTableTX1(char* table, int n){
 *	INTERUPTIONS Fonctions
 */
 
-// MODULE 1 RX
+// MODULE 0 RX
 #pragma vector=UART0RX_VECTOR
 __interrupt void usart0_rx (void)
 {
-	if(UsbToScreen)
+	// 1 - usb connecté à l'écran
+	if(itMode==1)
 		TXBUF1 = RXBUF0;
+	
+	// 2 - écoute du gps
+	if(itMode==2);
 }
 
-// MODULE 1 TX
+// MODULE 0 TX
 #pragma vector=UART0TX_VECTOR
 __interrupt void usart0_tx (void)
 {
@@ -197,7 +199,8 @@ __interrupt void usart0_tx (void)
 #pragma vector=UART1RX_VECTOR
 __interrupt void usart1_rx (void)
 {
-	if(UsbToScreen)
+	// 1 - usb connecté à l'écran
+	if(itMode==1)
 		TXBUF0 = RXBUF1;
 
 	IT_R1_ACK = 1;
