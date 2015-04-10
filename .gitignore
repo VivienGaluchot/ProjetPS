@@ -36,8 +36,10 @@
 *.hzs
 *.hzo
 *.hzp
+
 Debug/*
 Release/*
+MSP430 Debug/*
 
 
 # Windows image file caches
