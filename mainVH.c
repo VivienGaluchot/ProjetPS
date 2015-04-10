@@ -1,8 +1,10 @@
 #include <__cross_studio_io.h>
 #include  <msp430x16x.h>
+#include <ecran.h>
 
-int next;
-void envoicommande( char *commande,int taille);
+
+
+
 void
 main(void)
 {
@@ -11,6 +13,7 @@ main(void)
    char b[10] = {0xFF,0xCD,0x00,0x40,0x00,0x40,0x00,0x14,0x00,0x10} ;
    char Clear[2] = {0xFF,0xD7};
    char ScreenModeLR[4] = {0xFF,0x68,0x00,0x01};
+   
 
 
 //////////////////////////////////
@@ -122,7 +125,12 @@ for(j=0;j<2;j++)
 //////////////////
 //  MAINLOOP    //
 //////////////////
+  
   envoicommande(b,10);
+//  envoicommande(Clear,2);
+//  envoicommande(ScreenModeLR,4);
+//  
+//  printe("C'est le test$",1,1);
   while(1)
   {
     if(P2IN == 0x1E) { P1OUT |=0x01;}else{ P1OUT = 0;}        //PUSH
@@ -153,6 +161,7 @@ __interrupt void usart0_tx (void)
 #pragma vector=USART1RX_VECTOR
 __interrupt void usart1_rx (void)
 {
+  ACK=1;
   TXBUF0=RXBUF1;
  }
 
@@ -163,17 +172,3 @@ __interrupt void usart1_tx (void)
  }
 
 
-void envoicommande(char commande[],int taille)
-{
-  int i;
-  i=0;
-  next=1;
-  while(i<taille)
-  {
-    if (next){
-    next = 0;
-    TXBUF1 =  commande[i];
-    i++;
-    }
-  }
-}
