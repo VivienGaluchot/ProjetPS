@@ -2,7 +2,9 @@
 #define _ECRAN_H
 
 #include <__cross_studio_io.h>
-#include  <msp430x16x.h>
+#include <msp430x16x.h>
+#include <uart.h>
+#include <ports.h>
 
 extern int next;
 extern int ACK;
