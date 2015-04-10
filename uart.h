@@ -32,18 +32,17 @@ static int nextT1 = 0;
 static int IT_R0 = 0;
 static int IT_R1_ACK = 0;
 
-//Buffer de rectption GPS
+//Buffer de reception GPS
 static char bufferUART0[400];
 static char bufferUART1[400];
 static int iBuff0 = 0;
 static int iBuff1 = 0;
 static int selBuff = 0;
 
-
 void initModule0();
 void initModule1();
 
-// connecter l'usb à l'écran ou ecouter le gps ne peuvent se faire en meme temps
+// Atention, connecter l'usb à l'écran ou ecouter le gps ne peuvent se faire en meme temps
 void connectUsbToScreen(int etat);
 void listenGPS(int etat);
 
