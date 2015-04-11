@@ -190,7 +190,19 @@ void sendCharTableTX1(char* table, int n){
 	}
 }
 
-
+void sendCharTX1(char valeur){
+	int i,t;
+	nextT1 = 1;
+	i = 0;
+	while(i<1){
+		if(nextT1){
+			nextT1 = 0;
+			//debug_printf("Envoi\n");
+			TXBUF1 = valeur;
+			i++;
+		}
+	}
+}
 /*
 *	INTERUPTIONS Fonctions
 */

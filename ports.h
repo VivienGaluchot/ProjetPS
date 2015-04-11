@@ -37,6 +37,7 @@ void setLedDroite(int etat);
 void setLedMilieu(int etat);
 
 void initSequenceTest(void);
+void initSequenceTest2(void);
 
 
 // Commandes

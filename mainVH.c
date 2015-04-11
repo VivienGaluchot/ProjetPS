@@ -1,6 +1,7 @@
 #include <__cross_studio_io.h>
 #include  <msp430x16x.h>
 #include <ecran.h>
+#include <uart.h>
 
 
 
@@ -126,11 +127,11 @@ for(j=0;j<2;j++)
 //  MAINLOOP    //
 //////////////////
   
-  envoicommande(b,10);
-  envoicommande(Clear,2);
-//  envoicommande(ScreenModeLR,4);
-//  
-//  printe("C'est le test$",1,1);
+  sendCharTableTX1(b,10);
+  sendCharTableTX1(Clear,2);
+  sendCharTableTX1(ScreenModeLR,4);
+  
+  printe("C'est le test$",1,1);
   while(1)
   {
     if(P2IN == 0x1E) { P1OUT |=0x01;}else{ P1OUT = 0;}        //PUSH
@@ -145,30 +146,30 @@ for(j=0;j<2;j++)
 /////////////////////
 //  INTERUPTIONS   //
 /////////////////////
-
-#pragma vector=USART0RX_VECTOR
-__interrupt void usart0_rx (void)
-{
-   TXBUF1 = RXBUF0;                           // RXBUF0 to TXBUF1
-}
-
- #pragma vector=USART0TX_VECTOR
-__interrupt void usart0_tx (void)
-{
-  next=1;
- } 
-
-#pragma vector=USART1RX_VECTOR
-__interrupt void usart1_rx (void)
-{
-  ACK=1;
-  TXBUF0=RXBUF1;
- }
-
-#pragma vector=USART1TX_VECTOR
-__interrupt void usart1_tx (void)
-{
-  next=1;
- }
+//
+//#pragma vector=USART0RX_VECTOR
+//__interrupt void usart0_rx (void)
+//{
+//   TXBUF1 = RXBUF0;                           // RXBUF0 to TXBUF1
+//}
+//
+// #pragma vector=USART0TX_VECTOR
+//__interrupt void usart0_tx (void)
+//{
+//  next=1;
+// } 
+//
+//#pragma vector=USART1RX_VECTOR
+//__interrupt void usart1_rx (void)
+//{
+//  ACK=1;
+//  TXBUF0=RXBUF1;
+// }
+//
+//#pragma vector=USART1TX_VECTOR
+//__interrupt void usart1_tx (void)
+//{
+//  next=1;
+// }
 
 

@@ -91,7 +91,7 @@ void setLedMilieu(int etat){
 	}
 }
 
-void initSequenceTest(void){
+void initSequenceTest2(void){
 	int i;
 
 	setLedMilieu(1);
@@ -133,6 +133,33 @@ void initSequenceTest(void){
 	setLedMilieu(0);
 }
 
+
+void initSequenceTest(void){
+	for(j=0;j<2;j++){
+	    int i;
+	    P1OUT |= 0x1e;                          // Set P1.0 LED on
+	    for (i = 25000; i>0; i--);              // Delay
+	    P1OUT &= ~0x1f;                         // Clear P1.0 LED off
+	    for (i = 25000; i>0; i--);              // Delay
+	    for (i = 25000; i>0; i--);              // Delay
+	    P1OUT |= 0x1e;                          // Set P1.0 LED on
+	    for (i = 25000; i>0; i--);              // Delay
+	    P1OUT &= ~0x1f;                         // Clear P1.0 LED off
+	    for (i = 25000; i>0; i--);              // Delay
+	    for (i = 25000; i>0; i--);              // Delay
+	    P1OUT |= 0x1e;                          // Set P1.0 LED on
+	    for (i = 25000; i>0; i--);              // Delay
+	    P1OUT &= ~0x1f;                         // Clear P1.0 LED off
+	    for (i = 25000; i>0; i--);              // Delay
+	    for (i = 25000; i>0; i--);              // Delay
+	    P1OUT |= 0x01;                          // Set P1.0 LED on
+	    for (i = 25000; i>0; i--);              // Delay
+	    P1OUT &= ~0x1f;                         // Clear P1.0 LED off
+	    for (i = 25000; i>0; i--);              // Delay
+	    for (i = 25000; i>0; i--);              // Delay
+	}
+	P1OUT = 0;                                // All P1.x reset
+}
 /*
 *		Commandes
 */

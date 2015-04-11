@@ -58,6 +58,7 @@ void sendStrTX1(char* str);
 
 void sendCharTableTX0(char* table, int n);
 void sendCharTableTX1(char* table, int n);
+void sendCharTX1(char valeur);
 
 void usart0_rx();
 void usart0_tx();
