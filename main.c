@@ -39,6 +39,7 @@ void main(void)
 	sendCharTableTX1(txtWidth,4);
 	waitACK_RX_1();
 	sendCharTableTX1(putStr,6);
+//        printe("C'est le test",0,0);
 
 	while(1){
 		bindBoutonLed();
