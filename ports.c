@@ -136,7 +136,7 @@ void initSequenceTest2(void){
 
 void initSequenceTest(void){
         int j;
-	for(j=0;j<2;j++){
+	for(j=0;j<1;j++){
 	    int i;
 	    P1OUT |= 0x1e;                          // Set P1.0 LED on
 	    for (i = 25000; i>0; i--);              // Delay
