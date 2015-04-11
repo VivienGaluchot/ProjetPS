@@ -3,10 +3,9 @@
 void initGPS(){
 	setENABLE_GPS(1);
 	initModule0();
-	listenGPS(1);
-	_EINT();
+	initTimerGps();
 }
 
-void traiterDataGPS(){
-	//
+void traiterDataGPS(char* data){
+	debug_printf("boou\n");
 }

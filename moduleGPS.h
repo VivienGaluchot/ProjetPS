@@ -7,6 +7,6 @@
 
 void initGPS();
 
-void traiterDataGPS();
+void traiterDataGPS(char* data);
 
 #endif

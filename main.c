@@ -3,6 +3,7 @@
 #include <moduleGPS.h>
 #include <ecran.h>
 
+
 void main(void)
 {
 	
@@ -11,16 +12,18 @@ void main(void)
 	initComPorts();
 
 	resetScreen();
-
+	initModule1(); // A mettre dans initScreen() si possible, avec resetScreen()
+	initGPS();
 	initSequenceTest();
 
-	initModule0();
-	initModule1();
+	// Commande de l'écran par l'usb
+	//connectUsbToScreen(1);
+	// Demarage du module GPS
+	
+	connectGPS(1);
+	connectScreen(1);
 
 	_EINT();
-
-	// Commande de l'écran par l'usb
-	connectUsbToScreen(1);
 
 	// cette comande marche pas mais si je l'enlève plus rien de marche
 	sendCharTableTX1(clear,2);

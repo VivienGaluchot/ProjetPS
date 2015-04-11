@@ -2,6 +2,8 @@
 #define MODULE_GPS_H
 
 #include <msp430x16x.h>
+#include <ports.h>
+#include <moduleGPS.h>
 
 /*
 	Ports : TX P3.4 - RX P3.5
@@ -22,9 +24,10 @@
 #define PORT_RX_1	0x80	// P3.7
 
 // mode d'interruptions
-// 0 - stop
-// 1 - usb connecté à l'écran
-// 2 - écoute du gps
+#define NO_IT 			0x00		// 0 - stop
+#define USB_TO_SCREEN 	0x01		// bit 1 - usb connecté à l'écran
+#define LISTEN_GPS 		0x02		// bit 2 - écoute du gps
+#define CONNECT_SCEEN 	0x04		// bit 3 - connecté a l'écran
 static int itMode = 0;
 
 static int nextT0 = 0;
@@ -41,10 +44,12 @@ static int selBuff = 0;
 
 void initModule0();
 void initModule1();
+void initTimerGps();
 
 // Atention, connecter l'usb à l'écran ou ecouter le gps ne peuvent se faire en meme temps
 void connectUsbToScreen(int etat);
-void listenGPS(int etat);
+void connectGPS(int etat);
+void connectScreen(int etat);
 
 void setIT_RX_0(int etat);
 void setIT_TX_0(int etat);
@@ -60,9 +65,11 @@ void sendCharTableTX0(char* table, int n);
 void sendCharTableTX1(char* table, int n);
 void sendCharTX1(char valeur);
 
+//Iterruptions
 void usart0_rx();
 void usart0_tx();
 void usart1_rx();
 void usart1_tx();
+void Timer_A();
 
 #endif

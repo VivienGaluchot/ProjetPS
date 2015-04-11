@@ -52,11 +52,22 @@ void initModule1(){
 	UCTL1 &= ~SWRST;                      // End initialize USART state machine
 }
 
+void initTimerGps(){
+	WDTCTL = WDTPW + WDTHOLD;             // Stop WDT
+	TACTL = TASSEL0 + TACLR;              // ACLK, clear TAR
+	CCTL0 = CCIE;                         // CCR0 interrupt enabled
+	CCR0 = 16384;
+	TACTL |= MC0|MC1;                     // Start Timer_a in updown mode
+}
+
 void connectUsbToScreen(int etat){
 	if(etat){
-		setCMD_SWITCH(1);
+		if(itMode & LISTEN_GPS)
+			connectGPS(0);
 
-		itMode = 1;
+		itMode |= USB_TO_SCREEN;
+
+		setCMD_SWITCH(1);
 
 		setIT_RX_0(1);
 		setIT_RX_1(1);
@@ -69,13 +80,16 @@ void connectUsbToScreen(int etat){
 		setIT_TX_0(0);
 		setIT_TX_1(0);
 
-		itMode = 0;
+		itMode &= ~USB_TO_SCREEN;
 	}
 }
 
-void listenGPS(int etat){
+void connectGPS(int etat){
 	if(etat){
-		itMode = 2;
+		if(itMode & USB_TO_SCREEN)
+			connectUsbToScreen(0);
+
+		itMode |= LISTEN_GPS;
 		
 		iBuff0 = 0;
 		iBuff1 = 0;
@@ -88,10 +102,27 @@ void listenGPS(int etat){
 	else{
 		setIT_RX_0(0);
 
-		itMode = 0;
+		itMode &= ~LISTEN_GPS;
 	}
 }
 
+void connectScreen(int etat){
+	if(etat){
+		if(itMode & USB_TO_SCREEN)
+			connectUsbToScreen(0);
+
+		itMode |= CONNECT_SCEEN;
+
+		setIT_RX_1(1);
+		setIT_TX_1(1);
+	}
+	else{
+		setIT_RX_1(1);
+		setIT_TX_1(1);
+
+		itMode &= ~CONNECT_SCEEN;
+	}
+}
 
 /*
 *	INTERRUPTIONS Sets
@@ -183,7 +214,6 @@ void sendCharTableTX1(char* table, int n){
 	while(i<n){
 		if(nextT1){
 			nextT1 = 0;
-			//debug_printf("Envoi\n");
 			TXBUF1 = table[i];
 			i++;
 		}
@@ -204,7 +234,7 @@ void sendCharTX1(char valeur){
 	}
 }
 /*
-*	INTERUPTIONS Fonctions
+*	Interruptions
 */
 
 // MODULE 0 RX
@@ -212,11 +242,11 @@ void sendCharTX1(char valeur){
 __interrupt void usart0_rx (void)
 {
 	// 1 - usb connecté à l'écran
-	if(itMode==1)
+	if(itMode & USB_TO_SCREEN)
 		TXBUF1 = RXBUF0;
 	
 	// 2 - écoute du gps
-	if(itMode==2){
+	if(itMode & LISTEN_GPS){
 		if(selBuff==1){
 			bufferUART1[iBuff1] = RXBUF0;
 			iBuff1++;
@@ -241,15 +271,29 @@ __interrupt void usart0_tx (void)
 __interrupt void usart1_rx (void)
 {
 	// 1 - usb connecté à l'écran
-	if(itMode==1)
+	if(itMode & USB_TO_SCREEN)
 		TXBUF0 = RXBUF1;
 
-	IT_R1_ACK = 1;
+	// 3 - ecran connecté
+	if(itMode & CONNECT_SCEEN)
+		IT_R1_ACK = 1;
 }
 
 // MODULE 1 TX
 #pragma vector=UART1TX_VECTOR 
 __interrupt void usart1_tx (void)
-{ 
-	nextT1 = 1;
+{
+	// 3 - ecran connecté
+	if(itMode & CONNECT_SCEEN)
+		nextT1 = 1;
+}
+
+// Timer A0 interrupt service routine
+#pragma vector=TIMERA0_VECTOR
+__interrupt void Timer_A (void)
+{
+	// 2 - écoute du gps
+	if(itMode & LISTEN_GPS){
+		traiterDataGPS("vide");
+	}
 }
