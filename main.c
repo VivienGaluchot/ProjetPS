@@ -14,7 +14,7 @@ void main(void)
 	resetScreen();
 	initModule1(); // A mettre dans initScreen() si possible, avec resetScreen()
 	initGPS();
-	initSequenceTest();
+	initSequenceTest2();
 
 	// Commande de l'écran par l'usb
 	//connectUsbToScreen(1);
