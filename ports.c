@@ -135,7 +135,7 @@ void initSequenceTest2(void){
 
 
 void initSequenceTest(void){
-		int j;
+	int j;
 	for(j=0;j<1;j++){
 	    int i;
 	    P1OUT |= 0x1e;                          // Set P1.0 LED on
