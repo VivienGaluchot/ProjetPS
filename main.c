@@ -1,20 +1,30 @@
 #include <msp430x16x.h>
+#include <uart.h>
 #include <ports.h>
 #include <moduleGPS.h>
 #include <ecran.h>
 
-
 void main(void)
 {
-	
+	char fondBleu[] = {0xFF,0xCE, 0x00,0x00, 0x00,0x00, 0x00,0x80, 0x00,0x80, 0x00,0x4D};
+	char rondBleuClair[] = {0xFF,0xCC, 0x00,0x40, 0x00,0x40, 0x00,0x32, 0x04,0xB9};
+	char txtHeight[] = {0xFF,0x7B, 0x00,0x03};
+	char txtWidth[] = {0xFF,0x7C, 0x00,0x03};
+	char putStr[] = {0x00,0x06,'G','P','S',0x00};
+	char clr[] = {0xFF,0xD7};
+
 	initPortLed();
 	initPortBouton(); 
 	initComPorts();
 
-	resetScreen();
-	initModule1(); // A mettre dans initScreen() si possible, avec resetScreen()
+	resetScreen(); // A mettre dans initScreen() si possible
+
+	initModule0();
+	initModule1();
+
 	initGPS();
-	initSequenceTest();
+
+	initSequenceTest2();
 
 	// Commande de l'écran par l'usb
 	//connectUsbToScreen(1);
@@ -25,11 +35,7 @@ void main(void)
 
 	_EINT();
 
-	// cette comande marche pas mais si je l'enlève plus rien de marche
-	sendCharTableTX1(clear,2);
-
-	sendCharTableTX1(landscapeR,4);
-	waitACK_RX_1();
+	sendCharTX1(0);
 	sendCharTableTX1(fondBleu,12);
 	waitACK_RX_1();
 	sendCharTableTX1(rondBleuClair,10);
@@ -39,7 +45,8 @@ void main(void)
 	sendCharTableTX1(txtWidth,4);
 	waitACK_RX_1();
 	sendCharTableTX1(putStr,6);
-//        printe("C'est le test",0,0);
+	waitACK_RX_1();
+	sendCharTableTX1(clr,2);
 
 	while(1){
 		bindBoutonLed();
