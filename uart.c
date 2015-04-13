@@ -238,8 +238,7 @@ void sendCharTX1(char valeur){
 */
 
 // MODULE 0 RX
-#pragma vector=UART0RX_VECTOR
-__interrupt void usart0_rx (void)
+void usart0_rx (void) __interrupt[UART0RX_VECTOR]
 {
 	// 1 - usb connecté à l'écran
 	if(itMode & USB_TO_SCREEN)
@@ -260,15 +259,13 @@ __interrupt void usart0_rx (void)
 }
 
 // MODULE 0 TX
-#pragma vector=UART0TX_VECTOR
-__interrupt void usart0_tx (void)
+void usart0_tx (void) __interrupt[UART0TX_VECTOR]
 {
 	nextT0 = 1;
 }
 
 // MODULE 1 RX
-#pragma vector=UART1RX_VECTOR
-__interrupt void usart1_rx (void)
+void usart1_rx (void) __interrupt[UART1RX_VECTOR]
 {
 	// 1 - usb connecté à l'écran
 	if(itMode & USB_TO_SCREEN)
@@ -280,8 +277,7 @@ __interrupt void usart1_rx (void)
 }
 
 // MODULE 1 TX
-#pragma vector=UART1TX_VECTOR 
-__interrupt void usart1_tx (void)
+void usart1_tx (void) __interrupt[UART1TX_VECTOR]
 {
 	// 3 - ecran connecté
 	if(itMode & CONNECT_SCEEN)
@@ -289,8 +285,7 @@ __interrupt void usart1_tx (void)
 }
 
 // Timer A0 interrupt service routine
-#pragma vector=TIMERA0_VECTOR
-__interrupt void Timer_A (void)
+void Timer_A (void) __interrupt[TIMERA0_VECTOR]
 {
 	// 2 - écoute du gps
 	if(itMode & LISTEN_GPS){
