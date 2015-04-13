@@ -5,7 +5,7 @@
 #include <ports.h>
 #include <uart.h>
 
-void initGPS();
+void initGPS(void);
 
 void traiterDataGPS(char* data);
 

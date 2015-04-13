@@ -60,6 +60,12 @@ void initTimerGps(){
 	TACTL |= MC0|MC1;                     // Start Timer_a in updown mode
 }
 
+void resetTimer(){
+	TACTL &= ~(MC0|MC1); //stop timer
+	TAR = 0;
+	TACTL |= MC0|MC1; // start timer
+}
+
 void connectUsbToScreen(int etat){
 	if(etat){
 		if(itMode & LISTEN_GPS)
@@ -90,37 +96,28 @@ void connectGPS(int etat){
 			connectUsbToScreen(0);
 
 		itMode |= LISTEN_GPS;
-		
-		iBuff0 = 0;
-		iBuff1 = 0;
-		selBuff = 0;
-
+		iBuff = 0;
 		setCMD_SWITCH(0);
-
 		setIT_RX_0(1);
 	}
 	else{
 		setIT_RX_0(0);
-
 		itMode &= ~LISTEN_GPS;
 	}
 }
 
 void connectScreen(int etat){
 	if(etat){
-		if(itMode & USB_TO_SCREEN)
-			connectUsbToScreen(0);
-
-		itMode |= CONNECT_SCEEN;
+		itMode |= CONNECT_SCREEN;
 
 		setIT_RX_1(1);
 		setIT_TX_1(1);
 	}
 	else{
-		setIT_RX_1(1);
-		setIT_TX_1(1);
+		setIT_RX_1(0);
+		setIT_TX_1(0);
 
-		itMode &= ~CONNECT_SCEEN;
+		itMode &= ~CONNECT_SCREEN;
 	}
 }
 
@@ -175,63 +172,48 @@ void waitACK_RX_1(){
 }
 
 void sendStrTX0(char* str){
-	nextT0 = 1;
 	while(*str){
-		if(nextT0){
-			nextT0 = 0;
-			TXBUF0 = *str++;
-		}
+		nextT0 = 0;
+		TXBUF0 = *str++;
+		while(!nextT0);
 	}
 }
 
 void sendStrTX1(char* str){
-	nextT1 = 1;
 	while(*str){
-		if(nextT1){
-			nextT1 = 0;
-			TXBUF1 = *str++;
-		}
+		nextT1 = 0;
+		TXBUF1 = *str++;
+		while(!nextT1);
 	}
 }
 
 void sendCharTableTX0(char* table, int n){
 	int i;
-	nextT0 = 1;
 	i = 0;
 	while(i<n){
-		if(nextT0){
-			nextT0 = 0;
-			TXBUF0 = table[i];
-			i++;
-		}
+		nextT0 = 0;
+		TXBUF0 = table[i];
+		while(nextT0 == 0);
+		i++;
+		
 	}
 }
 
 void sendCharTableTX1(char* table, int n){
-	int i,t;
-	nextT1 = 1;
+	int i;
 	i = 0;
 	while(i<n){
-		if(nextT1){
-			nextT1 = 0;
-			TXBUF1 = table[i];
-			i++;
-		}
+		nextT1 = 0;
+		TXBUF1 = table[i];
+		while(nextT1 == 0);
+		i++;
 	}
 }
 
 void sendCharTX1(char valeur){
-	int i,t;
-	nextT1 = 1;
-	i = 0;
-	while(i<1){
-		if(nextT1){
-			nextT1 = 0;
-			//debug_printf("Envoi\n");
-			TXBUF1 = valeur;
-			i++;
-		}
-	}
+	nextT1 = 0;
+	TXBUF1 = valeur;
+	while(nextT1 == 0);
 }
 /*
 *	Interruptions
@@ -245,23 +227,17 @@ void usart0_rx (void) __interrupt[UART0RX_VECTOR]
 		TXBUF1 = RXBUF0;
 	
 	// 2 - écoute du gps
-	if(itMode & LISTEN_GPS){
-		if(selBuff==1){
-			bufferUART1[iBuff1] = RXBUF0;
-			iBuff1++;
-		}
-		else
-		{
-			bufferUART0[iBuff0] = RXBUF0;
-			iBuff0++;
-		}
+	if((itMode & LISTEN_GPS) && (iBuff < BUFF_SIZE)){
+		buffer[iBuff] = RXBUF0;
+		iBuff++;
 	}
 }
 
 // MODULE 0 TX
 void usart0_tx (void) __interrupt[UART0TX_VECTOR]
 {
-	nextT0 = 1;
+	if(itMode & USB_TO_SCREEN)
+		nextT0 = 1;
 }
 
 // MODULE 1 RX
@@ -272,7 +248,7 @@ void usart1_rx (void) __interrupt[UART1RX_VECTOR]
 		TXBUF0 = RXBUF1;
 
 	// 3 - ecran connecté
-	if(itMode & CONNECT_SCEEN)
+	if(itMode & CONNECT_SCREEN)
 		IT_R1_ACK = 1;
 }
 
@@ -280,7 +256,7 @@ void usart1_rx (void) __interrupt[UART1RX_VECTOR]
 void usart1_tx (void) __interrupt[UART1TX_VECTOR]
 {
 	// 3 - ecran connecté
-	if(itMode & CONNECT_SCEEN)
+	if(itMode & CONNECT_SCREEN)
 		nextT1 = 1;
 }
 
@@ -289,6 +265,7 @@ void Timer_A (void) __interrupt[TIMERA0_VECTOR]
 {
 	// 2 - écoute du gps
 	if(itMode & LISTEN_GPS){
-		traiterDataGPS("vide");
+		traiterDataGPS(buffer);
+		iBuff = 0;
 	}
 }

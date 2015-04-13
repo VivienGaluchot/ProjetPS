@@ -50,11 +50,11 @@ void initComPorts(void);
 
 void setENABLE_GPS(int etat);
 void setCMD_SWITCH(int etat);
-void resetScreen();
+void resetScreen(void);
 
 
 // DIVERS
 
-void bindBoutonLed();
+void bindBoutonLed(void);
 
 #endif

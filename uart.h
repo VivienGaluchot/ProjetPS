@@ -27,7 +27,7 @@
 #define NO_IT 			0x00		// 0 - stop
 #define USB_TO_SCREEN 	0x01		// bit 1 - usb connecté à l'écran
 #define LISTEN_GPS 		0x02		// bit 2 - écoute du gps
-#define CONNECT_SCEEN 	0x04		// bit 3 - connecté a l'écran
+#define CONNECT_SCREEN 	0x04		// bit 3 - connecté a l'écran
 static int itMode = 0;
 
 static int nextT0 = 0;
@@ -36,15 +36,14 @@ static int IT_R0 = 0;
 static int IT_R1_ACK = 0;
 
 //Buffer de reception GPS
-static char bufferUART0[400];
-static char bufferUART1[400];
-static int iBuff0 = 0;
-static int iBuff1 = 0;
-static int selBuff = 0;
+#define BUFF_SIZE 1024
+static char buffer[BUFF_SIZE];
+static int iBuff = 0;
 
-void initModule0();
-void initModule1();
-void initTimerGps();
+void initModule0(void);
+void initModule1(void);
+void initTimerGps(void);
+void resetTimer(void);
 
 // Atention, connecter l'usb à l'écran ou ecouter le gps ne peuvent se faire en meme temps
 void connectUsbToScreen(int etat);
@@ -56,7 +55,7 @@ void setIT_TX_0(int etat);
 void setIT_RX_1(int etat);
 void setIT_TX_1(int etat);
 
-void waitACK_RX_1();
+void waitACK_RX_1(void);
 
 void sendStrTX0(char* str);
 void sendStrTX1(char* str);
@@ -66,10 +65,10 @@ void sendCharTableTX1(char* table, int n);
 void sendCharTX1(char valeur);
 
 //Iterruptions
-void usart0_rx();
-void usart0_tx();
-void usart1_rx();
-void usart1_tx();
-void Timer_A();
+void usart0_rx(void);
+void usart0_tx(void);
+void usart1_rx(void);
+void usart1_tx(void);
+void Timer_A(void);
 
 #endif
