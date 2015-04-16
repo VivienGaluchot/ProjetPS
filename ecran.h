@@ -17,6 +17,7 @@ static char txtWidth[] = {0xFF,0x7C, 0x00,0x02};
 static char putStr[] = {0x00,0x06,'G','P','S',0x00};
 
 static char blanc[]={0xff,0xff};
+static char noir[]={0x00,0x00};
 static char fondviolet[]={0xd0,0xcf};
 static char tourviolet[]={0xeb,0xd6};
 static char fondbleu[]={0x19,0x71};
@@ -37,7 +38,10 @@ void setTextBGColour(char *couleur);
 void putstr(char *phrase);
 void drawRectangle(char x1,char y1,char x2, char y2, char *couleur);
 void drawFilledRectangle(char x1,char y1,char x2, char y2, char *couleur);
-
+void clearScreen();
+void menu1();
+void majmenu1(int i,int iAvant);
+int bouton(int i);
 
 
 

@@ -181,31 +181,29 @@
 
 void main(void)
 {
-  
+  int i, temp;
   initPortLed();
   initPortBouton(); 
   initComPorts();
 
   resetScreen();
-  initModule0();
   initModule1(); // A mettre dans initScreen() si possible, avec resetScreen()
-  // initGPS();
+  initGPS();
   initSequenceTest();
 
   // Commande de l'écran par l'usb
-  //connectUsbToScreen(1);
+  connectUsbToScreen(1);
   // Demarage du module GPS
   
-  // connectGPS(0);
-   connectScreen(1);
+  // connectGPS(1);
+  connectScreen(1);
 
   _EINT();
 
-        // cette comande marche pas mais si je l'enlève plus rien de marche
-  // sendCharTableTX1(clear,2);
   sendCharTX1(0x00);
   sendCharTableTX1(landscapeR,4);
   waitACK_RX_1();
+
   // sendCharTableTX1(fondBleu,12);
   // waitACK_RX_1();
   // sendCharTableTX1(rondBleuClair,10);
@@ -215,24 +213,16 @@ void main(void)
   // sendCharTableTX1(txtWidth,4);
   // waitACK_RX_1();
   // sendCharTableTX1(putStr,6);
-  // waitACK_RX_1();  
-   
-  
-  drawFilledRectangle(2,62,2,62,fondbleu);
-  drawFilledRectangle(2,62,66,126,fondorange);
-  drawFilledRectangle(66,126,2,62,fondviolet);
-  drawFilledRectangle(66,126,66,126,fondgris);
-  drawRectangle(2,62,2,62,tourbleu);
-  drawRectangle(2,62,66,126,tourorange);
-  drawRectangle(66,126,2,62,tourviolet);
-  drawRectangle(66,126,66,126,tourgris);
-  printe("Enregistrement",6,0,fondbleu,blanc);
-  printe("Stats",11,2,fondorange,blanc);
-  printe("Serial",11,11,fondgris,blanc);
-  printe("Nav",3,12,fondviolet,blanc);
 
-  
+  i = 0 ;
+  temp = 0 ;
+  clearScreen();
+  menu1();
   while(1){
-    bindBoutonLed();
+    // bindBoutonLed();
+    temp=i;
+    i=bouton(i);
+    if(temp!=i) {majmenu1(i,temp);}
   }
 }
+
