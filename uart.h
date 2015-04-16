@@ -36,9 +36,12 @@ static int IT_R0 = 0;
 static int IT_R1_ACK = 0;
 
 //Buffer de reception GPS
-#define BUFF_SIZE 1024
-static char buffer[BUFF_SIZE];
-static int iBuff = 0;
+#define BUFF_SIZE 512
+static char buffer0[BUFF_SIZE];
+static char buffer1[BUFF_SIZE];
+static int iBuff0 = 0;
+static int iBuff1 = 0;
+static char useBuffer = 0;
 
 void initModule0(void);
 void initModule1(void);

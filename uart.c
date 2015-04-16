@@ -56,7 +56,7 @@ void initTimerGps(){
 	WDTCTL = WDTPW + WDTHOLD;             // Stop WDT
 	TACTL = TASSEL0 + TACLR;              // ACLK, clear TAR
 	CCTL0 = CCIE;                         // CCR0 interrupt enabled
-	CCR0 = 20000;
+	CCR0 = 18000;
 	TACTL |= MC0|MC1;                     // Start Timer_a in updown mode
 }
 
@@ -96,7 +96,11 @@ void connectGPS(int etat){
 			connectUsbToScreen(0);
 
 		itMode |= LISTEN_GPS;
-		iBuff = 0;
+
+		iBuff0 = 0;
+		iBuff1 = 0;
+		useBuffer = 0;
+
 		setCMD_SWITCH(0);
 		setIT_RX_0(1);
 		setIT_TX_0(1);
@@ -229,9 +233,15 @@ void usart0_rx (void) __interrupt[UART0RX_VECTOR]
 		TXBUF1 = RXBUF0;
 	
 	// 2 - écoute du gps
-	if((itMode & LISTEN_GPS) && (iBuff < BUFF_SIZE)){
-		buffer[iBuff] = RXBUF0;
-		iBuff++;
+	if(itMode & LISTEN_GPS){
+		if(useBuffer == 0 && iBuff0 < BUFF_SIZE){
+			buffer0[iBuff0] = RXBUF0;
+			iBuff0++;
+		}
+		else if(useBuffer == 1 && iBuff1 < BUFF_SIZE){
+			buffer1[iBuff1] = RXBUF0;
+			iBuff1++;
+		}
 	}
 }
 
@@ -266,12 +276,20 @@ void usart1_tx (void) __interrupt[UART1TX_VECTOR]
 void Timer_A (void) __interrupt[TIMERA0_VECTOR]
 {
 	// 2 - écoute du gps
-	if(itMode & LISTEN_GPS && iBuff>0){
-		setIT_TX_0(0); // desactive l'interruption TX0
-
-		traiterDataGPS(buffer,iBuff);
-		iBuff = 0;
-
-		setIT_TX_0(1); // reactive l'interruption TX0
+	if(itMode & LISTEN_GPS){
+		if(useBuffer==0){
+			setIT_TX_0(0); // desactive l'interruption TX0
+			useBuffer = 1;
+			setIT_TX_0(1); // reactive l'interruption TX0
+			traiterDataGPS(buffer0,iBuff0+1);
+			iBuff0 = 0;
+		}
+		else if(useBuffer==1){
+			setIT_TX_0(0); // desactive l'interruption TX0
+			useBuffer = 0;
+			setIT_TX_0(1); // reactive l'interruption TX0
+			traiterDataGPS(buffer1,iBuff1+1);
+			iBuff1 = 0;
+		}
 	}
 }
