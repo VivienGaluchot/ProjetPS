@@ -18,6 +18,11 @@ static char putStr[] = {0x00,0x06,'G','P','S',0x00};
 
 static char blanc[]={0xff,0xff};
 static char noir[]={0x00,0x00};
+static char blert[]={0x0d,0x4b};
+static char vert[]={0x05,0xe4};
+static char bleuclair[]={0x1c,0xbd};
+
+
 static char fondviolet[]={0xd0,0xcf};
 static char tourviolet[]={0xeb,0xd6};
 static char fondbleu[]={0x19,0x71};
@@ -42,6 +47,10 @@ void clearScreen();
 void menu1();
 void majmenu1(int i,int iAvant);
 int bouton(int i);
+void affichageEnregistrement();
+void majaffichageEnregistrement(char* coord1, char* coord2, char* altitude, char* vitesse,char* heure);
+void initScreen();
+void underline();
 
 
 

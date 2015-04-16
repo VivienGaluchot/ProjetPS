@@ -187,6 +187,7 @@ void main(void)
   initComPorts();
 
   resetScreen();
+  initModule0();
   initModule1(); // A mettre dans initScreen() si possible, avec resetScreen()
   initGPS();
   initSequenceTest();
@@ -194,15 +195,13 @@ void main(void)
   // Commande de l'écran par l'usb
   connectUsbToScreen(1);
   // Demarage du module GPS
-  
+
   // connectGPS(1);
   connectScreen(1);
 
   _EINT();
 
-  sendCharTX1(0x00);
-  sendCharTableTX1(landscapeR,4);
-  waitACK_RX_1();
+
 
   // sendCharTableTX1(fondBleu,12);
   // waitACK_RX_1();
@@ -213,11 +212,11 @@ void main(void)
   // sendCharTableTX1(txtWidth,4);
   // waitACK_RX_1();
   // sendCharTableTX1(putStr,6);
-
   i = 0 ;
   temp = 0 ;
-  clearScreen();
+  initScreen();
   menu1();
+  majmenu1(i,8);
   while(1){
     // bindBoutonLed();
     temp=i;
