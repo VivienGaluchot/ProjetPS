@@ -278,16 +278,16 @@ void Timer_A (void) __interrupt[TIMERA0_VECTOR]
 	// 2 - écoute du gps
 	if(itMode & LISTEN_GPS){
 		if(useBuffer==0){
-			setIT_TX_0(0); // desactive l'interruption TX0
+			setIT_RX_0(0); // desactive l'interruption RX0
 			useBuffer = 1;
-			setIT_TX_0(1); // reactive l'interruption TX0
+			setIT_RX_0(1); // reactive l'interruption RX0
 			traiterDataGPS(buffer0,iBuff0+1);
 			iBuff0 = 0;
 		}
 		else if(useBuffer==1){
-			setIT_TX_0(0); // desactive l'interruption TX0
+			setIT_RX_0(0); // desactive l'interruption RX0
 			useBuffer = 0;
-			setIT_TX_0(1); // reactive l'interruption TX0
+			setIT_RX_0(1); // reactive l'interruption RX0
 			traiterDataGPS(buffer1,iBuff1+1);
 			iBuff1 = 0;
 		}

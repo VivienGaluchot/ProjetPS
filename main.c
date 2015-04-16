@@ -6,12 +6,13 @@
 
 void main(void)
 {
-	char fondBleu[] = {0xFF,0xCE, 0x00,0x00, 0x00,0x00, 0x00,0x80, 0x00,0x80, 0x00,0x4D};
-	char rondBleuClair[] = {0xFF,0xCC, 0x00,0x40, 0x00,0x40, 0x00,0x32, 0x04,0xB9};
-	char txtHeight[] = {0xFF,0x7B, 0x00,0x03};
-	char txtWidth[] = {0xFF,0x7C, 0x00,0x03};
-	char putStr[] = {0x00,0x06,'G','P','S',0x00};
-	char clr[] = {0xFF,0xD7};
+	int i, temp;
+	// char fondBleu[] = {0xFF,0xCE, 0x00,0x00, 0x00,0x00, 0x00,0x80, 0x00,0x80, 0x00,0x4D};
+	// char rondBleuClair[] = {0xFF,0xCC, 0x00,0x40, 0x00,0x40, 0x00,0x32, 0x04,0xB9};
+	// char txtHeight[] = {0xFF,0x7B, 0x00,0x03};
+	// char txtWidth[] = {0xFF,0x7C, 0x00,0x03};
+	// char putStr[] = {0x00,0x06,'G','P','S',0x00};
+	// char clr[] = {0xFF,0xD7};
 
 	_EINT(); // enable interrupt
 
@@ -26,24 +27,32 @@ void main(void)
 
 	initSequenceTest2();
 
-	initGPS();
+	//initGPS();
 	
 	connectScreen(1);
 
-	sendCharTX1(0);
-	sendCharTableTX1(fondBleu,12);
-	waitACK_RX_1();
-	sendCharTableTX1(rondBleuClair,10);
-	waitACK_RX_1();
-	sendCharTableTX1(txtHeight,4);
-	waitACK_RX_1();
-	sendCharTableTX1(txtWidth,4);
-	waitACK_RX_1();
-	sendCharTableTX1(putStr,6);
-	waitACK_RX_1();
-	sendCharTableTX1(clr,2);
+	// sendCharTX1(0);
+	// sendCharTableTX1(fondBleu,12);
+	// waitACK_RX_1();
+	// sendCharTableTX1(rondBleuClair,10);
+	// waitACK_RX_1();
+	// sendCharTableTX1(txtHeight,4);
+	// waitACK_RX_1();
+	// sendCharTableTX1(txtWidth,4);
+	// waitACK_RX_1();
+	// sendCharTableTX1(putStr,6);
+	// waitACK_RX_1();
+	// sendCharTableTX1(clr,2);
 
+	i = 0 ;
+	temp = 0 ;
+	initScreen();
+	menu1();
+	majmenu1(i,8);
 	while(1){
 		bindBoutonLed();
+		temp=i;
+		i=bouton(i);
+		if(temp!=i) {majmenu1(i,temp);}
 	}
 }
