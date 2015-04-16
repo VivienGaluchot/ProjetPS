@@ -13,6 +13,8 @@ void main(void)
 	char putStr[] = {0x00,0x06,'G','P','S',0x00};
 	char clr[] = {0xFF,0xD7};
 
+	_EINT(); // enable interrupt
+
 	initPortLed();
 	initPortBouton(); 
 	initComPorts();
@@ -22,18 +24,11 @@ void main(void)
 	initModule0();
 	initModule1();
 
-	initGPS();
-
 	initSequenceTest2();
 
-	// Commande de l'écran par l'usb
-	//connectUsbToScreen(1);
-	// Demarage du module GPS
+	initGPS();
 	
-	connectGPS(1);
 	connectScreen(1);
-
-	_EINT();
 
 	sendCharTX1(0);
 	sendCharTableTX1(fondBleu,12);

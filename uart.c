@@ -56,7 +56,7 @@ void initTimerGps(){
 	WDTCTL = WDTPW + WDTHOLD;             // Stop WDT
 	TACTL = TASSEL0 + TACLR;              // ACLK, clear TAR
 	CCTL0 = CCIE;                         // CCR0 interrupt enabled
-	CCR0 = 16384;
+	CCR0 = 20000;
 	TACTL |= MC0|MC1;                     // Start Timer_a in updown mode
 }
 
@@ -99,9 +99,11 @@ void connectGPS(int etat){
 		iBuff = 0;
 		setCMD_SWITCH(0);
 		setIT_RX_0(1);
+		setIT_TX_0(1);
 	}
 	else{
 		setIT_RX_0(0);
+		setIT_TX_0(0);
 		itMode &= ~LISTEN_GPS;
 	}
 }
@@ -236,7 +238,7 @@ void usart0_rx (void) __interrupt[UART0RX_VECTOR]
 // MODULE 0 TX
 void usart0_tx (void) __interrupt[UART0TX_VECTOR]
 {
-	if(itMode & USB_TO_SCREEN)
+	if((itMode & USB_TO_SCREEN) || (itMode & LISTEN_GPS))
 		nextT0 = 1;
 }
 
@@ -264,8 +266,12 @@ void usart1_tx (void) __interrupt[UART1TX_VECTOR]
 void Timer_A (void) __interrupt[TIMERA0_VECTOR]
 {
 	// 2 - écoute du gps
-	if(itMode & LISTEN_GPS){
-		traiterDataGPS(buffer);
+	if(itMode & LISTEN_GPS && iBuff>0){
+		setIT_TX_0(0); // desactive l'interruption TX0
+
+		traiterDataGPS(buffer,iBuff);
 		iBuff = 0;
+
+		setIT_TX_0(1); // reactive l'interruption TX0
 	}
 }
