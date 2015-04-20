@@ -91,6 +91,17 @@ void setLedMilieu(int etat){
 	}
 }
 
+void allumerLedHaut(void){ P1OUT |= LED_HAUT; }
+void allumerLedBas(void){ P1OUT |= LED_BAS; }
+void allumerLedGauche(void){ P1OUT |= LED_GAUCHE; }
+void allumerLedDroite(void){ P1OUT |= LED_DROITE; }
+void allumerLedMilieu(void){ P1OUT |= LED_MILIEU; }
+void eteindreLedHaut(void){ P1OUT &= ~LED_HAUT; }
+void eteindreLedBas(void){ P1OUT &= ~LED_BAS; }
+void eteindreLedGauche(void){ P1OUT &= ~LED_GAUCHE; }
+void eteindreLedDroite(void){ P1OUT &= ~LED_DROITE; }
+void eteindreLedMilieu(void){ P1OUT &= ~LED_MILIEU; }
+
 void initSequenceTest2(void){
 	int i;
 
@@ -208,9 +219,14 @@ void resetScreen(){
 */
 
 void bindBoutonLed(){
-	setLedHaut(getBoutonHaut());
-	setLedBas(getBoutonBas());
-	setLedDroite(getBoutonDroite());
-	setLedGauche(getBoutonGauche());
-	setLedMilieu(getBoutonMilieu());
+	setFuncPressBoutonHaut(allumerLedHaut);
+	setFuncPressBoutonBas(allumerLedBas);
+	setFuncPressBoutonGauche(allumerLedGauche);
+	setFuncPressBoutonDroite(allumerLedDroite);
+	setFuncPressBoutonMilieu(allumerLedMilieu);
+	setFuncReleaseBoutonHaut(eteindreLedHaut);
+	setFuncReleaseBoutonBas(eteindreLedBas);
+	setFuncReleaseBoutonGauche(eteindreLedGauche);
+	setFuncReleaseBoutonDroite(eteindreLedDroite);
+	setFuncReleaseBoutonMilieu(eteindreLedMilieu);
 }

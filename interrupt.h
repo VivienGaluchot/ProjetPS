@@ -17,7 +17,17 @@ static void (*funcTx0)(void);
 static void (*funcRx1)(void);
 static void (*funcTx1)(void);
 static void (*funcTimerA)(void);
-static void (*funcP2)(void);
+
+static void (*funcPressBoutonHaut)(void);
+static void (*funcPressBoutonBas)(void);
+static void (*funcPressBoutonGauche)(void);
+static void (*funcPressBoutonDroite)(void);
+static void (*funcPressBoutonMilieu)(void);
+static void (*funcReleaseBoutonHaut)(void);
+static void (*funcReleaseBoutonBas)(void);
+static void (*funcReleaseBoutonGauche)(void);
+static void (*funcReleaseBoutonDroite)(void);
+static void (*funcReleaseBoutonMilieu)(void);
 
 void setFuncRx0(void (*func)(void));
 void setFuncTx0(void (*func)(void));
@@ -25,6 +35,16 @@ void setFuncRx1(void (*func)(void));
 void setFuncTx1(void (*func)(void));
 void setFuncTimer_A(void (*func)(void));
 void setFuncP2(void (*func)(void));
+void setFuncPressBoutonHaut(void (*func)(void));
+void setFuncPressBoutonBas(void (*func)(void));
+void setFuncPressBoutonGauche(void (*func)(void));
+void setFuncPressBoutonDroite(void (*func)(void));
+void setFuncPressBoutonMilieu(void (*func)(void));
+void setFuncReleaseBoutonHaut(void (*func)(void));
+void setFuncReleaseBoutonBas(void (*func)(void));
+void setFuncReleaseBoutonGauche(void (*func)(void));
+void setFuncReleaseBoutonDroite(void (*func)(void));
+void setFuncReleaseBoutonMilieu(void (*func)(void));
 
 // Uart
 void setItRx0(int etat);

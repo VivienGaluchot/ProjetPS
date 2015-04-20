@@ -2,10 +2,6 @@
 #include <interrupt.h>
 #include <ports.h>
 
-void test(void){
-	debug_printf("test");
-}
-
 void main(void)
 {
 	int i;
@@ -13,10 +9,9 @@ void main(void)
 	initPortLed();
 	initPortBouton();
 	initComPorts();
-
 	initIt();
-
-	setFuncP2(test);
+	
+	bindBoutonLed();
 	setItP2(1);
 
 	while(1){
