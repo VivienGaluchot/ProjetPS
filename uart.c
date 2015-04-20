@@ -52,58 +52,28 @@ void initModule1(void){
 	UCTL1 &= ~SWRST;                      // End initialize USART state machine
 }
 
-void initTimerGps(void){
-	WDTCTL = WDTPW + WDTHOLD;             // Stop WDT
-	TACTL = TASSEL0 + TACLR;              // ACLK, clear TAR
-	CCTL0 = CCIE;                         // CCR0 interrupt enabled
-	CCR0 = 18000;
-	TACTL |= MC0|MC1;                     // Start Timer_a in updown mode
-}
-
-void resetTimer(void){
-	TACTL &= ~(MC0|MC1); //stop timer
-	TAR = 0;
-	TACTL |= MC0|MC1; // start timer
-}
-
 void connectUsbToScreen(int etat){
 	if(etat){
-		if(itMode & LISTEN_GPS)
-			connectGPS(0);
-
-		itMode |= USB_TO_SCREEN;
-
 		setCMD_SWITCH(1);
 
+		setFuncRx0(&usbToSreenURX0);
+		setFuncRx1(&usbToSreenURX1);
 		setItRx0(1);
 		setItRx1(1);
-		setItTx0(1);
-		setItTx1(1);
 	}
 	else{
 		setItRx0(0);
 		setItRx1(0);
-		setItTx0(0);
-		setItTx1(0);
-
-		itMode &= ~USB_TO_SCREEN;
+		setFuncRx0(&rien);
+		setFuncRx1(&rien);
 	}
 }
 
 void connectGPS(int etat){
 	if(etat){
-		if(itMode & USB_TO_SCREEN)
-			connectUsbToScreen(0);
-
-		itMode |= LISTEN_GPS;
-
-		iBuff0 = 0;
-		iBuff1 = 0;
-		useBuffer = 0;
-
 		setCMD_SWITCH(0);
 
-		setFuncRx0(&gpsURX0);
+		// la fonctionRX0 est mise dans le module GPS
 		setFuncTx0(&envoiUTX0);
 		setItRx0(1);
 		setItTx0(1);
@@ -113,14 +83,11 @@ void connectGPS(int etat){
 		setItTx0(0);
 		setFuncRx0(&rien);
 		setFuncTx0(&rien);
-		itMode &= ~LISTEN_GPS;
 	}
 }
 
 void connectScreen(int etat){
 	if(etat){
-		itMode |= CONNECT_SCREEN;
-
 		setFuncRx1(&screenURX1);
 		setFuncTx1(&envoiUTX1);
 		setItRx1(1);
@@ -131,8 +98,6 @@ void connectScreen(int etat){
 		setItTx1(0);
 		setFuncRx1(&rien);
 		setFuncTx1(&rien);
-
-		itMode &= ~CONNECT_SCREEN;
 	}
 }
 
@@ -186,23 +151,13 @@ void sendCharTX1(char valeur){
 	TXBUF1 = valeur;
 	while(nextT1 == 0);
 }
+
 /*
 *	Fonctions d'iterruptions
 */
 
 void usbToSreenURX0(void){
 	TXBUF1 = RXBUF0;
-}
-
-void gpsURX0(void){
-	if(useBuffer == 0 && iBuff0 < BUFF_SIZE){
-		buffer0[iBuff0] = RXBUF0;
-		iBuff0++;
-	}
-	else if(useBuffer == 1 && iBuff1 < BUFF_SIZE){
-		buffer1[iBuff1] = RXBUF0;
-		iBuff1++;
-	}
 }
 
 void envoiUTX0(void){
@@ -219,21 +174,4 @@ void screenURX1(void){
 
 void envoiUTX1(void){
 	nextT1 = 1;
-}
-
-void vidageBuffer(void){
-	if(useBuffer==0){
-		setItRx0(0); // desactive l'interruption RX0
-		useBuffer = 1;
-		setItRx0(1); // reactive l'interruption RX0
-		traiterDataGPS(buffer0,iBuff0+1);
-		iBuff0 = 0;
-	}
-	else if(useBuffer==1){
-		setItRx0(0); // desactive l'interruption RX0
-		useBuffer = 0;
-		setItRx0(1); // reactive l'interruption RX0
-		traiterDataGPS(buffer1,iBuff1+1);
-		iBuff1 = 0;
-	}
 }

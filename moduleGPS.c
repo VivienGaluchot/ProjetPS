@@ -2,56 +2,64 @@
 
 void initGPS(void){
 	char* NMEA_OUTPUT = "$PMTK314,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0*28<CR><LF>";
-	// char* NMEA_OUTPUT_infos = "PMTK314,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0";
-	// int chk = checksum(NMEA_OUTPUT_infos);
+
+	iBuff0 = 0;
+	iBuff1 = 0;
+	useBuffer = 0;
+	lengthWaitBuffer = 0;
 
 	setENABLE_GPS(1);
 	initTimer_A();
 	setFuncTimer_A(&vidageBuffer);
 	setTimer_A(1);
 
+	setFuncRx0(&RxBuff0);
 	connectGPS(1);
 	
 	//selection des trames $GPRMC
 	//sendStrTX0(NMEA_OUTPUT);
 }
 
-void traiterDataGPS(char* data, int lenght){
+void mettreEnAttente(char* data, int length){
+	waitBuffer = data;
+	lengthWaitBuffer = length;
+}
+
+void traiterDataGPS(){
 	int i,j,chk;
-	
+
 	i = 0;
-	while(i<lenght){
+	while(i<lengthWaitBuffer){
 		//avencée vers le premier $
-		while(i<lenght && data[i]!='$') i++;
-		// data[i+1] contient le début des données de la trames
+		while(i<lengthWaitBuffer && waitBuffer[i]!='$') i++;
+		// waitBuffer[i+1] contient le début des données de la trames
 
 		//calcul du checksum
 		j = i+1;
 		chk = 0;
-		while(j<lenght && data[j]!='*'){
-			chk ^= data[j];
+		while(j<lengthWaitBuffer && waitBuffer[j]!='*'){
+			chk ^= waitBuffer[j];
 			j++;
 		}
 
 		//trame valide ?
-		if((j+3 < lenght) && (chk == hexToInt(data+j+1,2))){
-			data[j] = 0;
-			debug_printf(data+i+1);
+		if((j+3 < lengthWaitBuffer) && (chk == hexToInt(waitBuffer+j+1,2))){
+			waitBuffer[j] = 0;
+			debug_printf(waitBuffer+i+1);
+			debug_printf("\n");
 		}
-		else{
-			debug_printf("invalide");
-		}
-		debug_printf("\n");
 		i++;
 	}
+
+	lengthWaitBuffer = 0;
 }
 
-int hexToInt(char *s, int lenght){
+int hexToInt(char *s, int length){
 	int i,j,sum,hexPow;
 
 	sum = 0;
 	hexPow = 1;
-	for(i=lenght-1;i>=0;i--){
+	for(i=length-1;i>=0;i--){
 		j = 0;
 		while((j<16) && (s[i] != hexaTable[j]))
 			j++;
@@ -66,4 +74,29 @@ int hexToInt(char *s, int lenght){
 	}
 
 	return sum;
+}
+
+void RxBuff0(void){
+	if(iBuff0 < BUFF_SIZE)
+		buffer0[iBuff0++] = RXBUF0;
+}
+
+void RxBuff1(void){
+	if(iBuff1 < BUFF_SIZE)
+		buffer1[iBuff1++] = RXBUF0;
+}
+
+void vidageBuffer(void){
+	if(useBuffer==0){
+		useBuffer = 1;
+		setFuncRx0(&RxBuff1);
+		mettreEnAttente(buffer0,iBuff0+1);
+		iBuff0 = 0;
+	}
+	else if(useBuffer==1){
+		useBuffer = 0;
+		setFuncRx0(&RxBuff0);
+		mettreEnAttente(buffer1,iBuff1+1);
+		iBuff1 = 0;
+	}
 }

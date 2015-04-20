@@ -29,25 +29,14 @@
 #define USB_TO_SCREEN 	0x01		// bit 1 - usb connecté à l'écran
 #define LISTEN_GPS 		0x02		// bit 2 - écoute du gps
 #define CONNECT_SCREEN 	0x04		// bit 3 - connecté a l'écran
-static int itMode = 0;
 
 static int nextT0 = 0;
 static int nextT1 = 0;
 static int IT_R0 = 0;
 static int IT_R1_ACK = 0;
 
-//Buffer de reception GPS
-#define BUFF_SIZE 512
-static char buffer0[BUFF_SIZE];
-static char buffer1[BUFF_SIZE];
-static int iBuff0 = 0;
-static int iBuff1 = 0;
-static char useBuffer = 0;
-
 void initModule0(void);
 void initModule1(void);
-void initTimerGps(void);
-void resetTimer(void);
 
 // Atention, connecter l'usb à l'écran ou ecouter le gps ne peuvent se faire en meme temps
 void connectUsbToScreen(int etat);
@@ -70,6 +59,5 @@ void envoiUTX0(void);
 void usbToSreenURX1(void);
 void screenURX1(void);
 void envoiUTX1(void);
-void vidageBuffer(void);
 
 #endif

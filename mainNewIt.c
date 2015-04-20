@@ -2,12 +2,12 @@
 #include <interrupt.h>
 #include <uart.h>
 #include <ports.h>
+#include <moduleGPS.h>
+#include <ecran.h>
 
 void main(void)
 {
-	int i;
-
-	// Initialisation des ports
+	// Initialisation des i/o
 	initPortLed();
 	initPortBouton();
 	initComPorts();
@@ -15,20 +15,22 @@ void main(void)
 	// Initialisation du module d'interruptions
 	initIt();
 
-	// Initialisation du timer
-
-
 	// Initialisation des modules UART
 	initModule0();
 	initModule1();
-	
-	// Main
-	bindBoutonLed();
-	setItP2(1);
 
+	// Initialisation du module GPS
+	initGPS();
+
+	// Ecran
+	resetScreen();
 	initSequenceTest();
+	initScreen();
 
 	while(1){
-		i++;
+		// Mettre le cpu en pause la
+		traiterDataGPS();
+		// Mettre a jour l'affichage ici après le changement des données
+		majScreen();
 	}
 }
