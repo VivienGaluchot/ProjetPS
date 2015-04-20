@@ -3,6 +3,7 @@
 
 #include <msp430x16x.h>
 #include <ports.h>
+#include <interrupt.h>
 #include <moduleGPS.h>
 
 /*
@@ -53,11 +54,6 @@ void connectUsbToScreen(int etat);
 void connectGPS(int etat);
 void connectScreen(int etat);
 
-void setIT_RX_0(int etat);
-void setIT_TX_0(int etat);
-void setIT_RX_1(int etat);
-void setIT_TX_1(int etat);
-
 void waitACK_RX_1(void);
 
 void sendStrTX0(char* str);
@@ -67,11 +63,13 @@ void sendCharTableTX0(char* table, int n);
 void sendCharTableTX1(char* table, int n);
 void sendCharTX1(char valeur);
 
-//Iterruptions
-void usart0_rx(void);
-void usart0_tx(void);
-void usart1_rx(void);
-void usart1_tx(void);
-void Timer_A(void);
+// Fonctions d'iterruptions
+void usbToSreenURX0(void);
+void gpsURX0(void);
+void envoiUTX0(void);
+void usbToSreenURX1(void);
+void screenURX1(void);
+void envoiUTX1(void);
+void vidageBuffer(void);
 
 #endif

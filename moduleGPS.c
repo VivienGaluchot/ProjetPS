@@ -1,16 +1,19 @@
 #include <moduleGPS.h>
 
-void initGPS(){
+void initGPS(void){
 	char* NMEA_OUTPUT = "$PMTK314,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0*28<CR><LF>";
 	// char* NMEA_OUTPUT_infos = "PMTK314,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0";
 	// int chk = checksum(NMEA_OUTPUT_infos);
 
 	setENABLE_GPS(1);
-	initTimerGps();
+	initTimer_A();
+	setFuncTimer_A(&vidageBuffer);
+	setTimer_A(1);
+
 	connectGPS(1);
 	
 	//selection des trames $GPRMC
-	sendStrTX0(NMEA_OUTPUT);
+	//sendStrTX0(NMEA_OUTPUT);
 }
 
 void traiterDataGPS(char* data, int lenght){

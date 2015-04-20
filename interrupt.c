@@ -1,5 +1,7 @@
 #include <interrupt.h>
 
+void rien(void){}
+
 void initIt(void){
 	initTimer_A();
 	initItP2();
@@ -10,6 +12,22 @@ void initIt(void){
 	setItTx1(0);
 	setTimer_A(0);
 	setItP2(0);
+
+	setFuncRx0(&rien);
+	setFuncTx0(&rien);
+	setFuncRx1(&rien);
+	setFuncTx1(&rien);
+	setFuncTimer_A(&rien);
+	setFuncPressBoutonHaut(&rien);
+	setFuncPressBoutonBas(&rien);
+	setFuncPressBoutonGauche(&rien);
+	setFuncPressBoutonDroite(&rien);
+	setFuncPressBoutonMilieu(&rien);
+	setFuncReleaseBoutonHaut(&rien);
+	setFuncReleaseBoutonBas(&rien);
+	setFuncReleaseBoutonGauche(&rien);
+	setFuncReleaseBoutonDroite(&rien);
+	setFuncReleaseBoutonMilieu(&rien);
 
 	_EINT(); // enable interrupt
 }
@@ -35,23 +53,43 @@ void setFuncReleaseBoutonMilieu(void (*func)(void)){ funcReleaseBoutonMilieu = f
 
 // ---------------------------------- Uart ----------------------------------
 void setItRx0(int etat){
-	if(etat) ME1 |= URXE0;
-	else ME1 &= ~URXE0;
+	if(etat){
+		IFG1 &= ~URXIFG0;                 // flag reset
+		IE1 |= URXIE0;
+	}
+	else{
+		IE1 &= ~URXIE0;
+	}
 }
 
 void setItTx0(int etat){
-	if(etat) ME1 |= UTXE0;
-	else ME1 &= ~UTXE0;
+	if(etat){
+		IFG1 &= ~UTXIFG0;                 // flag reset
+		IE1 |= UTXIE0;
+	}
+	else{
+		IE1 &= ~UTXIE0;
+	}
 }
 
 void setItRx1(int etat){
-	if(etat) ME2 |= URXE1;
-	else ME2 &= ~URXE1;
+	if(etat){
+		IFG2 &= ~URXIFG1;                 // flag reset
+		IE2 |= URXIE1;
+	}
+	else{
+		IE2 &= ~URXIE1;
+	}
 }
 
 void setItTx1(int etat){
-	if(etat) ME2 |= UTXE1;
-	else ME2 &= ~UTXE1;
+	if(etat){
+		IFG2 &= ~UTXIFG1;                 // flag reset
+		IE2 |= UTXIE1;
+	}
+	else{
+		IE2 &= ~UTXIE1;
+	}
 }
 
 // ---------------------------------- Timer ----------------------------------

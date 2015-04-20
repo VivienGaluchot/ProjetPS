@@ -47,7 +47,6 @@ void eteindreLedDroite(void);
 void eteindreLedMilieu(void);
 
 void initSequenceTest(void);
-void initSequenceTest2(void);
 
 
 // Commandes

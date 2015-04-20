@@ -9,6 +9,7 @@
 *	en cours de programme la fonction appelée lors d'une iterruptions
 */
 
+void rien(void);
 void initIt(void);
 
 // Pointeurs de fonctions
@@ -34,7 +35,6 @@ void setFuncTx0(void (*func)(void));
 void setFuncRx1(void (*func)(void));
 void setFuncTx1(void (*func)(void));
 void setFuncTimer_A(void (*func)(void));
-void setFuncP2(void (*func)(void));
 void setFuncPressBoutonHaut(void (*func)(void));
 void setFuncPressBoutonBas(void (*func)(void));
 void setFuncPressBoutonGauche(void (*func)(void));
