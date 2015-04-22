@@ -20,8 +20,8 @@ static char blert[]={0x0d,0x4b};
 static char vert[]={0x05,0xe4};
 static char bleuclair[]={0x1c,0xbd};
 
-static char fondviolet[]={0xd0,0xcf};
-static char tourviolet[]={0xeb,0xd6};
+static char fondviolet[]={0xb1,0x38};
+static char tourviolet[]={0xe8,0x13};
 static char fondbleu[]={0x19,0x71};
 static char tourbleu[]={0x1e,0xde};
 static char fondorange[]={0xf3,0xa0};
@@ -40,6 +40,9 @@ static int ClearScreen_TODO;
 static int MajMenu1_TODO;
 static int Menu1_TODO;
 static int AffichageEnregistrement_TODO;
+static int AffichageBoussole_TODO;
+static int PassageSerial_TODO;
+static int RetourSerial_TODO;
 
 void majScreen();
 
@@ -48,10 +51,17 @@ void moveCursor(char ligne,char colonne);
 void setTextFGColour(char *couleur);
 void setTextBGColour(char *couleur);
 void putstr(char *phrase);
+void drawLine(char x1,char y1,char x2, char y2, char *couleur);
+void drawCircle(char x, char y, char radius, char*couleur);
+void drawFilledCircle(char x, char y, char radius, char*couleur);
+void drawTriangle(char x1,char y1, char x2,char y2, char x3,char y3, char *couleur);
+void fondBoussole();
+void boussole(char x1,char y1,char x2, char y2,char *couleur);
 void drawRectangle(char x1,char y1,char x2, char y2, char *couleur);
 void drawFilledRectangle(char x1,char y1,char x2, char y2, char *couleur);
 void clearScreen(void);
 void underline(void);
+void tailleText(char x);
 
 void menu1(void);
 void majmenu1(void);
