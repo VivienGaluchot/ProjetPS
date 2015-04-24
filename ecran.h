@@ -59,7 +59,10 @@ void fondBoussole();
 void boussole(char x1,char y1,char x2, char y2,char *couleur);
 void drawRectangle(char x1,char y1,char x2, char y2, char *couleur);
 void drawFilledRectangle(char x1,char y1,char x2, char y2, char *couleur);
+void drawPolygon7(char x1,char x2,char x3,char x4,char x5,char x6,char x7,char y1,char y2,char y3,char y4,char y5,char y6,char y7 ,char *couleur );
+void arrow(char x, char y,float taille, char* couleur);
 void clearScreen(void);
+void moveTo(char x, char y);
 void underline(void);
 void tailleText(char x);
 

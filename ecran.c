@@ -42,6 +42,8 @@ void initScreen(void){
 void majScreen(void){
 	if(ClearScreen_TODO){
 		clearScreen();
+		arrow(50,50,1,fondorange);
+		arrow(50,50,0.8,tourorange);
 		ClearScreen_TODO = 0;
 	}
 	if(Menu1_TODO){
@@ -58,7 +60,7 @@ void majScreen(void){
 	}
 	if(AffichageBoussole_TODO){
 		fondBoussole();
-		boussole(63,63,83,14,blanc);
+		boussole(63,63,97,97,blanc);
 		AffichageBoussole_TODO = 0;
 	}
 	if(PassageSerial_TODO){
@@ -283,9 +285,9 @@ void drawRectangle(char x1,char y1,char x2, char y2, char *couleur){
 	sendCharTX1(0x00);
 	sendCharTX1(x1);
 	sendCharTX1(0x00);
-	sendCharTX1(x2);
-	sendCharTX1(0x00);
 	sendCharTX1(y1);
+	sendCharTX1(0x00);
+	sendCharTX1(x2);
 	sendCharTX1(0x00);
 	sendCharTX1(y2);
 	sendCharTableTX1(couleur,2);
@@ -297,17 +299,65 @@ void drawFilledRectangle(char x1,char y1,char x2, char y2, char *couleur){
 
 	sendCharTX1(0xff);
 	sendCharTX1(0xce);
+
+	sendCharTX1(0x00);
+	sendCharTX1(x1);
+	sendCharTX1(0x00);
+	sendCharTX1(y1);
+	sendCharTX1(0x00);
+	sendCharTX1(x2);
+	sendCharTX1(0x00);
+	sendCharTX1(y2);
+
+	sendCharTableTX1(couleur,2);
+	waitACK_RX_1();
+
+}
+
+void drawPolygon7(char x1,char x2,char x3,char x4,char x5,char x6,char x7,char y1,char y2,char y3,char y4,char y5,char y6,char y7, char *couleur ){
+
+	sendCharTX1(0x00);
+	sendCharTX1(0x04);
+	sendCharTX1(0x00);
+	sendCharTX1(0x07);
+
 	sendCharTX1(0x00);
 	sendCharTX1(x1);
 	sendCharTX1(0x00);
 	sendCharTX1(x2);
 	sendCharTX1(0x00);
+	sendCharTX1(x3);
+	sendCharTX1(0x00);
+	sendCharTX1(x4);
+	sendCharTX1(0x00);
+	sendCharTX1(x5);
+	sendCharTX1(0x00);
+	sendCharTX1(x6);
+	sendCharTX1(0x00);
+	sendCharTX1(x7);
+
+	sendCharTX1(0x00);
 	sendCharTX1(y1);
 	sendCharTX1(0x00);
 	sendCharTX1(y2);
+	sendCharTX1(0x00);
+	sendCharTX1(y3);
+	sendCharTX1(0x00);
+	sendCharTX1(y4);
+	sendCharTX1(0x00);
+	sendCharTX1(y5);
+	sendCharTX1(0x00);
+	sendCharTX1(y6);
+	sendCharTX1(0x00);
+	sendCharTX1(y7);
+
 	sendCharTableTX1(couleur,2);
 	waitACK_RX_1();
 
+}
+
+void arrow(char x, char y,float taille, char* couleur){
+	drawPolygon7(x,x+30*taille,x+10*taille,x+10*taille,x-10*taille,x-10*taille,x-30*taille,y+40*taille,y+10*taille,y+10*taille,y-30*taille,y-30*taille,y+10*taille,y+10*taille,couleur);
 }
 
 void clearScreen(void){
@@ -316,24 +366,44 @@ void clearScreen(void){
 	waitACK_RX_1();
 }
 
+void moveTo(char x, char y){
+	sendCharTX1(0xff);
+	sendCharTX1(0xd6);
+	sendCharTX1(0x00);
+	sendCharTX1(x);
+	sendCharTX1(0x00);
+	sendCharTX1(y);
+	waitACK_RX_1();
+}
+
+/* pasvoid orbit( doublechar angle, char distance){
+	sendCharTX1(0x00);
+	sendCharTX1(0x03);
+	sendCharTX1(0xDebutangle);
+	sendCharTX1(0xfinangle);
+	sendCharTX1(0x00);
+	sendCharTX1(distance);
+	waitACK_RX_1();
+	recuperage x;
+	recuperage y;
+
+}  */
+
 void menu1(void){
 
 
-	drawFilledRectangle(3,124,3,28,fondbleu);  
-	drawFilledRectangle(3,124,35,60,fondorange);  
-	drawFilledRectangle(3,124,67,92,fondviolet);  
-	drawFilledRectangle(3,124,99,124,fondgris);  
-	drawRectangle(3,124,3,28,tourbleu);  
-	drawRectangle(3,124,35,60,tourorange);  
-	drawRectangle(3,124,67,92,tourviolet);  
-	drawRectangle(3,124,99,124,tourgris);  
+	drawFilledRectangle(3,3,124,28,fondbleu);  
+	drawFilledRectangle(3,35,124,60,fondorange);  
+	drawFilledRectangle(3,67,124,92,fondviolet);  
+	drawFilledRectangle(3,99,124,124,fondgris);  
+	drawRectangle(3,3,124,28,tourbleu);  
+	drawRectangle(3,35,124,60,tourorange);  
+	drawRectangle(3,67,124,92,tourviolet);  
+	drawRectangle(3,99,124,124,tourgris);  
 	printe("Enregistrement",2,1,fondbleu,blanc);  
 	printe("Navigation",6,1,fondorange,blanc);
 	printe("Boussole",10,1,fondviolet,blanc);  
 	printe("Serial",14,1,fondgris,blanc); 
-
-
-
 
 }
 
@@ -346,20 +416,20 @@ void majmenu1(void){
 	else if(prevMenu1Item==2) { color[0] = fondviolet[0];color[1] = fondviolet[1]; }
 	else if(prevMenu1Item==3) { color[0] = fondgris[0];	color[1] = fondgris[1]; }
 
-	drawRectangle(4,123,32*prevMenu1Item+4,32*prevMenu1Item+27,color); 
-	drawRectangle(2,125,32*prevMenu1Item+2,32*prevMenu1Item+29,noir); 
-	drawRectangle(1,126,32*prevMenu1Item+1,32*prevMenu1Item+30,noir); 
-	drawRectangle(0,127,32*prevMenu1Item,32*prevMenu1Item+31,noir); 
+	drawRectangle(4,32*prevMenu1Item+4,123,32*prevMenu1Item+27,color); 
+	drawRectangle(2,32*prevMenu1Item+2,125,32*prevMenu1Item+29,noir); 
+	drawRectangle(1,32*prevMenu1Item+1,126,32*prevMenu1Item+30,noir); 
+	drawRectangle(0,32*prevMenu1Item,127,32*prevMenu1Item+31,noir); 
 
 	if(menu1Item==0) { color[0] = tourbleu[0];	color[1] = tourbleu[1]; }
 	else if(menu1Item==1) { color[0] = tourorange[0];color[1] = tourorange[1]; }
 	else if(menu1Item==2) { color[0] = tourviolet[0];color[1] = tourviolet[1]; }
 	else if(menu1Item==3) { color[0] = tourgris[0];	color[1] = tourgris[1]; }
 
-	drawRectangle(4,123,32*menu1Item+4,32*menu1Item+27,color); 
-	drawRectangle(2,125,32*menu1Item+2,32*menu1Item+29,color); 
-	drawRectangle(1,126,32*menu1Item+1,32*menu1Item+30,color); 
-	drawRectangle(0,127,32*menu1Item,32*menu1Item+31,color); 
+	drawRectangle(4,32*menu1Item+4,123,32*menu1Item+27,color); 
+	drawRectangle(2,32*menu1Item+2,125,32*menu1Item+29,color); 
+	drawRectangle(1,32*menu1Item+1,126,32*menu1Item+30,color); 
+	drawRectangle(0,32*menu1Item,127,32*menu1Item+31,color); 
 
 	prevMenu1Item = menu1Item;
 }
@@ -367,13 +437,13 @@ void majmenu1(void){
 void affichageEnregistrement(void){
 	clearScreen();
 
-	drawRectangle(0,127,0,127,bleuclair);
-	drawRectangle(1,126,1,126,blert);
-	drawRectangle(2,125,2,125,vert);
-	drawRectangle(83,83,3,124,blert);
-	drawRectangle(2,83,62,94,blert);
-	drawRectangle(3,82,61,124,blert);
-	drawRectangle(3,82,93,3,blert);
+	drawRectangle(0,0,127,127,bleuclair);
+	drawRectangle(1,1,126,126,blert);
+	drawRectangle(2,2,125,125,vert);
+	drawRectangle(83,3,83,124,blert);
+	drawRectangle(2,62,83,94,blert);
+	drawRectangle(3,61,82,124,blert);
+	drawRectangle(3,93,82,3,blert);
 
 	underline();
 	printe("Position",1,1,noir,bleuclair);
