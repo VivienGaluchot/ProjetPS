@@ -40,10 +40,17 @@ void initScreen(void){
 }
 
 void majScreen(void){
+	setItP2(0);
+	if(RetourSerial_TODO){
+		connectUsbToScreen(0);
+		connectGPS(1);
+		connectScreen(1);
+		RetourSerial_TODO = 0;
+	}
 	if(ClearScreen_TODO){
 		clearScreen();
-		arrow(50,50,1,fondorange);
-		arrow(50,50,0.8,tourorange);
+		//arrow(50,50,1,fondorange);
+		//arrow(50,50,0.8,tourorange);
 		ClearScreen_TODO = 0;
 	}
 	if(Menu1_TODO){
@@ -69,11 +76,7 @@ void majScreen(void){
 		clearScreen();
 		PassageSerial_TODO = 0;
 	}
-	if(RetourSerial_TODO){
-		connectUsbToScreen(0);
-		connectGPS(1);
-		RetourSerial_TODO = 0;
-	}
+	setItP2(1);
 }
 
 void printe( char *phrase,char ligne,char colonne,char *BGcolor, char *FGcolor)
