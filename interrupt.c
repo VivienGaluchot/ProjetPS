@@ -132,28 +132,28 @@ void Port_2 (void) __interrupt[PORT2_VECTOR]{
 		else
 			(*funcReleaseBoutonHaut)();
 	}
-
+	
 	if(P2IFG & BOUTON_BAS){
 		if((P2IES & BOUTON_BAS))
 			(*funcPressBoutonBas)();
 		else
 			(*funcReleaseBoutonBas)();
 	}
-
+	
 	if(P2IFG & BOUTON_GAUCHE){
 		if((P2IES & BOUTON_GAUCHE))
 			(*funcPressBoutonGauche)();
 		else
 			(*funcReleaseBoutonGauche)();
 	}
-
+	
 	if(P2IFG & BOUTON_DROITE){
 		if((P2IES & BOUTON_DROITE))
 			(*funcPressBoutonDroite)();
 		else
 			(*funcReleaseBoutonDroite)();
 	}
-
+	
 	if(P2IFG & BOUTON_MILIEU){
 		if((P2IES & BOUTON_MILIEU))
 			(*funcPressBoutonMilieu)();
