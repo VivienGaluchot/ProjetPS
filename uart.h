@@ -50,6 +50,8 @@ void sendStrTX1(char* str);
 
 void sendCharTableTX0(char* table, int n);
 void sendCharTableTX1(char* table, int n);
+
+void sendCharTX0(char valeur);
 void sendCharTX1(char valeur);
 
 // Fonctions d'iterruptions

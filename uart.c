@@ -146,6 +146,12 @@ void sendCharTableTX1(char* table, int n){
 	}
 }
 
+void sendCharTX0(char valeur){
+	nextT0 = 0;
+	TXBUF0 = valeur;
+	while(nextT0 == 0);
+}
+
 void sendCharTX1(char valeur){
 	nextT1 = 0;
 	TXBUF1 = valeur;

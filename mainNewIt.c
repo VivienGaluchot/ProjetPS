@@ -20,13 +20,12 @@ void main(void)
 	initModule1();
 
 	// Initialisation du module GPS
-	// initGPS();
+	initGPS();
 
 	// Ecran
 	resetScreen();
 	initSequenceTest();
 	initScreen();
-
 
 	while(1){
 		// Mettre le cpu en pause la

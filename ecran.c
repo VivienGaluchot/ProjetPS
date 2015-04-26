@@ -43,6 +43,7 @@ void majScreen(void){
 	setItP2(0);
 	if(RetourSerial_TODO){
 		connectUsbToScreen(0);
+		setENABLE_GPS(1);
 		connectGPS(1);
 		connectScreen(1);
 		RetourSerial_TODO = 0;
@@ -71,9 +72,10 @@ void majScreen(void){
 		AffichageBoussole_TODO = 0;
 	}
 	if(PassageSerial_TODO){
+		setENABLE_GPS(0);
 		connectGPS(0);
-		connectUsbToScreen(1);
 		clearScreen();
+		connectUsbToScreen(1);
 		PassageSerial_TODO = 0;
 	}
 	setItP2(1);
@@ -182,7 +184,7 @@ void drawTriangle(char x1,char y1, char x2,char y2, char x3,char y3, char *coule
 	waitACK_RX_1();
 }
 
-void fondBoussole(){
+void fondBoussole(void){
 
 	clearScreen();
 

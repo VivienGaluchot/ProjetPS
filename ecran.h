@@ -44,7 +44,7 @@ static int AffichageBoussole_TODO;
 static int PassageSerial_TODO;
 static int RetourSerial_TODO;
 
-void majScreen();
+void majScreen(void);
 
 void printe( char *phrase,char ligne,char colonne,char *BGcolor, char *FGcolor);
 void moveCursor(char ligne,char colonne);
@@ -55,7 +55,7 @@ void drawLine(char x1,char y1,char x2, char y2, char *couleur);
 void drawCircle(char x, char y, char radius, char*couleur);
 void drawFilledCircle(char x, char y, char radius, char*couleur);
 void drawTriangle(char x1,char y1, char x2,char y2, char x3,char y3, char *couleur);
-void fondBoussole();
+void fondBoussole(void);
 void boussole(char x1,char y1,char x2, char y2,char *couleur);
 void drawRectangle(char x1,char y1,char x2, char y2, char *couleur);
 void drawFilledRectangle(char x1,char y1,char x2, char y2, char *couleur);
