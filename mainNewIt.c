@@ -1,7 +1,8 @@
 #include <msp430x16x.h>
+
+#include <ports.h>
 #include <interrupt.h>
 #include <uart.h>
-#include <ports.h>
 #include <moduleGPS.h>
 #include <ecran.h>
 
