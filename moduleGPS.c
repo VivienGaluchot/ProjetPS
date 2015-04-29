@@ -118,6 +118,27 @@ int hexToInt(char *s, int length){
 	return sum;
 }
 
+int decToInt(char *s, int length){
+	int i,j,sum,decPow,t;
+
+	sum = 0;
+	decPow = 1;
+	for(i=length-1;i>=0;i--){
+		j = s[i] - '0';
+
+		if(0<=j && j<10){
+			t  = j*decPow;
+			sum = sum + t;
+			decPow *= 10;
+		}
+		else{
+			return 0; //caractère non reconnu
+		}
+	}
+
+	return sum;
+}
+
 char strCmp(char* cible, char* ref){
 	int i;
 	char res;
@@ -149,8 +170,51 @@ int strAnalyse(char* cible, char*ref, int maxLen){
 	return i;
 }
 
-float distance(float lat1, float lon1, float lat2, float lon2){
-	return 1.0;
+// lat : ddmm,mmmm
+// lon : dddmm,mmmm
+/* Exemple :
+	coordConv(&A,"4851,0000","N","00221,0000","E");
+	coordConv(&B,"4043,0000","N","07400,0000","W");
+*/
+void coordConv(gpsCoord *A, char* lat, char *NSind, char* lon, char*EWind){
+	double t;
+
+	//latitude en degrès
+	t = decToInt(lat+5,4);
+	t = t/1000;
+	t = t + decToInt(lat+2,2);
+	t = t/60;
+	t = t + decToInt(lat,2);
+	//latitude deg -> rad
+	t = t*PI/180;
+	//signe
+	if(NSind[0] == 'N')
+		A->lat = t;
+	else if(NSind[0] == 'S')
+		A->lat = -t;
+
+	//longitude en degrès
+	t = decToInt(lon+6,4);
+	t = t/1000;
+	t = t + decToInt(lon+3,2);
+	t = t/60;
+	t = t + decToInt(lon,3);
+	//longitude deg -> rad
+	t = t*PI/180;
+	//signe
+	if(EWind[0] == 'E')
+		A->lon = t;
+	else if(EWind[0] == 'W')
+		A->lon = -t;
+}
+
+void distance(double *res, gpsCoord A, gpsCoord B){
+	*res = sin(A.lat)*sin(B.lat) + cos(A.lat)*cos(B.lat)*cos(B.lon - A.lon);
+	*res = 60*acos(*res);
+	// rad -> deg
+	*res = (*res)*180/PI;
+	// miles -> km
+	*res = (*res)*1.852;
 }
 
 void RxBuff0(void){

@@ -5,6 +5,14 @@
 #include <ports.h>
 #include <uart.h>
 #include <interrupt.h>
+#include <math.h>
+
+typedef struct this {
+	double lat;
+	double lon;
+} gpsCoord;
+
+#define PI (3.141592653589793)
 
 void initGPS(void);
 
@@ -38,12 +46,18 @@ static int lengthWaitBuffer;
 void mettreEnAttente(char* data, int length);
 void traiterDataGPS(void);
 
-int hexToInt(char *s, int length);
 static char hexaTable[] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+int hexToInt(char *s, int length);
+
+int decToInt(char *s, int length);
+
 char strCmp(char* cible, char* ref);
 int strAnalyse(char* cible, char*ref, int maxLen); //return le nombre de char copié
 
-float distance(float lat1, float lon1, float lat2, float lon2);
+// lat : ddmm,mmmm
+// lon : dddmm,mmmm
+void coordConv(gpsCoord *A, char* lat, char *NSind, char* lon, char*EWind);
+void distance(double *res, gpsCoord A, gpsCoord B);
 
 // Fonction interruptions
 void RxBuff0(void);
