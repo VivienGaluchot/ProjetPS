@@ -1,4 +1,5 @@
 #include <ecran.h>
+#include <math.h>
 
 void initScreen(void){
 	etat = 1;
@@ -8,6 +9,7 @@ void initScreen(void){
 	ClearScreen_TODO = 0;
 	MajMenu1_TODO = 0;
 	Menu1_TODO = 0;
+	AffichageNavigation_TODO =0;
 	AffichageEnregistrement_TODO = 0;
 	AffichageBoussole_TODO = 0;
 	PassageSerial_TODO = 0;
@@ -50,8 +52,10 @@ void majScreen(void){
 	}
 	if(ClearScreen_TODO){
 		clearScreen();
-		//arrow(50,50,1,fondorange);
-		//arrow(50,50,0.8,tourorange);
+		arrow(32,32,0.8,0,fondorange);
+		arrow(90,90,0.8,90,tourorange);
+		arrow(90,32,0.8,200,fondbleu);
+		arrow(32,90,0.5,250,blert);
 		ClearScreen_TODO = 0;
 	}
 	if(Menu1_TODO){
@@ -66,9 +70,14 @@ void majScreen(void){
 		affichageEnregistrement();
 		AffichageEnregistrement_TODO = 0;
 	}
+	if(AffichageNavigation_TODO){
+		affichageNavigation();
+		AffichageNavigation_TODO =0;
+	}
 	if(AffichageBoussole_TODO){
 		fondBoussole();
-		boussole(63,63,97,97,blanc);
+		orbit(63,63,45,200,ResOrbit);
+		boussole(63,63,ResOrbit[0],ResOrbit[1],blanc);
 		AffichageBoussole_TODO = 0;
 	}
 	if(PassageSerial_TODO){
@@ -361,8 +370,32 @@ void drawPolygon7(char x1,char x2,char x3,char x4,char x5,char x6,char x7,char y
 
 }
 
-void arrow(char x, char y,float taille, char* couleur){
-	drawPolygon7(x,x+30*taille,x+10*taille,x+10*taille,x-10*taille,x-10*taille,x-30*taille,y+40*taille,y+10*taille,y+10*taille,y-30*taille,y-30*taille,y+10*taille,y+10*taille,couleur);
+void arrow(char x, char y,float taille,float angle, char* couleur){
+	char x1, x2, x3, x4, x5, x6, x7, y1, y2, y3, y4, y5, y6, y7;
+	orbit(x,y,40*taille,angle,ResOrbit);
+	x1=ResOrbit[0];
+	y1=ResOrbit[1];
+	orbit(x,y,sqrt(30*taille*30*taille+10*taille*10*taille),angle+71.565,ResOrbit);
+	x2=ResOrbit[0];
+	y2=ResOrbit[1];
+	orbit(x,y,sqrt(10*taille*10*taille+10*taille*10*taille),angle+45,ResOrbit);
+	x3=ResOrbit[0];
+	y3=ResOrbit[1];
+	orbit(x,y,sqrt(10*taille*10*taille+(-30*taille*(-30)*taille)),angle+161.565,ResOrbit);
+	x4=ResOrbit[0];
+	y4=ResOrbit[1];
+	orbit(x,y,sqrt((-30*taille*(-30)*taille)+(-10*taille*(-10)*taille)),angle-161.565,ResOrbit);
+	x5=ResOrbit[0];
+	y5=ResOrbit[1];
+	orbit(x,y,sqrt((-10*taille*(-10)*taille)+(10*taille*10*taille)),angle-45,ResOrbit);
+	x6=ResOrbit[0];
+	y6=ResOrbit[1];
+	orbit(x,y,sqrt((-30*taille*(-30)*taille)+10*taille*10*taille),angle-71.565,ResOrbit);
+	x7=ResOrbit[0];
+	y7=ResOrbit[1];
+
+//	drawPolygon7(x,x+30*taille,x+10*taille,x+10*taille,x-10*taille,x-10*taille,x-30*taille,y+40*taille,y+10*taille,y+10*taille,y-30*taille,y-30*taille,y+10*taille,y+10*taille,couleur);
+	drawPolygon7(x1, x2, x3, x4, x5, x6, x7, y1, y2, y3, y4, y5, y6, y7,couleur);
 }
 
 void clearScreen(void){
@@ -381,18 +414,12 @@ void moveTo(char x, char y){
 	waitACK_RX_1();
 }
 
-/* pasvoid orbit( doublechar angle, char distance){
-	sendCharTX1(0x00);
-	sendCharTX1(0x03);
-	sendCharTX1(0xDebutangle);
-	sendCharTX1(0xfinangle);
-	sendCharTX1(0x00);
-	sendCharTX1(distance);
-	waitACK_RX_1();
-	recuperage x;
-	recuperage y;
 
-}  */
+//Range dans ResOrbit x et y calculer
+void orbit(int x, int y, int distance, float angle,char ResOrbit[]){
+ 	ResOrbit[0]=x+distance*cos((270+angle)*M_PI/180);
+ 	ResOrbit[1]=y+distance*sin((270+angle)*M_PI/180);
+}  
 
 void menu1(void){
 
@@ -468,6 +495,41 @@ void majaffichageEnregistrement(char* coord1, char* coord2, char* altitude, char
 	printe(heure,1,12,noir,vert);
 }
 
+void affichageNavigation(void){
+	clearScreen();
+
+	drawRectangle(0,0,127,127,rouge);
+	drawRectangle(1,1,126,126,fondorange);
+	drawRectangle(2,2,125,125,tourorange);
+	drawRectangle(80,1,126,111,fondorange);
+	drawRectangle(81,2,125,109,tourorange);
+	drawRectangle(2,111,125,125,tourorange);
+	drawRectangle(1,110,126,126,fondorange);
+
+	underline();
+	printe("Heure",1,12,noir,fondorange);
+	underline();
+	printe("Arrive",5,12,noir,fondorange);
+	underline();
+	printe("Vitesse",9,12,noir,fondorange);
+
+	majaffichageNavigation("15:11","5Km/h",70);
+}
+
+void majaffichageNavigation(char* heure, char* vitesse, float angle){
+	printe(heure,3,12,noir,tourorange);
+	printe("soon",7,12,noir,tourorange);
+	printe(vitesse,11,12,noir,tourorange);
+
+	tailleText(2);
+	printe("171m",5,1,noir,tourorange);
+	tailleText(1);
+
+	arrow(40,40,0.8,angle,fondorange);
+
+	drawFilledRectangle(4,113,50,123,rouge);
+}
+
 void underline(void){
 
 	sendCharTX1(0xff);
@@ -512,6 +574,10 @@ void boutonDroit(void){
 		AffichageEnregistrement_TODO = 1;
 		etat=11;
 	}
+	if (menu1Item==1 && etat == 2){
+		AffichageNavigation_TODO = 1;
+		etat=21;
+	}
 	if (menu1Item==2 && etat == 3){
 		AffichageBoussole_TODO = 1;
 		etat=31;
@@ -520,6 +586,7 @@ void boutonDroit(void){
 		PassageSerial_TODO = 1;
 		etat=41;
 	}
+
 	eteindreLedDroite();
 }
 
@@ -537,6 +604,12 @@ void boutonGauche(void){
 	if(etat == 11){
 		ClearScreen_TODO = 1;
 		etat = 1;
+		Menu1_TODO = 1;
+		MajMenu1_TODO = 1;
+	}
+	if(etat == 21){
+		ClearScreen_TODO = 1;
+		etat = 2;
 		Menu1_TODO = 1;
 		MajMenu1_TODO = 1;
 	}
