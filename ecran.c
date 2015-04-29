@@ -82,8 +82,7 @@ void majScreen(void){
 		fondBoussole();
 		orbit(63,63,45,boussoleAngle,ResOrbit);
 		boussole(63,63,ResOrbit[0],ResOrbit[1],blanc);
-		//AffichageBoussole_TODO = 0;
-		boussoleAngle+=15;
+		AffichageBoussole_TODO = 0;
 	}
 	if(PassageSerial_TODO){
 		setENABLE_GPS(0);
