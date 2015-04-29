@@ -33,13 +33,13 @@ static char tourorange[]={0xf7,0xa0};
 static char fondgris[]={0x6b,0x6d};
 static char tourgris[]={0xc6,0x18};
 
-static char ResOrbit[2];
-
 void initScreen(void);
 
 static int etat;
 static int menu1Item;
 static int prevMenu1Item;
+
+static int boussoleAngle;
 
 // Choses a faire lors de la majScreen
 static int ClearScreen_TODO;

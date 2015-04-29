@@ -6,6 +6,8 @@ void initScreen(void){
 	menu1Item = 0;
 	prevMenu1Item = 0;
 
+	boussoleAngle = 0;
+
 	ClearScreen_TODO = 0;
 	MajMenu1_TODO = 0;
 	Menu1_TODO = 0;
@@ -42,6 +44,8 @@ void initScreen(void){
 }
 
 void majScreen(void){
+	char ResOrbit[2];
+
 	setItP2(0);
 	if(RetourSerial_TODO){
 		connectUsbToScreen(0);
@@ -76,9 +80,10 @@ void majScreen(void){
 	}
 	if(AffichageBoussole_TODO){
 		fondBoussole();
-		orbit(63,63,45,200,ResOrbit);
+		orbit(63,63,45,boussoleAngle,ResOrbit);
 		boussole(63,63,ResOrbit[0],ResOrbit[1],blanc);
-		AffichageBoussole_TODO = 0;
+		//AffichageBoussole_TODO = 0;
+		boussoleAngle+=15;
 	}
 	if(PassageSerial_TODO){
 		setENABLE_GPS(0);
@@ -371,6 +376,7 @@ void drawPolygon7(char x1,char x2,char x3,char x4,char x5,char x6,char x7,char y
 }
 
 void arrow(char x, char y,float taille,float angle, char* couleur){
+	char ResOrbit[2];
 	char x1, x2, x3, x4, x5, x6, x7, y1, y2, y3, y4, y5, y6, y7;
 	orbit(x,y,40*taille,angle,ResOrbit);
 	x1=ResOrbit[0];

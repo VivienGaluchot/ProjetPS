@@ -21,7 +21,7 @@ void main(void)
 	initModule1();
 
 	// Initialisation du module GPS
-	initGPS();
+	//initGPS();
 
 	// Ecran
 	resetScreen();
