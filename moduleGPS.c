@@ -265,32 +265,61 @@ void test(void){
 }
 
 char* getHeure(void){
-	char* heure = malloc(sizeof(char)*6);
-	heure[0] = gps_UTCPos[0];
-	heure[1] = gps_UTCPos[1];
+	temp[0] = gps_UTCPos[0];
+	temp[1] = gps_UTCPos[1];
 	if((gps_UTCPos[5] - '0')%2)
-		heure[2] = ':';
+		temp[2] = ':';
 	else
-		heure[2] = ' ';
-	heure[3] = gps_UTCPos[2];
-	heure[4] = gps_UTCPos[3];
-	heure[5] = 0;
-	return gps_UTCPos;
+		temp[2] = ' ';
+	temp[3] = gps_UTCPos[2];
+	temp[4] = gps_UTCPos[3];
+	temp[5] = 0;
+	return temp;
 }
 
 char* getLatitude(void){
-	return gps_Latitude;
+	temp[0] = gps_Latitude[0];
+	temp[1] = gps_Latitude[1];
+	temp[2] = '*';
+	temp[3] = gps_Latitude[2];
+	temp[4] = gps_Latitude[3];
+	temp[5] = ',';
+	temp[6] = gps_Latitude[4];
+	temp[7] = gps_Latitude[5];
+	temp[8] = ' ';
+	temp[9] = gps_NSind[0];
+	temp[10] = 0;
+	return temp;
 }
 
 char* getLongitude(void){
-	return gps_Longitude;
+	temp[0] = gps_Longitude[0];
+	temp[1] = gps_Longitude[1];
+	temp[2] = gps_Longitude[2];
+	temp[3] = '*';
+	temp[4] = gps_Longitude[3];
+	temp[5] = gps_Longitude[4];
+	temp[6] = ',';
+	temp[7] = gps_Longitude[5];
+	temp[8] = gps_Longitude[6];
+	temp[9] = ' ';
+	temp[10] = gps_EWind[0];
+	temp[11] = 0;
+	return temp;
 }
+
 char* getSatUsed(void){
-	return gps_SatUsed;
+	temp[0] = gps_SatUsed[0];
+	temp[1] = gps_SatUsed[1];
+	temp[2] = 0;
+	return temp;
 }
 
 char* getAltitude(void){
-	return gps_Altitude;
+	int i = 0;
+	while(gps_Altitude[i])
+		temp[i] = gps_Altitude[i++];
+	return temp;
 }
 
 char* getSpeed(void){

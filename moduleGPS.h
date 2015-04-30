@@ -39,6 +39,8 @@ char gps_SpeedOverGround[16];
 char gps_CourseOverGround[16];
 char gps_Date[6];
 
+char temp[17];
+
 // Buffer de reception GPS
 #define BUFF_SIZE 512
 static char buffer0[BUFF_SIZE];
