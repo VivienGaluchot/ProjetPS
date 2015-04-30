@@ -1,5 +1,6 @@
 #include <ecran.h>
-#include <math.h>
+
+
 
 void initScreen(void){
 	etat = 1;
@@ -16,6 +17,8 @@ void initScreen(void){
 	AffichageBoussole_TODO = 0;
 	PassageSerial_TODO = 0;
 	RetourSerial_TODO = 0;
+	MajEnregistrement_TODO = 0;
+	MajNavigation_TODO = 0;
 
 	// Interruptions
 	bindBoutonLed();
@@ -56,10 +59,10 @@ void majScreen(void){
 	}
 	if(ClearScreen_TODO){
 		clearScreen();
-		arrow(32,32,0.8,0,fondorange);
-		arrow(90,90,0.8,90,tourorange);
-		arrow(90,32,0.8,200,fondbleu);
-		arrow(32,90,0.5,250,blert);
+		// arrow(32,32,0.8,0,fondorange);
+		// arrow(90,90,0.8,90,tourorange);
+		// arrow(90,32,0.8,200,fondbleu);
+		// arrow(32,90,0.5,250,blert);
 		ClearScreen_TODO = 0;
 	}
 	if(Menu1_TODO){
@@ -90,6 +93,12 @@ void majScreen(void){
 		clearScreen();
 		connectUsbToScreen(1);
 		PassageSerial_TODO = 0;
+	}
+	if(MajEnregistrement_TODO && gps_Status[0]=='A' && gps_PosFixInd[0]!='0'){
+		majaffichageEnregistrement("N 48°12\'13\"","E 13°45\'05\"","175 m","5 Km/h","15:11");
+	}
+	if(MajNavigation_TODO && gps_Status[0]=='A' && gps_PosFixInd[0]!='0'){
+		majaffichageNavigation("15:11","5Km/h",70);
 	}
 	setItP2(1);
 }
@@ -489,15 +498,24 @@ void affichageEnregistrement(void){
 	underline();
 	printe("Vitesse",12,1,noir,bleuclair);
 
-	majaffichageEnregistrement("N 48°12\'13\"","E 13°45\'05\"","175 m","5 Km/h","15:11");
 }
 
 void majaffichageEnregistrement(char* coord1, char* coord2, char* altitude, char* vitesse,char* heure){
 	printe(coord1,3,1,noir,vert);
 	printe(coord2,5,1,noir,vert);
-	printe(altitude,10,2,noir,vert);
+
+	//altitude
+	printe(gps_Altitude,10,2,noir,vert);
+	printe(gps_AltUnit,10,2,noir,vert);
+
 	printe(vitesse,14,2,noir,vert);
-	printe(heure,1,12,noir,vert);
+
+	//heure
+	printe(gps_UTCPos[0],1,12,noir,vert);
+	printe(gps_UTCPos[1],1,12,noir,vert);
+	printe(':',1,12,noir,vert);
+	printe(gps_UTCPos[2],1,12,noir,vert);
+	printe(gps_UTCPos[3],1,12,noir,vert);
 }
 
 void affichageNavigation(void){
@@ -518,11 +536,18 @@ void affichageNavigation(void){
 	underline();
 	printe("Vitesse",9,12,noir,fondorange);
 
-	majaffichageNavigation("15:11","5Km/h",70);
+	
 }
 
 void majaffichageNavigation(char* heure, char* vitesse, float angle){
-	printe(heure,3,12,noir,tourorange);
+
+	//heure
+	printe(gps_UTCPos[0],3,12,noir,tourorange);
+	printe(gps_UTCPos[1],3,12,noir,tourorange);
+	printe(':',3,12,noir,tourorange);
+	printe(gps_UTCPos[2],3,12,noir,tourorange);
+	printe(gps_UTCPos[3],3,12,noir,tourorange);
+
 	printe("soon",7,12,noir,tourorange);
 	printe(vitesse,11,12,noir,tourorange);
 
@@ -577,10 +602,12 @@ void boutonHaut(void){
 void boutonDroit(void){
 	if (menu1Item==0 && etat == 1){
 		AffichageEnregistrement_TODO = 1;
+		MajEnregistrement_TODO =1;
 		etat=11;
 	}
 	if (menu1Item==1 && etat == 2){
 		AffichageNavigation_TODO = 1;
+		MajNavigation_TODO =1;
 		etat=21;
 	}
 	if (menu1Item==2 && etat == 3){
@@ -611,12 +638,14 @@ void boutonGauche(void){
 		etat = 1;
 		Menu1_TODO = 1;
 		MajMenu1_TODO = 1;
+		MajEnregistrement_TODO =0;
 	}
 	if(etat == 21){
 		ClearScreen_TODO = 1;
 		etat = 2;
 		Menu1_TODO = 1;
 		MajMenu1_TODO = 1;
+		MajNavigation_TODO = 0;
 	}
 	if(etat == 31){
 		ClearScreen_TODO = 1;

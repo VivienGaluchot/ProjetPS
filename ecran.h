@@ -6,6 +6,7 @@
 #include <uart.h>
 #include <ports.h>
 #include <math.h>
+#include <moduleGPS.h>
 
 #define M_PI 3.14159265358979323846
 
@@ -50,6 +51,8 @@ static int AffichageEnregistrement_TODO;
 static int AffichageBoussole_TODO;
 static int PassageSerial_TODO;
 static int RetourSerial_TODO;
+static int MajEnregistrement_TODO;
+static int MajNavigation_TODO;
 
 void majScreen(void);
 
