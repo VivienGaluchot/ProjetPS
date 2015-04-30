@@ -341,8 +341,15 @@ char* getAltitude(void){
 }
 
 char* getSpeed(void){
-
-	return gps_SpeedOverGround;
+	int i = 0;
+	while(gps_SpeedOverGround[i]!=0 && i<14){
+		temp[i] = gps_SpeedOverGround[i];
+		i++;
+	}
+	temp[i++] = ' ';
+	temp[i++] = 'K';
+	temp[i] = 0;
+	return temp;
 }
 
 char* getDate(void){
