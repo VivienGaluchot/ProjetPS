@@ -94,10 +94,10 @@ void majScreen(void){
 		connectUsbToScreen(1);
 		PassageSerial_TODO = 0;
 	}
-	if(MajEnregistrement_TODO && gps_Status[0]=='A' && gps_PosFixInd[0]!='0'){
+	if(MajEnregistrement_TODO){
 		majaffichageEnregistrement("N 48°12\'13\"","E 13°45\'05\"","175 m","5 Km/h","15:11");
 	}
-	if(MajNavigation_TODO && gps_Status[0]=='A' && gps_PosFixInd[0]!='0'){
+	if(MajNavigation_TODO){
 		majaffichageNavigation("15:11","5Km/h",70);
 	}
 	setItP2(1);
@@ -505,17 +505,17 @@ void majaffichageEnregistrement(char* coord1, char* coord2, char* altitude, char
 	printe(coord2,5,1,noir,vert);
 
 	//altitude
-	printe(gps_Altitude,10,2,noir,vert);
-	printe(gps_AltUnit,10,2,noir,vert);
+	// printe(gps_Altitude,10,2,noir,vert);
+	// printe(gps_AltUnit,10,2,noir,vert);
 
 	printe(vitesse,14,2,noir,vert);
 
 	//heure
-	printe(gps_UTCPos[0],1,12,noir,vert);
-	printe(gps_UTCPos[1],1,12,noir,vert);
-	printe(':',1,12,noir,vert);
-	printe(gps_UTCPos[2],1,12,noir,vert);
-	printe(gps_UTCPos[3],1,12,noir,vert);
+	printe(getHeure(),1,12,noir,vert);
+	// printe(gps_UTCPos[1],1,12,noir,vert);
+	// printe(':',1,12,noir,vert);
+	// printe(gps_UTCPos[2],1,12,noir,vert);
+	// printe(gps_UTCPos[3],1,12,noir,vert);
 }
 
 void affichageNavigation(void){
@@ -542,11 +542,11 @@ void affichageNavigation(void){
 void majaffichageNavigation(char* heure, char* vitesse, float angle){
 
 	//heure
-	printe(gps_UTCPos[0],3,12,noir,tourorange);
-	printe(gps_UTCPos[1],3,12,noir,tourorange);
-	printe(':',3,12,noir,tourorange);
-	printe(gps_UTCPos[2],3,12,noir,tourorange);
-	printe(gps_UTCPos[3],3,12,noir,tourorange);
+	printe(getHeure(),3,12,noir,tourorange);
+	// printe(gps_UTCPos[1],3,12,noir,tourorange);
+	// printe(':',3,12,noir,tourorange);
+	// printe(gps_UTCPos[2],3,12,noir,tourorange);
+	// printe(gps_UTCPos[3],3,12,noir,tourorange);
 
 	printe("soon",7,12,noir,tourorange);
 	printe(vitesse,11,12,noir,tourorange);
