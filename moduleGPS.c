@@ -56,8 +56,6 @@ void traiterDataGPS(void){
 		//trame valide ?
 		if((j+3 < lengthWaitBuffer) && (chk == hexToInt(waitBuffer+j+1,2))){
 			waitBuffer[j+3] = 0;
-			debug_printf(waitBuffer+i);
-			debug_printf("\n");
 			if(!strCmp(waitBuffer+i,"$GPGGA")){
 				i += 7;
 				i += strAnalyse(gps_UTCPos, waitBuffer+i, 10) + 1;
@@ -208,13 +206,24 @@ void coordConv(gpsCoord *A, char* lat, char *NSind, char* lon, char*EWind){
 		A->lon = -t;
 }
 
-void distance(double *res, gpsCoord A, gpsCoord B){
-	*res = sin(A.lat)*sin(B.lat) + cos(A.lat)*cos(B.lat)*cos(B.lon - A.lon);
-	*res = 60*acos(*res);
+float distance(gpsCoord A, gpsCoord B){
+	float res;
+	res = sin(A.lat)*sin(B.lat) + cos(A.lat)*cos(B.lat)*cos(B.lon - A.lon);
+	res = 60*acos(res);
 	// rad -> deg
-	*res = (*res)*180/PI;
+	res = (res)*180/PI;
 	// miles -> km
-	*res = (*res)*1.852;
+	res = (res)*1.852;
+	return res;
+}
+
+float cap(gpsCoord A, gpsCoord B){
+	float res;
+	res = (cos(A.lat)*tan(B.lat)) / (sin(B.lon - A.lon)) - sin(A.lat)/(tan(B.lon - A.lon));
+	res = atan(1/res);
+	// rad -> deg
+	res = (res)*180/PI;
+	return res;
 }
 
 void RxBuff0(void){
@@ -240,4 +249,21 @@ void vidageBuffer(void){
 		mettreEnAttente(buffer1,iBuff1+1);
 		iBuff1 = 0;
 	}
+}
+
+void test(void){
+	gpsCoord A;
+	gpsCoord B;
+	float vdistance;
+	float vcap;
+	coordConv(&A,"4851,0000","N","00221,0000","E"); // paris
+	coordConv(&B,"4043,0000","N","07400,0000","W"); // newyork
+
+	vdistance = distance(A,B);
+	vcap = cap(A,B);
+	vcap++;
+}
+
+char* getHeure(void){
+	return gps_UTCPos;
 }

@@ -17,6 +17,7 @@ typedef struct this {
 void initGPS(void);
 
 // Données
+char* getHeure(void);
 char gps_UTCPos[10];
 char gps_Latidude[9];
 char gps_NSind[1];
@@ -57,11 +58,15 @@ int strAnalyse(char* cible, char*ref, int maxLen); //return le nombre de char co
 // lat : ddmm,mmmm
 // lon : dddmm,mmmm
 void coordConv(gpsCoord *A, char* lat, char *NSind, char* lon, char*EWind);
-void distance(double *res, gpsCoord A, gpsCoord B);
+float distance(gpsCoord A, gpsCoord B);
+float cap(gpsCoord A, gpsCoord B);
+
 
 // Fonction interruptions
 void RxBuff0(void);
 void RxBuff1(void);
 void vidageBuffer(void);
+
+void test(void);
 
 #endif

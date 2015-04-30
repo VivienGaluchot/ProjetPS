@@ -8,6 +8,7 @@
 
 void main(void)
 {
+	test();
 	// Initialisation des i/o
 	initPortLed();
 	initPortBouton();
@@ -21,7 +22,7 @@ void main(void)
 	initModule1();
 
 	// Initialisation du module GPS
-	//initGPS();
+	initGPS();
 
 	// Ecran
 	resetScreen();
