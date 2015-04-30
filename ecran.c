@@ -7,7 +7,7 @@ char* getLongitude(void);
 char* getSatUsed(void);
 char* getAltitude(void);
 char* getSpeed(void);
-
+char* getDate(void);
 
 void initScreen(void){
 	etat = 1;
@@ -102,10 +102,10 @@ void majScreen(void){
 		PassageSerial_TODO = 0;
 	}
 	if(MajEnregistrement_TODO){
-		majaffichageEnregistrement(getLatitude(),getLongitude(),getAltitude(),getSpeed(),getHeure());
+		majaffichageEnregistrement();
 	}
 	if(MajNavigation_TODO){
-		majaffichageNavigation(getHeure(),getSpeed(),70);
+		majaffichageNavigation();
 	}
 	setItP2(1);
 }
@@ -507,12 +507,12 @@ void affichageEnregistrement(void){
 
 }
 
-void majaffichageEnregistrement(char* coord1, char* coord2, char* altitude, char* vitesse,char* heure){
-	printe(coord1,3,1,noir,vert);
-	printe(coord2,5,1,noir,vert);
-	printe(altitude,10,2,noir,vert);
-	printe(vitesse,14,2,noir,vert);
-	printe(heure,1,12,noir,vert);
+void majaffichageEnregistrement(){
+	printe(getLatitude(),3,1,noir,vert);
+	printe(getLongitude(),5,1,noir,vert);
+	printe(getAltitude(),10,2,noir,vert);
+	printe(getSpeed(),14,2,noir,vert);
+	printe(getHeure(),1,12,noir,vert);
 }
 
 void affichageNavigation(void){
@@ -536,18 +536,18 @@ void affichageNavigation(void){
 	
 }
 
-void majaffichageNavigation(char* heure, char* vitesse, float angle, char* distance){
+void majaffichageNavigation(){
 
 
-	printe(heure,3,12,noir,tourorange);
+	printe(getHeure(),3,12,noir,tourorange);
 	printe("soon",7,12,noir,tourorange);
-	printe(vitesse,11,12,noir,tourorange);
+	printe(getSpeed(),11,12,noir,tourorange);
 
 	tailleText(2);
 	printe("171m",5,1,noir,tourorange);
 	tailleText(1);
 
-	arrow(40,40,0.8,angle,fondorange);
+	arrow(40,40,0.8,70,fondorange);
 
 	drawFilledRectangle(4,113,50,123,rouge);
 }

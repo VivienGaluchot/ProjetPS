@@ -81,9 +81,9 @@ void orbit(int x, int y, int distance, float angle,char ResOrbit[]);
 void menu1(void);
 void majmenu1(void);
 void affichageEnregistrement(void);
-void majaffichageEnregistrement(char* coord1, char* coord2, char* altitude, char* vitesse,char* heure);
+void majaffichageEnregistrement();
 void affichageNavigation(void);
-void majaffichageNavigation(char* heure, char* vitesse, float angle, char* distance);
+void majaffichageNavigation();
 
 // Fonctions interruptions
 void boutonMilieu(void);
