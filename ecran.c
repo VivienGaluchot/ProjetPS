@@ -510,19 +510,9 @@ void affichageEnregistrement(void){
 void majaffichageEnregistrement(char* coord1, char* coord2, char* altitude, char* vitesse,char* heure){
 	printe(coord1,3,1,noir,vert);
 	printe(coord2,5,1,noir,vert);
-
-	//altitude
-	// printe(gps_Altitude,10,2,noir,vert);
-	// printe(gps_AltUnit,10,2,noir,vert);
-
+	printe(altitude,10,2,noir,vert);
 	printe(vitesse,14,2,noir,vert);
-
-	//heure
 	printe(heure,1,12,noir,vert);
-	// printe(gps_UTCPos[1],1,12,noir,vert);
-	// printe(':',1,12,noir,vert);
-	// printe(gps_UTCPos[2],1,12,noir,vert);
-	// printe(gps_UTCPos[3],1,12,noir,vert);
 }
 
 void affichageNavigation(void){
@@ -548,13 +538,8 @@ void affichageNavigation(void){
 
 void majaffichageNavigation(char* heure, char* vitesse, float angle){
 
-	//heure
-	printe(heure,3,12,noir,tourorange);
-	// printe(gps_UTCPos[1],3,12,noir,tourorange);
-	// printe(':',3,12,noir,tourorange);
-	// printe(gps_UTCPos[2],3,12,noir,tourorange);
-	// printe(gps_UTCPos[3],3,12,noir,tourorange);
 
+	printe(heure,3,12,noir,tourorange);
 	printe("soon",7,12,noir,tourorange);
 	printe(vitesse,11,12,noir,tourorange);
 
