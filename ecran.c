@@ -493,10 +493,18 @@ void affichageEnregistrement(void){
 	drawRectangle(0,0,127,127,bleuclair);
 	drawRectangle(1,1,126,126,blert);
 	drawRectangle(2,2,125,125,vert);
-	drawRectangle(83,3,83,124,blert);
-	drawRectangle(2,62,83,94,blert);
-	drawRectangle(3,61,82,124,blert);
-	drawRectangle(3,93,82,3,blert);
+	drawRectangle(88,3,88,124,blert);
+	drawRectangle(2,62,88,94,blert);
+	drawRectangle(3,61,87,124,blert);
+	drawRectangle(3,93,87,3,blert);
+
+	drawFilledRectangle(83,3,124,18,noir);
+	drawRectangle(81,3,125,19,blert);
+	drawRectangle(80,2,126,20,blert);
+
+	drawCircle(40,20,2,vert);
+	drawCircle(40,40,2,vert);
+
 
 	underline();
 	printe("Position",1,1,noir,bleuclair);
