@@ -19,17 +19,22 @@ void initGPS(void);
 // Données
 char* getHeure(void);
 char gps_UTCPos[10];
-char gps_Latidude[9];
+char* getLatitude(void);
+char gps_Latitude[9];
 char gps_NSind[1];
+char* getLongitude(void);
 char gps_Longitude[10];
 char gps_EWind[1];
 char gps_PosFixInd[1];
+char* getSatUsed(void);
 char gps_SatUsed[2];
 char gps_HDOP[16];
+char* getAltitude(void);
 char gps_Altitude[16];
 char gps_AltUnit[16];
 
 char gps_Status[1];
+char* getSpeed(void);
 char gps_SpeedOverGround[16];
 char gps_CourseOverGround[16];
 char gps_Date[6];

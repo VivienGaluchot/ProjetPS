@@ -2,7 +2,7 @@
 
 void initGPS(void){
 	strAnalyse(gps_UTCPos,"-",10);
-	strAnalyse(gps_Latidude,"-",9);
+	strAnalyse(gps_Latitude,"-",9);
 	strAnalyse(gps_NSind,"-",1);
 	strAnalyse(gps_Longitude,"-",10);
 	strAnalyse(gps_EWind,"-",1);
@@ -60,7 +60,7 @@ void traiterDataGPS(void){
 				i += 7;
 				i += strAnalyse(gps_UTCPos, waitBuffer+i, 10) + 1;
 
-				i += strAnalyse(gps_Latidude, waitBuffer+i, 9) + 1;
+				i += strAnalyse(gps_Latitude, waitBuffer+i, 9) + 1;
 				i += strAnalyse(gps_NSind, waitBuffer+i, 1) + 1;
 				i += strAnalyse(gps_Longitude, waitBuffer+i, 10) + 1;
 				i += strAnalyse(gps_EWind, waitBuffer+i, 1) + 1;
@@ -77,7 +77,7 @@ void traiterDataGPS(void){
 				i += strAnalyse(gps_UTCPos, waitBuffer+i, 10) + 1;
 				i += strAnalyse(gps_Status, waitBuffer+i, 1) + 1;
 
-				i += strAnalyse(gps_Latidude, waitBuffer+i, 9) + 1;
+				i += strAnalyse(gps_Latitude, waitBuffer+i, 9) + 1;
 				i += strAnalyse(gps_NSind, waitBuffer+i, 1) + 1;
 				i += strAnalyse(gps_Longitude, waitBuffer+i, 10) + 1;
 				i += strAnalyse(gps_EWind, waitBuffer+i, 1) + 1;
@@ -266,4 +266,27 @@ void test(void){
 
 char* getHeure(void){
 	return gps_UTCPos;
+}
+
+char* getLatitude(void){
+	return gps_Latitude;
+}
+
+char* getLongitude(void){
+	return gps_Longitude;
+}
+char* getSatUsed(void){
+	return gps_SatUsed;
+}
+
+char* getAltitude(void){
+	return gps_Altitude;
+}
+
+char* getSpeed(void){
+	return gps_SpeedOverGround;
+}
+
+char* getDate(void){
+	return gps_Date;
 }
