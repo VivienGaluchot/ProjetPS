@@ -1,6 +1,13 @@
 #include <ecran.h>
 
 
+char* getHeure(void);
+char* getLatitude(void);
+char* getLongitude(void);
+char* getSatUsed(void);
+char* getAltitude(void);
+char* getSpeed(void);
+
 
 void initScreen(void){
 	etat = 1;
@@ -95,10 +102,10 @@ void majScreen(void){
 		PassageSerial_TODO = 0;
 	}
 	if(MajEnregistrement_TODO){
-		majaffichageEnregistrement("N 48°12\'13\"","E 13°45\'05\"","175 m","5 Km/h","15:11");
+		majaffichageEnregistrement("N 48°12\'13\"","E 13°45\'05\"",getAltitude(),getSpeed(),getHeure());
 	}
 	if(MajNavigation_TODO){
-		majaffichageNavigation("15:11","5Km/h",70);
+		majaffichageNavigation(getHeure(),getSpeed(),70);
 	}
 	setItP2(1);
 }
@@ -511,7 +518,7 @@ void majaffichageEnregistrement(char* coord1, char* coord2, char* altitude, char
 	printe(vitesse,14,2,noir,vert);
 
 	//heure
-	printe(getHeure(),1,12,noir,vert);
+	printe(heure,1,12,noir,vert);
 	// printe(gps_UTCPos[1],1,12,noir,vert);
 	// printe(':',1,12,noir,vert);
 	// printe(gps_UTCPos[2],1,12,noir,vert);
@@ -542,7 +549,7 @@ void affichageNavigation(void){
 void majaffichageNavigation(char* heure, char* vitesse, float angle){
 
 	//heure
-	printe(getHeure(),3,12,noir,tourorange);
+	printe(heure,3,12,noir,tourorange);
 	// printe(gps_UTCPos[1],3,12,noir,tourorange);
 	// printe(':',3,12,noir,tourorange);
 	// printe(gps_UTCPos[2],3,12,noir,tourorange);
