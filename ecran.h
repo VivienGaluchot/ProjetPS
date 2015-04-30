@@ -83,7 +83,7 @@ void majmenu1(void);
 void affichageEnregistrement(void);
 void majaffichageEnregistrement(char* coord1, char* coord2, char* altitude, char* vitesse,char* heure);
 void affichageNavigation(void);
-void majaffichageNavigation(char* heure, char* vitesse, float angle);
+void majaffichageNavigation(char* heure, char* vitesse, float angle, char* distance);
 
 // Fonctions interruptions
 void boutonMilieu(void);

@@ -102,7 +102,7 @@ void majScreen(void){
 		PassageSerial_TODO = 0;
 	}
 	if(MajEnregistrement_TODO){
-		majaffichageEnregistrement("N 48°12\'13\"","E 13°45\'05\"",getAltitude(),getSpeed(),getHeure());
+		majaffichageEnregistrement(getLatitude(),getLongitude(),getAltitude(),getSpeed(),getHeure());
 	}
 	if(MajNavigation_TODO){
 		majaffichageNavigation(getHeure(),getSpeed(),70);
@@ -536,7 +536,7 @@ void affichageNavigation(void){
 	
 }
 
-void majaffichageNavigation(char* heure, char* vitesse, float angle){
+void majaffichageNavigation(char* heure, char* vitesse, float angle, char* distance){
 
 
 	printe(heure,3,12,noir,tourorange);
