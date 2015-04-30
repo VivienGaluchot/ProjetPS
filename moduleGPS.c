@@ -265,6 +265,16 @@ void test(void){
 }
 
 char* getHeure(void){
+	char* heure = malloc(sizeof(char)*6);
+	heure[0] = gps_UTCPos[0];
+	heure[1] = gps_UTCPos[1];
+	if((gps_UTCPos[5] - '0')%2)
+		heure[2] = ':';
+	else
+		heure[2] = ' ';
+	heure[3] = gps_UTCPos[2];
+	heure[4] = gps_UTCPos[3];
+	heure[5] = 0;
 	return gps_UTCPos;
 }
 
