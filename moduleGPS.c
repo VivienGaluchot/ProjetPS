@@ -278,17 +278,24 @@ char* getHeure(void){
 }
 
 char* getLatitude(void){
-	temp[0] = gps_Latitude[0];
-	temp[1] = gps_Latitude[1];
-	temp[2] = '*';
-	temp[3] = gps_Latitude[2];
-	temp[4] = gps_Latitude[3];
-	temp[5] = ',';
-	temp[6] = gps_Latitude[4];
-	temp[7] = gps_Latitude[5];
-	temp[8] = ' ';
-	temp[9] = gps_NSind[0];
-	temp[10] = 0;
+	if(gps_Latitude[0] != '-'){
+		temp[0] = '0';
+		temp[1] = gps_Latitude[0];
+		temp[2] = gps_Latitude[1];
+		temp[3] = ' ';
+		temp[4] = gps_Latitude[2];
+		temp[5] = gps_Latitude[3];
+		temp[6] = '.';
+		temp[7] = gps_Latitude[6];
+		temp[8] = gps_Latitude[7];
+		temp[9] = '\'';
+		temp[10] = gps_NSind[0];
+		temp[11] = 0;
+	}
+	else{
+		temp[0] = '-';
+		temp[1] = 0;
+	}
 	return temp;
 }
 
@@ -296,13 +303,13 @@ char* getLongitude(void){
 	temp[0] = gps_Longitude[0];
 	temp[1] = gps_Longitude[1];
 	temp[2] = gps_Longitude[2];
-	temp[3] = '*';
+	temp[3] = ' ';
 	temp[4] = gps_Longitude[3];
 	temp[5] = gps_Longitude[4];
-	temp[6] = ',';
-	temp[7] = gps_Longitude[5];
-	temp[8] = gps_Longitude[6];
-	temp[9] = ' ';
+	temp[6] = '.';
+	temp[7] = gps_Longitude[6];
+	temp[8] = gps_Longitude[7];
+	temp[9] = '\'';
 	temp[10] = gps_EWind[0];
 	temp[11] = 0;
 	return temp;
@@ -317,12 +324,24 @@ char* getSatUsed(void){
 
 char* getAltitude(void){
 	int i = 0;
-	while(gps_Altitude[i])
-		temp[i] = gps_Altitude[i++];
+	int j = 0;
+	while(gps_Altitude[i]!=0 && i<16){
+		temp[i] = gps_Altitude[i];
+		i++;
+	}
+	temp[i] = ' ';
+	i++;
+	while(gps_AltUnit[j]!=0 && i<16){
+		temp[i] = gps_AltUnit[j];
+		i++;
+		j++;
+	}
+	temp[i] = 0;
 	return temp;
 }
 
 char* getSpeed(void){
+
 	return gps_SpeedOverGround;
 }
 

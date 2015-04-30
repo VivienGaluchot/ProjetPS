@@ -36,7 +36,9 @@ char gps_AltUnit[16];
 char gps_Status[1];
 char* getSpeed(void);
 char gps_SpeedOverGround[16];
+char* getCourseOverGroud[16];
 char gps_CourseOverGround[16];
+char* getDate(void);
 char gps_Date[6];
 
 char temp[17];
@@ -67,7 +69,6 @@ int strAnalyse(char* cible, char*ref, int maxLen); //return le nombre de char co
 void coordConv(gpsCoord *A, char* lat, char *NSind, char* lon, char*EWind);
 float distance(gpsCoord A, gpsCoord B);
 float cap(gpsCoord A, gpsCoord B);
-
 
 // Fonction interruptions
 void RxBuff0(void);

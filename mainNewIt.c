@@ -8,7 +8,6 @@
 
 void main(void)
 {
-	test();
 	// Initialisation des i/o
 	initPortLed();
 	initPortBouton();
