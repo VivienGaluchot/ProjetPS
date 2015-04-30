@@ -502,9 +502,6 @@ void affichageEnregistrement(void){
 	drawRectangle(81,3,125,19,blert);
 	drawRectangle(80,2,126,20,blert);
 
-	drawCircle(40,20,2,vert);
-	drawCircle(40,40,2,vert);
-
 
 	underline();
 	printe("Position",1,1,noir,bleuclair);
@@ -517,7 +514,10 @@ void affichageEnregistrement(void){
 
 void majaffichageEnregistrement(){
 	printe(getLatitude(),3,1,noir,vert);
+	drawCircle(31,25,1,vert);
 	printe(getLongitude(),5,1,noir,vert);
+	drawCircle(31,41,1,vert);
+
 	printe(getAltitude(),10,2,noir,vert);
 	printe(getSpeed(),14,2,noir,vert);
 	printe(getHeure(),1,12,noir,vert);
