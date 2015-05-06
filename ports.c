@@ -91,7 +91,18 @@ void setLedMilieu(int etat){
 	}
 }
 
-void initSequenceTest2(void){
+void allumerLedHaut(void){ P1OUT |= LED_HAUT; }
+void allumerLedBas(void){ P1OUT |= LED_BAS; }
+void allumerLedGauche(void){ P1OUT |= LED_GAUCHE; }
+void allumerLedDroite(void){ P1OUT |= LED_DROITE; }
+void allumerLedMilieu(void){ P1OUT |= LED_MILIEU; }
+void eteindreLedHaut(void){ P1OUT &= ~LED_HAUT; }
+void eteindreLedBas(void){ P1OUT &= ~LED_BAS; }
+void eteindreLedGauche(void){ P1OUT &= ~LED_GAUCHE; }
+void eteindreLedDroite(void){ P1OUT &= ~LED_DROITE; }
+void eteindreLedMilieu(void){ P1OUT &= ~LED_MILIEU; }
+
+void initSequenceTest(void){
 	int i;
 
 	setLedMilieu(1);
@@ -133,34 +144,6 @@ void initSequenceTest2(void){
 	setLedMilieu(0);
 }
 
-
-void initSequenceTest(void){
-	int j;
-	for(j=0;j<1;j++){
-	    int i;
-	    P1OUT |= 0x1e;                          // Set P1.0 LED on
-	    for (i = 25000; i>0; i--);              // Delay
-	    P1OUT &= ~0x1f;                         // Clear P1.0 LED off
-	    for (i = 25000; i>0; i--);              // Delay
-	    for (i = 25000; i>0; i--);              // Delay
-	    P1OUT |= 0x1e;                          // Set P1.0 LED on
-	    for (i = 25000; i>0; i--);              // Delay
-	    P1OUT &= ~0x1f;                         // Clear P1.0 LED off
-	    for (i = 25000; i>0; i--);              // Delay
-	    for (i = 25000; i>0; i--);              // Delay
-	    P1OUT |= 0x1e;                          // Set P1.0 LED on
-	    for (i = 25000; i>0; i--);              // Delay
-	    P1OUT &= ~0x1f;                         // Clear P1.0 LED off
-	    for (i = 25000; i>0; i--);              // Delay
-	    for (i = 25000; i>0; i--);              // Delay
-	    P1OUT |= 0x01;                          // Set P1.0 LED on
-	    for (i = 25000; i>0; i--);              // Delay
-	    P1OUT &= ~0x1f;                         // Clear P1.0 LED off
-	    for (i = 25000; i>0; i--);              // Delay
-	    for (i = 25000; i>0; i--);              // Delay
-	}
-	P1OUT = 0;                                // All P1.x reset
-}
 /*
 *		Commandes
 */
@@ -195,7 +178,7 @@ void setCMD_SWITCH(int etat){
 	}
 }
 
-void resetScreen(){
+void resetScreen(void){
 	int i=0;
 	P4OUT &= ~(RESET_SCREEN);
 	for(i=0;i<0x3ff;i++);
@@ -207,10 +190,15 @@ void resetScreen(){
 *		DIVERS
 */
 
-void bindBoutonLed(){
-	setLedHaut(getBoutonHaut());
-	setLedBas(getBoutonBas());
-	setLedDroite(getBoutonDroite());
-	setLedGauche(getBoutonGauche());
-	setLedMilieu(getBoutonMilieu());
+void bindBoutonLed(void){
+	setFuncPressBoutonHaut(allumerLedHaut);
+	setFuncPressBoutonBas(allumerLedBas);
+	setFuncPressBoutonGauche(allumerLedGauche);
+	setFuncPressBoutonDroite(allumerLedDroite);
+	setFuncPressBoutonMilieu(allumerLedMilieu);
+	setFuncReleaseBoutonHaut(eteindreLedHaut);
+	setFuncReleaseBoutonBas(eteindreLedBas);
+	setFuncReleaseBoutonGauche(eteindreLedGauche);
+	setFuncReleaseBoutonDroite(eteindreLedDroite);
+	setFuncReleaseBoutonMilieu(eteindreLedMilieu);
 }

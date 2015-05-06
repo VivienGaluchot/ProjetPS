@@ -19,7 +19,6 @@ int getBoutonGauche(void);
 int getBoutonDroite(void);
 int getBoutonMilieu(void);
 
-
 // LEDS
 
 #define LED_HAUT 0x04
@@ -36,8 +35,18 @@ void setLedGauche(int etat);
 void setLedDroite(int etat);
 void setLedMilieu(int etat);
 
+void allumerLedHaut(void);
+void allumerLedBas(void);
+void allumerLedGauche(void);
+void allumerLedDroite(void);
+void allumerLedMilieu(void);
+void eteindreLedHaut(void);
+void eteindreLedBas(void);
+void eteindreLedGauche(void);
+void eteindreLedDroite(void);
+void eteindreLedMilieu(void);
+
 void initSequenceTest(void);
-void initSequenceTest2(void);
 
 
 // Commandes

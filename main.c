@@ -1,58 +1,37 @@
 #include <msp430x16x.h>
-#include <uart.h>
+
 #include <ports.h>
+#include <interrupt.h>
+#include <uart.h>
 #include <moduleGPS.h>
 #include <ecran.h>
 
 void main(void)
 {
-	int i, temp;
-	// char fondBleu[] = {0xFF,0xCE, 0x00,0x00, 0x00,0x00, 0x00,0x80, 0x00,0x80, 0x00,0x4D};
-	// char rondBleuClair[] = {0xFF,0xCC, 0x00,0x40, 0x00,0x40, 0x00,0x32, 0x04,0xB9};
-	// char txtHeight[] = {0xFF,0x7B, 0x00,0x03};
-	// char txtWidth[] = {0xFF,0x7C, 0x00,0x03};
-	// char putStr[] = {0x00,0x06,'G','P','S',0x00};
-	// char clr[] = {0xFF,0xD7};
-
-	_EINT(); // enable interrupt
-
+	// Initialisation des i/o
 	initPortLed();
-	initPortBouton(); 
+	initPortBouton();
 	initComPorts();
 
-	resetScreen(); // A mettre dans initScreen() si possible
+	// Initialisation du module d'interruptions
+	initIt();
 
+	// Initialisation des modules UART
 	initModule0();
 	initModule1();
 
-	initSequenceTest2();
+	// Initialisation du module GPS
+	initGPS();
 
-	//initGPS();
-	
-	connectScreen(1);
-
-	// sendCharTX1(0);
-	// sendCharTableTX1(fondBleu,12);
-	// waitACK_RX_1();
-	// sendCharTableTX1(rondBleuClair,10);
-	// waitACK_RX_1();
-	// sendCharTableTX1(txtHeight,4);
-	// waitACK_RX_1();
-	// sendCharTableTX1(txtWidth,4);
-	// waitACK_RX_1();
-	// sendCharTableTX1(putStr,6);
-	// waitACK_RX_1();
-	// sendCharTableTX1(clr,2);
-
-	i = 0 ;
-	temp = 0 ;
+	// Ecran
+	resetScreen();
+	initSequenceTest();
 	initScreen();
-	menu1();
-	majmenu1(i,8);
+
 	while(1){
-		bindBoutonLed();
-		temp=i;
-		i=bouton(i);
-		if(temp!=i) {majmenu1(i,temp);}
+		// Mettre le cpu en pause la
+		traiterDataGPS();
+		// Mettre a jour l'affichage ici après le changement des données
+		majScreen();
 	}
 }

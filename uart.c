@@ -1,6 +1,6 @@
 #include <uart.h>
 
-void initModule0(){
+void initModule0(void){
 	UCTL0 |= SWRST;                      // Initialize USART state machine
 
 	// Clock du module
@@ -26,7 +26,7 @@ void initModule0(){
 	UCTL0 &= ~SWRST;                      // End initialize USART state machine
 }
 
-void initModule1(){
+void initModule1(void){
 	UCTL1 |= SWRST;                      // Initialize USART state machine
 
 	// Clock du module
@@ -52,126 +52,56 @@ void initModule1(){
 	UCTL1 &= ~SWRST;                      // End initialize USART state machine
 }
 
-void initTimerGps(){
-	WDTCTL = WDTPW + WDTHOLD;             // Stop WDT
-	TACTL = TASSEL0 + TACLR;              // ACLK, clear TAR
-	CCTL0 = CCIE;                         // CCR0 interrupt enabled
-	CCR0 = 18000;
-	TACTL |= MC0|MC1;                     // Start Timer_a in updown mode
-}
-
-void resetTimer(){
-	TACTL &= ~(MC0|MC1); //stop timer
-	TAR = 0;
-	TACTL |= MC0|MC1; // start timer
-}
-
 void connectUsbToScreen(int etat){
 	if(etat){
-		if(itMode & LISTEN_GPS)
-			connectGPS(0);
-
-		itMode |= USB_TO_SCREEN;
-
 		setCMD_SWITCH(1);
 
-		setIT_RX_0(1);
-		setIT_RX_1(1);
-		setIT_TX_0(1);
-		setIT_TX_1(1);
+		setFuncRx0(&usbToSreenURX0);
+		setFuncRx1(&usbToSreenURX1);
+		setItRx0(1);
+		setItRx1(1);
 	}
 	else{
-		setIT_RX_0(0);
-		setIT_RX_1(0);
-		setIT_TX_0(0);
-		setIT_TX_1(0);
-
-		itMode &= ~USB_TO_SCREEN;
+		setItRx0(0);
+		setItRx1(0);
+		setFuncRx0(&rien);
+		setFuncRx1(&rien);
 	}
 }
 
 void connectGPS(int etat){
 	if(etat){
-		if(itMode & USB_TO_SCREEN)
-			connectUsbToScreen(0);
-
-		itMode |= LISTEN_GPS;
-
-		iBuff0 = 0;
-		iBuff1 = 0;
-		useBuffer = 0;
-
 		setCMD_SWITCH(0);
-		setIT_RX_0(1);
-		setIT_TX_0(1);
+
+		// la fonctionRX0 est mise dans le module GPS
+		setFuncTx0(&envoiUTX0);
+		setItRx0(1);
+		setItTx0(1);
 	}
 	else{
-		setIT_RX_0(0);
-		setIT_TX_0(0);
-		itMode &= ~LISTEN_GPS;
+		setItRx0(0);
+		setItTx0(0);
+		setFuncRx0(&rien);
+		setFuncTx0(&rien);
 	}
 }
 
 void connectScreen(int etat){
 	if(etat){
-		itMode |= CONNECT_SCREEN;
-
-		setIT_RX_1(1);
-		setIT_TX_1(1);
+		setFuncRx1(&screenURX1);
+		setFuncTx1(&envoiUTX1);
+		setItRx1(1);
+		setItTx1(1);
 	}
 	else{
-		setIT_RX_1(0);
-		setIT_TX_1(0);
-
-		itMode &= ~CONNECT_SCREEN;
+		setItRx1(0);
+		setItTx1(0);
+		setFuncRx1(&rien);
+		setFuncTx1(&rien);
 	}
 }
 
-/*
-*	INTERRUPTIONS Sets
-*/
-
-void setIT_RX_0(int etat){
-	if(etat){
-		IFG1 &= ~URXIFG0;                 // flag reset
-		IE1 |= URXIE0;
-	}
-	else{
-		IE1 &= ~URXIE0;
-	}
-}
-
-void setIT_TX_0(int etat){
-	if(etat){
-		IFG1 &= ~UTXIFG0;                 // flag reset
-		IE1 |= UTXIE0;
-	}
-	else{
-		IE1 &= ~UTXIE0;
-	}
-}
-
-void setIT_RX_1(int etat){
-	if(etat){
-		IFG2 &= ~URXIFG1;                 // flag reset
-		IE2 |= URXIE1;
-	}
-	else{
-		IE2 &= ~URXIE1;
-	}
-}
-
-void setIT_TX_1(int etat){
-	if(etat){
-		IFG2 &= ~UTXIFG1;                 // flag reset
-		IE2 |= UTXIE1;
-	}
-	else{
-		IE2 &= ~UTXIE1;
-	}
-}
-
-void waitACK_RX_1(){
+void waitACK_RX_1(void){
 	unsigned long i = 0;
 	IT_R1_ACK = 0;
 	while(i<0xffff && IT_R1_ACK==0) i++;
@@ -216,80 +146,38 @@ void sendCharTableTX1(char* table, int n){
 	}
 }
 
+void sendCharTX0(char valeur){
+	nextT0 = 0;
+	TXBUF0 = valeur;
+	while(nextT0 == 0);
+}
+
 void sendCharTX1(char valeur){
 	nextT1 = 0;
 	TXBUF1 = valeur;
 	while(nextT1 == 0);
 }
+
 /*
-*	Interruptions
+*	Fonctions d'iterruptions
 */
 
-// MODULE 0 RX
-void usart0_rx (void) __interrupt[UART0RX_VECTOR]
-{
-	// 1 - usb connecté à l'écran
-	if(itMode & USB_TO_SCREEN)
-		TXBUF1 = RXBUF0;
-	
-	// 2 - écoute du gps
-	if(itMode & LISTEN_GPS){
-		if(useBuffer == 0 && iBuff0 < BUFF_SIZE){
-			buffer0[iBuff0] = RXBUF0;
-			iBuff0++;
-		}
-		else if(useBuffer == 1 && iBuff1 < BUFF_SIZE){
-			buffer1[iBuff1] = RXBUF0;
-			iBuff1++;
-		}
-	}
+void usbToSreenURX0(void){
+	TXBUF1 = RXBUF0;
 }
 
-// MODULE 0 TX
-void usart0_tx (void) __interrupt[UART0TX_VECTOR]
-{
-	if((itMode & USB_TO_SCREEN) || (itMode & LISTEN_GPS))
-		nextT0 = 1;
+void envoiUTX0(void){
+	nextT0 = 1;
 }
 
-// MODULE 1 RX
-void usart1_rx (void) __interrupt[UART1RX_VECTOR]
-{
-	// 1 - usb connecté à l'écran
-	if(itMode & USB_TO_SCREEN)
-		TXBUF0 = RXBUF1;
-
-	// 3 - ecran connecté
-	if(itMode & CONNECT_SCREEN)
-		IT_R1_ACK = 1;
+void usbToSreenURX1(void){
+	TXBUF0 = RXBUF1;
 }
 
-// MODULE 1 TX
-void usart1_tx (void) __interrupt[UART1TX_VECTOR]
-{
-	// 3 - ecran connecté
-	if(itMode & CONNECT_SCREEN)
-		nextT1 = 1;
+void screenURX1(void){
+	IT_R1_ACK = 1;
 }
 
-// Timer A0 interrupt service routine
-void Timer_A (void) __interrupt[TIMERA0_VECTOR]
-{
-	// 2 - écoute du gps
-	if(itMode & LISTEN_GPS){
-		if(useBuffer==0){
-			setIT_RX_0(0); // desactive l'interruption RX0
-			useBuffer = 1;
-			setIT_RX_0(1); // reactive l'interruption RX0
-			traiterDataGPS(buffer0,iBuff0+1);
-			iBuff0 = 0;
-		}
-		else if(useBuffer==1){
-			setIT_RX_0(0); // desactive l'interruption RX0
-			useBuffer = 0;
-			setIT_RX_0(1); // reactive l'interruption RX0
-			traiterDataGPS(buffer1,iBuff1+1);
-			iBuff1 = 0;
-		}
-	}
+void envoiUTX1(void){
+	nextT1 = 1;
 }
