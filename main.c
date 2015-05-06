@@ -33,5 +33,7 @@ void main(void)
 		traiterDataGPS();
 		// Mettre a jour l'affichage ici après le changement des données
 		majScreen();
+		// CPU en veille
+		LPM0;
 	}
 }

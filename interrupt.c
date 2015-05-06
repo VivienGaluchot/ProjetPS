@@ -38,7 +38,7 @@ void setFuncTx0(void (*func)(void)){ funcTx0 = func; }
 void setFuncRx1(void (*func)(void)){ funcRx1 = func; }
 void setFuncTx1(void (*func)(void)){ funcTx1 = func; }
 
-void setFuncTimer_A(void (*func)(void)){ funcTimerA = func;}
+void setFuncTimer_A(void (*func)(void)){ funcTimerA = func; }
 
 void setFuncPressBoutonHaut(void (*func)(void)){ funcPressBoutonHaut = func; }
 void setFuncPressBoutonBas(void (*func)(void)){ funcPressBoutonBas = func; }
@@ -118,12 +118,27 @@ void setItP2(int etat){
 }
 
 // --------------------------- Fonctions interruption--------------------------
-void usart0_rx (void) __interrupt[UART0RX_VECTOR]{ (*funcRx0)();}
-void usart0_tx (void) __interrupt[UART0TX_VECTOR]{ (*funcTx0)();}
-void usart1_rx (void) __interrupt[UART1RX_VECTOR]{ (*funcRx1)();}
-void usart1_tx (void) __interrupt[UART1TX_VECTOR]{ (*funcTx1)();}
+void usart0_rx (void) __interrupt[UART0RX_VECTOR]{
+	(*funcRx0)();
+	LPM0_EXIT;
+}
+void usart0_tx (void) __interrupt[UART0TX_VECTOR]{
+	(*funcTx0)();
+	LPM0_EXIT;
+}
+void usart1_rx (void) __interrupt[UART1RX_VECTOR]{
+	(*funcRx1)();
+	LPM0_EXIT;
+}
+void usart1_tx (void) __interrupt[UART1TX_VECTOR]{
+	(*funcTx1)();
+	LPM0_EXIT;
+}
 
-void Timer_A (void) __interrupt[TIMERA0_VECTOR]{ (*funcTimerA)();}
+void Timer_A (void) __interrupt[TIMERA0_VECTOR]{
+	(*funcTimerA)();
+	LPM0_EXIT;
+}
 
 void Port_2 (void) __interrupt[PORT2_VECTOR]{
 	if(P2IFG & BOUTON_HAUT){
@@ -163,4 +178,5 @@ void Port_2 (void) __interrupt[PORT2_VECTOR]{
 
 	P2IES ^= P2IFG; // inversion des transitions
 	P2IFG = 0; //interrupt flag
+	LPM0_EXIT;
 }
