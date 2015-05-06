@@ -42,6 +42,66 @@ int decToInt(char *s, int length){
 	return sum;
 }
 
+int intToDec(int x, char *cible, int length){
+	int i,j,t;
+	i = 0;
+	while(x!=0 && i<length){
+		t = x/10;
+		cible[i] = x - t*10 + '0';
+		x = t;
+		i++;
+	}
+	// inversion des caractères
+	for(j=0;j<i/2;j++){
+		t = cible[j];
+		cible[j] = cible[i-j-1];
+		cible[i-j-1] = t;
+	}
+	if(x!=0) {
+		cible[0] = 0; //dépassement
+		i = 0;
+	}
+	else cible[i] = 0;
+	return i;
+}
+
+float strToFloat(char *s, int length){
+	int i,j,d;
+	float sum;
+
+	i = 0;
+	while(s[i] != 0 && s[i] != '.' && i<length) i++;
+	sum = decToInt(s,i);
+	i++;
+	j = i;
+	d = 1;
+	while(s[i] != 0 && i<length){
+		i++;
+		d = d * 10;
+	}
+	sum += (float)decToInt(s+j,i-j)/d;
+	return sum;
+}
+
+int floatToStr(float x, char *cible, int length, int apresVirgule){
+	int i,j,t;
+	t = x; // partie entiere dans t
+	i = intToDec(t,cible,length);
+	if(i<length-2){
+		cible[i++] = '.';
+		j = 0;
+		x = x-(float)t;
+		while(j < apresVirgule){
+			x = 10.0 * x;
+			t = (int)x;
+			j++;
+		}
+		i += intToDec(t,cible+i,length-i);
+	}
+
+	return i;
+}
+
 char strCmp(char* cible, char* ref){
 	int i;
 	char res;
@@ -76,8 +136,8 @@ int strCpy(char* cible, char*ref, int maxLen){
 // lat : ddmm,mmmm
 // lon : dddmm,mmmm
 /* Exemple :
-	coordConv(&A,"4851,0000","N","00221,0000","E");
-	coordConv(&B,"4043,0000","N","07400,0000","W");
+	coordConv(&A,"4851.0000","N","00221.0000","E");
+	coordConv(&B,"4043.0000","N","07400.0000","W");
 */
 void coordConv(gpsCoord *A, char* lat, char *NSind, char* lon, char*EWind){
 	double t;
