@@ -118,18 +118,6 @@ void vidageBuffer(void){
 	}
 }
 
-/*void test(void){
-	gpsCoord A;
-	gpsCoord B;
-	float vdistance;
-	float vcap;
-	coordConv(&A,"4851,0000","N","00221,0000","E"); // paris
-	coordConv(&B,"4043,0000","N","07400,0000","W"); // newyork
-
-	vdistance = distance(A,B);
-	vcap = cap(A,B);
-}*/
-
 char* getHeure(void){
 	temp[0] = gps_UTCPos[0];
 	temp[1] = gps_UTCPos[1];
@@ -144,6 +132,8 @@ char* getHeure(void){
 }
 
 char* getLatitude(void){
+	int tconv;
+	char tchar[2];
 	if(gps_Latitude[0] != '-'){
 		temp[0] = '0';
 		temp[1] = gps_Latitude[0];
@@ -151,10 +141,12 @@ char* getLatitude(void){
 		temp[3] = ' ';
 		temp[4] = gps_Latitude[2];
 		temp[5] = gps_Latitude[3];
-		temp[6] = '.';
-		temp[7] = gps_Latitude[6];
-		temp[8] = gps_Latitude[7];
-		temp[9] = '\'';
+		temp[6] = '\'';
+		tconv = decToInt(gps_Latitude+5,4) * 0.6 / 100.0;
+		intToDec(tconv,tchar,2);
+		temp[7] = tchar[0];
+		temp[8] = tchar[1];
+		temp[9] = '\"';
 		temp[10] = gps_NSind[0];
 		temp[11] = 0;
 	}
@@ -166,16 +158,20 @@ char* getLatitude(void){
 }
 
 char* getLongitude(void){
+	int tconv;
+	char tchar[2];
 	temp[0] = gps_Longitude[0];
 	temp[1] = gps_Longitude[1];
 	temp[2] = gps_Longitude[2];
 	temp[3] = ' ';
 	temp[4] = gps_Longitude[3];
 	temp[5] = gps_Longitude[4];
-	temp[6] = '.';
-	temp[7] = gps_Longitude[6];
-	temp[8] = gps_Longitude[7];
-	temp[9] = '\'';
+	temp[6] = '\'';
+	tconv = decToInt(gps_Longitude+6,4) * 0.6 / 100.0;
+	intToDec(tconv,tchar,2);
+	temp[7] = tchar[0];
+	temp[8] = tchar[1];
+	temp[9] = '\"';
 	temp[10] = gps_EWind[0];
 	temp[11] = 0;
 	return temp;
@@ -202,22 +198,56 @@ char* getAltitude(void){
 		i++;
 		j++;
 	}
+	while(i<10) temp[i++] = ' ';
 	temp[i] = 0;
 	return temp;
 }
 
 char* getSpeed(void){
 	int i = 0;
-	while(gps_SpeedOverGround[i]!=0 && i<14){
-		temp[i] = gps_SpeedOverGround[i];
-		i++;
-	}
+	float tconv;
+	tconv = strToFloat(gps_SpeedOverGround,16);
+	tconv = tconv  * 1.852;
+	i = floatToStr(tconv,temp+i,10,1);
 	temp[i++] = ' ';
-	temp[i++] = 'K';
+	temp[i++] = 'k';
+	temp[i++] = 'm';
+	temp[i++] = '/';
+	temp[i++] = 'h';
+	while(i<10) temp[i++] = ' ';
 	temp[i] = 0;
 	return temp;
 }
 
+char* getOrientation(void){
+	int i = 0;
+	while(gps_CourseOverGround[i] && i<16){
+		temp[i] = gps_CourseOverGround[i];
+	}
+	temp[i] = 0;
+	return temp;
+}
+
+float getFloatOrientation(void){
+	float result;
+	result = strToFloat(gps_CourseOverGround,16);
+	return result;
+}
+
 char* getDate(void){
 	return gps_Date;
+}
+
+float getDistanceToDest(void){
+	gpsCoord current;
+	coordConv(&current,gps_Latitude,gps_NSind,gps_Longitude,gps_EWind);
+	coordConv(&destCoord,"4851.0000","N","00221.0000","E"); // paris comme dest pour test
+	return distance(&current,&destCoord);
+}
+
+float getCapToDest(void){
+	gpsCoord current;
+	coordConv(&current,gps_Latitude,gps_NSind,gps_Longitude,gps_EWind);
+	coordConv(&destCoord,"4851.0000","N","00221.0000","E"); // paris comme dest pour test
+	return distance(&current,&destCoord);
 }

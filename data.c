@@ -45,23 +45,31 @@ int decToInt(char *s, int length){
 int intToDec(int x, char *cible, int length){
 	int i,j,t;
 	i = 0;
-	while(x!=0 && i<length){
-		t = x/10;
-		cible[i] = x - t*10 + '0';
-		x = t;
-		i++;
+	if(x == 0 && length>0){
+		cible[0] = '0';
+		if(length>1)
+			cible[1] = 0;
+		i = 1;
 	}
-	// inversion des caractères
-	for(j=0;j<i/2;j++){
-		t = cible[j];
-		cible[j] = cible[i-j-1];
-		cible[i-j-1] = t;
+	else{
+		while(x!=0 && i<length){
+			t = x/10;
+			cible[i] = x - t*10 + '0';
+			x = t;
+			i++;
+		}
+		// inversion des caractères
+		for(j=0;j<i/2;j++){
+			t = cible[j];
+			cible[j] = cible[i-j-1];
+			cible[i-j-1] = t;
+		}
+		if(x!=0) {
+			cible[0] = 0; //dépassement
+			i = 0;
+		}
+		else cible[i] = 0;
 	}
-	if(x!=0) {
-		cible[0] = 0; //dépassement
-		i = 0;
-	}
-	else cible[i] = 0;
 	return i;
 }
 
@@ -87,8 +95,9 @@ int floatToStr(float x, char *cible, int length, int apresVirgule){
 	int i,j,t;
 	t = x; // partie entiere dans t
 	i = intToDec(t,cible,length);
+	if(i==0)
+		cible[i++] = '0';
 	if(i<length-2){
-		cible[i++] = '.';
 		j = 0;
 		x = x-(float)t;
 		while(j < apresVirgule){
@@ -96,7 +105,11 @@ int floatToStr(float x, char *cible, int length, int apresVirgule){
 			t = (int)x;
 			j++;
 		}
-		i += intToDec(t,cible+i,length-i);
+		t = intToDec(t,cible+i+1,length-(i+1));
+		if(t>0){
+			cible[i++] = '.';
+			i+=t;
+		}
 	}
 
 	return i;
@@ -171,9 +184,9 @@ void coordConv(gpsCoord *A, char* lat, char *NSind, char* lon, char*EWind){
 		A->lon = -t;
 }
 
-float distance(gpsCoord A, gpsCoord B){
+float distance(gpsCoord* A, gpsCoord* B){
 	float res;
-	res = sin(A.lat)*sin(B.lat) + cos(A.lat)*cos(B.lat)*cos(B.lon - A.lon);
+	res = sin(A->lat)*sin(B->lat) + cos(A->lat)*cos(B->lat)*cos(B->lon - A->lon);
 	res = 60*acos(res);
 	// rad -> deg
 	res = (res)*180/PI;
@@ -182,11 +195,23 @@ float distance(gpsCoord A, gpsCoord B){
 	return res;
 }
 
-float cap(gpsCoord A, gpsCoord B){
+float cap(gpsCoord* A, gpsCoord* B){
 	float res;
-	res = (cos(A.lat)*tan(B.lat)) / (sin(B.lon - A.lon)) - sin(A.lat)/(tan(B.lon - A.lon));
+	res = (cos(A->lat)*tan(B->lat)) / (sin(B->lon - A->lon)) - sin(A->lat)/(tan(B->lon - A->lon));
 	res = atan(1/res);
 	// rad -> deg
 	res = (res)*180/PI;
 	return res;
 }
+
+/*void test(void){
+	gpsCoord A;
+	gpsCoord B;
+	float vdistance;
+	float vcap;
+	coordConv(&A,"4851,0000","N","00221,0000","E"); // paris
+	coordConv(&B,"4043,0000","N","07400,0000","W"); // newyork
+
+	vdistance = distance(A,B);
+	vcap = cap(A,B);
+}*/

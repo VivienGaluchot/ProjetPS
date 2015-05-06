@@ -32,7 +32,8 @@ char gps_AltUnit[16];
 char* getSpeed(void);
 char gps_SpeedOverGround[16];
 
-char* getCourseOverGroud[16];
+char* getOrientation(void);
+float getFloatOrientation(void);
 char gps_CourseOverGround[16];
 
 char* getDate(void);
@@ -43,6 +44,10 @@ char gps_Status[1];
 char gps_PosFixInd[1];
 
 char temp[17];
+
+float getDistanceToDest(void);
+float getCapToDest(void);
+gpsCoord destCoord;
 
 // Buffer de reception GPS
 #define BUFF_SIZE 512

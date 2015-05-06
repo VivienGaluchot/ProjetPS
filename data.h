@@ -27,7 +27,7 @@ int strCpy(char* cible, char*ref, int maxLen); //return le nombre de char copié
 // lat : "ddmm,mmmm"
 // lon : "dddmm,mmmm"
 void coordConv(gpsCoord *A, char* lat, char *NSind, char* lon, char*EWind);
-float distance(gpsCoord A, gpsCoord B);
-float cap(gpsCoord A, gpsCoord B);
+float distance(gpsCoord* A, gpsCoord* B);
+float cap(gpsCoord* A, gpsCoord* B);
 
 #endif
