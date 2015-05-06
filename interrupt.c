@@ -108,7 +108,7 @@ void setTimer_A(int etat){
 void initItP2(void){
 	int ports = BOUTON_HAUT | BOUTON_BAS | BOUTON_GAUCHE | BOUTON_DROITE | BOUTON_MILIEU;
 	P2IES |= ports; //high-to-low transition (bit a 1) pour les boutons
-	P2IFG = 0; //interrupt flag
+	P2IFG = 0; //interrupt flag reset
 }
 
 void setItP2(int etat){
@@ -177,6 +177,6 @@ void Port_2 (void) __interrupt[PORT2_VECTOR]{
 	}
 
 	P2IES ^= P2IFG; // inversion des transitions
-	P2IFG = 0; //interrupt flag
+	P2IFG = 0; //interrupt flag reset
 	LPM0_EXIT;
 }

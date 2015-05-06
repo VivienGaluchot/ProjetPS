@@ -29,11 +29,9 @@ void main(void)
 	initScreen();
 
 	while(1){
-		// Mettre le cpu en pause la
 		traiterDataGPS();
-		// Mettre a jour l'affichage ici après le changement des données
 		majScreen();
-		// CPU en veille
+		// CPU en pause jusqu'a la prochaine interruption
 		LPM0;
 	}
 }

@@ -55,9 +55,11 @@ void initScreen(void){
 
 void majScreen(void){
 	char ResOrbit[2];
+	char done = 0;
 
 	setItP2(0);
 	if(RetourSerial_TODO){
+		done = 1;
 		connectUsbToScreen(0);
 		setENABLE_GPS(1);
 		connectGPS(1);
@@ -65,6 +67,7 @@ void majScreen(void){
 		RetourSerial_TODO = 0;
 	}
 	if(ClearScreen_TODO){
+		done = 1;
 		clearScreen();
 		// arrow(32,32,0.8,0,fondorange);
 		// arrow(90,90,0.8,90,tourorange);
@@ -73,28 +76,34 @@ void majScreen(void){
 		ClearScreen_TODO = 0;
 	}
 	if(Menu1_TODO){
+		done = 1;
 		menu1();
 		Menu1_TODO = 0;
 	}
 	if(MajMenu1_TODO){
+		done = 1;
 		majmenu1();
 		MajMenu1_TODO = 0;
 	}
 	if(AffichageEnregistrement_TODO){
+		done = 1;
 		affichageEnregistrement();
 		AffichageEnregistrement_TODO = 0;
 	}
 	if(AffichageNavigation_TODO){
+		done = 1;
 		affichageNavigation();
 		AffichageNavigation_TODO =0;
 	}
 	if(AffichageBoussole_TODO){
+		done = 1;
 		fondBoussole();
 		orbit(63,63,45,boussoleAngle,ResOrbit);
 		boussole(63,63,ResOrbit[0],ResOrbit[1],blanc);
 		AffichageBoussole_TODO = 0;
 	}
 	if(PassageSerial_TODO){
+		done = 1;
 		setENABLE_GPS(0);
 		connectGPS(0);
 		clearScreen();
@@ -102,10 +111,19 @@ void majScreen(void){
 		PassageSerial_TODO = 0;
 	}
 	if(MajEnregistrement_TODO){
+		done = 1;
 		majaffichageEnregistrement();
 	}
 	if(MajNavigation_TODO){
+		done = 1;
 		majaffichageNavigation();
+	}
+	if(done){
+		eteindreLedMilieu();
+		eteindreLedHaut();
+		eteindreLedDroite();
+		eteindreLedBas();
+		eteindreLedGauche();
 	}
 	setItP2(1);
 }
