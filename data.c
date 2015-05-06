@@ -1,0 +1,132 @@
+#include <data.h>
+
+int hexToInt(char *s, int length){
+	int i,j,sum,hexPow,t;
+	char error = 0;
+	sum = 0;
+	hexPow = 1;
+	for(i=length-1;i>=0 && s[i]!=0 && !error;i--){
+		j = 0;
+		while((j<16) && (s[i] != hexaTable[j]))
+			j++;
+		if(s[i] == hexaTable[j]){
+			t  = j*hexPow;
+			sum = sum + t;
+			hexPow *= 16;
+		}
+		else{
+			error = 1; //caractère non reconnu
+		}
+	}
+	if(error) sum = 0;
+	return sum;
+}
+
+int decToInt(char *s, int length){
+	int i,j,sum,decPow,t;
+	char error = 0;
+	sum = 0;
+	decPow = 1;
+	for(i=length-1;i>=0 && s[i]!=0 && !error;i--){
+		j = s[i] - '0';
+		if(0<=j && j<10){
+			t  = j*decPow;
+			sum = sum + t;
+			decPow *= 10;
+		}
+		else{
+			error = 1; //caractère non reconnu
+		}
+	}
+	if(error) sum = 0;
+	return sum;
+}
+
+char strCmp(char* cible, char* ref){
+	int i;
+	char res;
+	res = 0;
+	i = 0;
+	while(cible[i]!=0 && cible[i]!=',' && cible[i]!='*' && ref[i]!=0 && ref[i]!=',' && ref[i]!='*' && res==0){
+		res = cible[i] - ref[i];
+		i++;
+	}
+
+	return res;
+}
+
+int strCpy(char* cible, char*ref, int maxLen){
+	int i;
+	i = 0;
+	if(ref[i]==0 || ref[i]==',' || ref[i]=='*'){
+		cible[i] = '-';
+	}
+	else{
+		while(ref[i]!=0 && ref[i]!=',' && ref[i]!='*' && i<maxLen){
+			cible[i] = ref[i];
+			i++;
+		}
+		if(i<maxLen)
+			cible[i] = 0;
+	}
+
+	return i;
+}
+
+// lat : ddmm,mmmm
+// lon : dddmm,mmmm
+/* Exemple :
+	coordConv(&A,"4851,0000","N","00221,0000","E");
+	coordConv(&B,"4043,0000","N","07400,0000","W");
+*/
+void coordConv(gpsCoord *A, char* lat, char *NSind, char* lon, char*EWind){
+	double t;
+
+	//latitude en degrès
+	t = decToInt(lat+5,4);
+	t = t/1000;
+	t = t + decToInt(lat+2,2);
+	t = t/60;
+	t = t + decToInt(lat,2);
+	//latitude deg -> rad
+	t = t*PI/180;
+	//signe
+	if(NSind[0] == 'N')
+		A->lat = t;
+	else if(NSind[0] == 'S')
+		A->lat = -t;
+
+	//longitude en degrès
+	t = decToInt(lon+6,4);
+	t = t/1000;
+	t = t + decToInt(lon+3,2);
+	t = t/60;
+	t = t + decToInt(lon,3);
+	//longitude deg -> rad
+	t = t*PI/180;
+	//signe
+	if(EWind[0] == 'E')
+		A->lon = t;
+	else if(EWind[0] == 'W')
+		A->lon = -t;
+}
+
+float distance(gpsCoord A, gpsCoord B){
+	float res;
+	res = sin(A.lat)*sin(B.lat) + cos(A.lat)*cos(B.lat)*cos(B.lon - A.lon);
+	res = 60*acos(res);
+	// rad -> deg
+	res = (res)*180/PI;
+	// miles -> km
+	res = (res)*1.852;
+	return res;
+}
+
+float cap(gpsCoord A, gpsCoord B){
+	float res;
+	res = (cos(A.lat)*tan(B.lat)) / (sin(B.lon - A.lon)) - sin(A.lat)/(tan(B.lon - A.lon));
+	res = atan(1/res);
+	// rad -> deg
+	res = (res)*180/PI;
+	return res;
+}

@@ -96,7 +96,7 @@ void setItTx1(int etat){
 void initTimer_A(void){
 	TACTL = TASSEL0 | TACLR;              // ACLK, clear TAR
 	CCTL0 = CCIE;                         // CCR0 interrupt enabled
-	CCR0 = 18000;                         // freq = (18k / 32khz)*2 ~ 1.1s
+	CCR0 = 16384;                         // freq = (16384k / 32768hz)*2 = 1s
 }
 
 void setTimer_A(int etat){
