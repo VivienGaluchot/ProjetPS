@@ -17,15 +17,25 @@ void initScreen(void){
 	boussoleAngle = 0;
 
 	ClearScreen_TODO = 0;
-	MajMenu1_TODO = 0;
+	
 	Menu1_TODO = 0;
+	MajMenu1_TODO = 0;
+
 	AffichageNavigation_TODO =0;
+	MajNavigation_TODO = 0;
+	MenuNavigation_TODO =0;
+	MajMenuNavigation_TODO =0;
+	
 	AffichageEnregistrement_TODO = 0;
+	MajEnregistrement_TODO = 0;
+
 	AffichageBoussole_TODO = 0;
+
 	PassageSerial_TODO = 0;
 	RetourSerial_TODO = 0;
-	MajEnregistrement_TODO = 0;
-	MajNavigation_TODO = 0;
+
+	
+	
 
 	// Interruptions
 	bindBoutonLed();
@@ -107,6 +117,17 @@ void majScreen(void){
 	if(MajNavigation_TODO){
 		majaffichageNavigation();
 	}
+	if(MenuNavigation_TODO){
+		menuNavigation();
+		MenuNavigation_TODO =0;
+	}
+	if(MajMenuNavigation_TODO){
+		majmenuNavigation();
+		MajMenuNavigation_TODO =0;
+	}
+
+
+	//initItP2();
 	setItP2(1);
 }
 
@@ -512,7 +533,7 @@ void affichageEnregistrement(void){
 
 }
 
-void majaffichageEnregistrement(){
+void majaffichageEnregistrement(void){
 	printe(getLatitude(),3,1,noir,vert);
 	drawCircle(31,25,1,vert);
 	printe(getLongitude(),5,1,noir,vert);
@@ -544,7 +565,7 @@ void affichageNavigation(void){
 	
 }
 
-void majaffichageNavigation(){
+void majaffichageNavigation(void){
 
 
 	printe(getHeure(),3,12,noir,tourorange);
@@ -558,6 +579,39 @@ void majaffichageNavigation(){
 	arrow(40,40,0.8,70,fondorange);
 
 	drawFilledRectangle(4,113,50,123,rouge);
+}
+
+void menuNavigation(void){
+
+
+	drawFilledRectangle(3,3,124,28,fondorange);  
+	drawFilledRectangle(3,35,124,60,fondorange);  
+	drawFilledRectangle(3,67,124,92,fondorange);  
+	drawFilledRectangle(3,99,124,124,fondorange);  
+	drawRectangle(3,3,124,28,tourorange);  
+	drawRectangle(3,35,124,60,tourorange);  
+	drawRectangle(3,67,124,92,tourorange);  
+	drawRectangle(3,99,124,124,tourorange);  
+	printe("Destination 1",2,1,fondorange,blanc);  
+	printe("Destination 2",6,1,fondorange,blanc);
+	printe("Destination 3",10,1,fondorange,blanc);  
+	printe("Destination 4",14,1,fondorange,blanc); 
+
+}
+
+void majmenuNavigation(void){
+
+	drawRectangle(4,32*prevMenu1Item+4,123,32*prevMenu1Item+27,tourorange); 
+	drawRectangle(2,32*prevMenu1Item+2,125,32*prevMenu1Item+29,noir); 
+	drawRectangle(1,32*prevMenu1Item+1,126,32*prevMenu1Item+30,noir); 
+	drawRectangle(0,32*prevMenu1Item,127,32*prevMenu1Item+31,noir); 
+
+	drawRectangle(4,32*menu1Item+4,123,32*menu1Item+27,tourorange); 
+	drawRectangle(2,32*menu1Item+2,125,32*menu1Item+29,tourorange); 
+	drawRectangle(1,32*menu1Item+1,126,32*menu1Item+30,tourorange); 
+	drawRectangle(0,32*menu1Item,127,32*menu1Item+31,tourorange); 
+
+	prevMenu1Item = menu1Item;
 }
 
 void underline(void){
@@ -596,6 +650,12 @@ void boutonHaut(void){
 		etat= menu1Item+1;
 		MajMenu1_TODO = 1;
 	}
+	else if(etat==21 || etat==22 || etat==23 || etat==24 ){
+		menu1Item--;
+		menu1Item = (menu1Item+8)%4;
+		etat= menu1Item+21;
+		MajMenuNavigation_TODO = 1;
+	}
 	eteindreLedHaut();
 }
 
@@ -605,18 +665,27 @@ void boutonDroit(void){
 		MajEnregistrement_TODO =1;
 		etat=11;
 	}
-	if (menu1Item==1 && etat == 2){
-		AffichageNavigation_TODO = 1;
-		MajNavigation_TODO =1;
-		etat=21;
+	else if (menu1Item==1 && etat == 2){
+		ClearScreen_TODO = 1;
+		MenuNavigation_TODO = 1;
+		menu1Item = 0;
+		prevMenu1Item =0;
+
+		MajMenuNavigation_TODO = 1;
+		etat = 21;
 	}
-	if (menu1Item==2 && etat == 3){
+	else if (menu1Item==2 && etat == 3){
 		AffichageBoussole_TODO = 1;
 		etat=31;
 	}
-	if (menu1Item==3 && etat == 4){
+	else if (menu1Item==3 && etat == 4){
 		PassageSerial_TODO = 1;
 		etat=41;
+	}
+	else if (etat == 21 || etat == 22 || etat == 23 || etat == 24){		
+		AffichageNavigation_TODO = 1;
+		MajNavigation_TODO =1;
+		etat=20;
 	}
 
 	eteindreLedDroite();
@@ -629,6 +698,12 @@ void boutonBas(void){
 		etat= menu1Item+1;
 		MajMenu1_TODO = 1;
 	}
+	else if(etat==21 || etat==22 || etat==23 || etat==24 ){
+		menu1Item++;
+		menu1Item = menu1Item%4;
+		etat= menu1Item+21;
+		MajMenuNavigation_TODO = 1;
+	}
 	eteindreLedBas();
 }
 
@@ -640,20 +715,28 @@ void boutonGauche(void){
 		MajMenu1_TODO = 1;
 		MajEnregistrement_TODO =0;
 	}
-	if(etat == 21){
+	else if(etat == 20){
 		ClearScreen_TODO = 1;
+		etat = menu1Item+21;
+		MenuNavigation_TODO = 1;
+		MajMenuNavigation_TODO = 1;
+		MajNavigation_TODO =0;
+	}
+	else if(etat == 21 || etat == 22 || etat == 23 || etat == 24){
+		ClearScreen_TODO = 1;
+		menu1Item = 1;
+		prevMenu1Item =1;
 		etat = 2;
 		Menu1_TODO = 1;
 		MajMenu1_TODO = 1;
-		MajNavigation_TODO = 0;
 	}
-	if(etat == 31){
+	else if(etat == 31){
 		ClearScreen_TODO = 1;
 		etat = 3;
 		Menu1_TODO = 1;
 		MajMenu1_TODO = 1;
 	}
-	if(etat == 41){
+	else if(etat == 41){
 		ClearScreen_TODO = 1;
 		etat = 4;
 		Menu1_TODO = 1;
