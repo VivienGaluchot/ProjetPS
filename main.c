@@ -5,6 +5,7 @@
 #include <uart.h>
 #include <moduleGPS.h>
 #include <ecran.h>
+#include <data.h>
 
 void main(void)
 {

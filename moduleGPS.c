@@ -249,5 +249,5 @@ float getCapToDest(void){
 	gpsCoord current;
 	coordConv(&current,gps_Latitude,gps_NSind,gps_Longitude,gps_EWind);
 	coordConv(&destCoord,"4851.0000","N","00221.0000","E"); // paris comme dest pour test
-	return distance(&current,&destCoord);
+	return cap(&current,&destCoord);
 }

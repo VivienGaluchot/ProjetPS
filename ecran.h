@@ -41,6 +41,7 @@ static int menu1Item;
 static int prevMenu1Item;
 
 static int boussoleAngle;
+static float distanceTotale;
 
 // Choses a faire lors de la majScreen
 static int ClearScreen_TODO;
@@ -53,6 +54,9 @@ static int PassageSerial_TODO;
 static int RetourSerial_TODO;
 static int MajEnregistrement_TODO;
 static int MajNavigation_TODO;
+static int MajMenuNavigation_TODO;
+static int MenuNavigation_TODO;
+
 
 void majScreen(void);
 
@@ -81,9 +85,12 @@ void orbit(int x, int y, int distance, float angle,char ResOrbit[]);
 void menu1(void);
 void majmenu1(void);
 void affichageEnregistrement(void);
-void majaffichageEnregistrement();
+void majaffichageEnregistrement(void);
 void affichageNavigation(void);
-void majaffichageNavigation();
+void majaffichageNavigation(void);
+void menuNavigation(void);
+void majmenuNavigation(void);
+void majNavigation(void);
 
 // Fonctions interruptions
 void boutonMilieu(void);

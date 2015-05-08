@@ -7,14 +7,18 @@ char* getLongitude(void);
 char* getSatUsed(void);
 char* getAltitude(void);
 char* getSpeed(void);
+char* getOrientation(void);
+float getFloatOrientation(void);
 char* getDate(void);
+float getDistanceToDest(void);
+float getCapToDest(void);
+
 
 void initScreen(void){
 	etat = 1;
 	menu1Item = 0;
 	prevMenu1Item = 0;
-
-	boussoleAngle = 0;
+	distanceTotale = 0;
 
 	ClearScreen_TODO = 0;
 	
@@ -108,7 +112,7 @@ void majScreen(void){
 	if(AffichageBoussole_TODO){
 		done = 1;
 		fondBoussole();
-		orbit(63,63,45,boussoleAngle,ResOrbit);
+		orbit(63,63,45,-getFloatOrientation(),ResOrbit);
 		boussole(63,63,ResOrbit[0],ResOrbit[1],blanc);
 		AffichageBoussole_TODO = 0;
 	}
@@ -581,23 +585,27 @@ void affichageNavigation(void){
 	underline();
 	printe("Vitesse",9,12,noir,fondorange);
 
-	
+	distanceTotale = getDistanceToDest();
 }
 
 void majaffichageNavigation(void){
-
+	float progression;
 
 	printe(getHeure(),3,12,noir,tourorange);
 	printe("soon",7,12,noir,tourorange);
 	printe(getSpeed(),11,12,noir,tourorange);
 
 	tailleText(2);
-	printe("171m",5,1,noir,tourorange);
+	printe("100m",5,1,noir,tourorange);
 	tailleText(1);
 
-	arrow(40,40,0.8,70,fondorange);
+	drawFilledRectangle(4,4,79,79,noir);
+	arrow(40,40,0.8,-getFloatOrientation()-getCapToDest(),fondorange);
 
-	drawFilledRectangle(4,113,50,123,rouge);
+
+	progression = ((distanceTotale-getDistanceToDest())/distanceTotale)*119+4;
+	drawFilledRectangle(4,113,progression,123,rouge);
+	drawFilledRectangle(progression+1,113,123,123,noir);
 }
 
 void menuNavigation(void){
