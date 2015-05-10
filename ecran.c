@@ -14,6 +14,7 @@ float getDistanceToDest(void);
 float getCapToDest(void);
 char* getStrDistanceToDest(void);
 char* getStrCapToDest(void);
+void setDestination(int);
 
 
 void initScreen(void){
@@ -726,25 +727,25 @@ void boutonDroit(void){
 		AffichageNavigation_TODO = 1;
 		MajNavigation_TODO =1;
 		etat=20;
-		destination =1;
+		setDestination(1);
 	}
 	else if (etat == 22){		
 		AffichageNavigation_TODO = 1;
 		MajNavigation_TODO =1;
 		etat=20;
-		destination =2;
+		setDestination(2);
 	}
 	else if (etat == 23){		
 		AffichageNavigation_TODO = 1;
 		MajNavigation_TODO =1;
 		etat=20;
-		destination =3;
+		setDestination(3);
 	}
 	else if (etat == 24){		
 		AffichageNavigation_TODO = 1;
 		MajNavigation_TODO =1;
 		etat=20;
-		destination =4;
+		setDestination(4);
 	}
 
 	eteindreLedDroite();
