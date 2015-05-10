@@ -22,6 +22,12 @@ void initGPS(void){
 	useBuffer = 0;
 	lengthWaitBuffer = 0;
 
+	destination = 0;
+	coordConv(destCoord,"4713.0000","N","00133.0000","W"); // Nantes
+	coordConv(destCoord+1,"4313.9433","N","00526.5883","E"); // Polytech luminy
+	coordConv(destCoord+2,"4314.9500","N","00526.9633","E"); // Vaufrege
+	coordConv(destCoord+3,"4313.6316","N","00526.3333","E"); // Crous
+
 	setENABLE_GPS(1);
 	initTimer_A();
 	setFuncTimer_A(&vidageBuffer);
@@ -246,7 +252,7 @@ char* getDate(void){
 }
 
 int coordValid(void){
-	return gps_Status[0] == 'A' && (gps_PosFixInd[0] == '1' || gps_PosFixInd[0] == '2' || gps_PosFixInd[0] =='3');
+	return (gps_Status[0] == 'A') && (gps_PosFixInd[0] == '1' || gps_PosFixInd[0] == '2' || gps_PosFixInd[0] =='3');
 }
 
 float getDistanceToDest(void){
@@ -254,8 +260,7 @@ float getDistanceToDest(void){
 	float res;
 	if(coordValid){
 		coordConv(&current,gps_Latitude,gps_NSind,gps_Longitude,gps_EWind);
-		coordConv(&destCoord,"4713.0000","N","00133.0000","W"); // nates comme dest pour test
-		res = distance(&current,&destCoord);
+		res = distance(&current,&destCoord[destination]);
 	}
 	else
 		res = 0;
@@ -279,8 +284,7 @@ float getCapToDest(void){
 	float res;
 	if(coordValid){
 		coordConv(&current,gps_Latitude,gps_NSind,gps_Longitude,gps_EWind);
-		coordConv(&destCoord,"4713.0000","N","00133.0000","W"); // nates comme dest pour test
-		res = cap(&current,&destCoord);
+		res = cap(&current,&destCoord[destination]);
 	}
 	else
 		res = 0;

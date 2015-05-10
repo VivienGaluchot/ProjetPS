@@ -47,7 +47,8 @@ char gps_PosFixInd[1];
 float getDistanceToDest(void);
 char* getStrDistanceToDest(void);
 float getCapToDest(void);
-gpsCoord destCoord;
+gpsCoord destCoord[4];
+int destination;
 
 char temp[17];
 
