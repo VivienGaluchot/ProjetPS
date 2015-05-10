@@ -301,5 +301,6 @@ char* getStrCapToDest(void){
 }
 
 void setDestination(int dest){
-	destination = dest;
+	if(dest>=0 && dest<4)
+		destination = dest;
 }
