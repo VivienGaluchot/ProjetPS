@@ -45,6 +45,7 @@ static float distanceTotale;
 
 // Choses a faire lors de la majScreen
 void resetTODO();
+static int reset_TODO;
 static int ClearScreen_TODO;
 static int MajMenu1_TODO;
 static int Menu1_TODO;
@@ -57,6 +58,7 @@ static int MajEnregistrement_TODO;
 static int MajNavigation_TODO;
 static int MajMenuNavigation_TODO;
 static int MenuNavigation_TODO;
+static int inMajScreen;
 
 
 void majScreen(void);

@@ -23,6 +23,7 @@ void initScreen(void){
 	prevMenu1Item = 0;
 	distanceTotale = 0;
 
+	inMajScreen = 0;
 	resetTODO();
 
 	// Interruptions
@@ -52,6 +53,8 @@ void initScreen(void){
 }
 
 void resetTODO(){
+	if(inMajScreen)
+		reset_TODO = 1;
 	ClearScreen_TODO = 0;
 	Menu1_TODO = 0;
 	MajMenu1_TODO = 0;
@@ -68,18 +71,16 @@ void resetTODO(){
 
 void majScreen(void){
 	char ResOrbit[2];
-	char done = 0;
+	inMajScreen = 1;
 
-	if(RetourSerial_TODO){
-		done = 1;
+	if(RetourSerial_TODO && !reset_TODO){
 		connectUsbToScreen(0);
 		setENABLE_GPS(1);
 		connectGPS(1);
 		connectScreen(1);
 		RetourSerial_TODO = 0;
 	}
-	if(ClearScreen_TODO){
-		done = 1;
+	if(ClearScreen_TODO && !reset_TODO){
 		clearScreen();
 		// arrow(32,32,0.8,0,fondorange);
 		// arrow(90,90,0.8,90,tourorange);
@@ -87,66 +88,52 @@ void majScreen(void){
 		// arrow(32,90,0.5,250,blert);
 		ClearScreen_TODO = 0;
 	}
-	if(Menu1_TODO){
-		done = 1;
+	if(Menu1_TODO && !reset_TODO){
 		menu1();
 		Menu1_TODO = 0;
 	}
-	if(MajMenu1_TODO){
-		done = 1;
+	if(MajMenu1_TODO && !reset_TODO){
 		majmenu1();
 		MajMenu1_TODO = 0;
 	}
-	if(AffichageEnregistrement_TODO){
-		done = 1;
+	if(AffichageEnregistrement_TODO && !reset_TODO){
 		affichageEnregistrement();
 		AffichageEnregistrement_TODO = 0;
 	}
-	if(AffichageNavigation_TODO){
-		done = 1;
+	if(AffichageNavigation_TODO && !reset_TODO){
 		affichageNavigation();
 		AffichageNavigation_TODO =0;
 	}
-	if(AffichageBoussole_TODO){
-		done = 1;
+	if(AffichageBoussole_TODO && !reset_TODO){
 		fondBoussole();
 		orbit(63,63,45,-getFloatOrientation(),ResOrbit);
 		boussole(63,63,ResOrbit[0],ResOrbit[1],blanc);
 		AffichageBoussole_TODO = 0;
 	}
-	if(PassageSerial_TODO){
-		done = 1;
+	if(PassageSerial_TODO && !reset_TODO){
 		setENABLE_GPS(0);
 		connectGPS(0);
 		clearScreen();
 		connectUsbToScreen(1);
 		PassageSerial_TODO = 0;
 	}
-	if(MajEnregistrement_TODO){
-		done = 1;
+	if(MajEnregistrement_TODO && !reset_TODO){
 		majaffichageEnregistrement();
 	}
-	if(MajNavigation_TODO){
-		done = 1;
+	if(MajNavigation_TODO && !reset_TODO){
 		majaffichageNavigation();
 	}
-	if(MenuNavigation_TODO){
-		done = 1;
+	if(MenuNavigation_TODO && !reset_TODO){
 		menuNavigation();
 		MenuNavigation_TODO =0;
 	}
-	if(MajMenuNavigation_TODO){
-		done = 1;
+	if(MajMenuNavigation_TODO && !reset_TODO){
 		majmenuNavigation();
 		MajMenuNavigation_TODO =0;
 	}
-	if(done){
-		eteindreLedMilieu();
-		eteindreLedHaut();
-		eteindreLedDroite();
-		eteindreLedBas();
-		eteindreLedGauche();
-	}
+
+	inMajScreen = 0;
+	reset_TODO = 0;
 }
 
 void printe( char *phrase,char ligne,char colonne,char *BGcolor, char *FGcolor)
@@ -606,7 +593,7 @@ void majaffichageNavigation(void){
 	
 
 	drawFilledRectangle(4,4,79,79,noir);
-	arrow(40,40,0.8,-getFloatOrientation()-getCapToDest(),fondorange);
+	arrow(40,40,0.8,-getFloatOrientation()+getCapToDest(),fondorange);
 
 
 	progression = ((distanceTotale-getDistanceToDest())/distanceTotale)*119+4;
