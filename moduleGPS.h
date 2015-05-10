@@ -40,6 +40,7 @@ char* getDate(void);
 char gps_Date[6];
 
 // Validitée des données
+int coordValid(void);
 char gps_Status[1];
 char gps_PosFixInd[1];
 
