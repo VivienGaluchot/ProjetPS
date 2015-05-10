@@ -12,6 +12,8 @@ float getFloatOrientation(void);
 char* getDate(void);
 float getDistanceToDest(void);
 float getCapToDest(void);
+char* getStrDistanceToDest(void);
+char* getStrCapToDest(void);
 
 
 void initScreen(void){
@@ -290,70 +292,79 @@ void fondBoussole(void){
 
 void boussole(char x1,char y1,char x2, char y2,char *couleur){
 
-	drawFilledCircle(63,63,9,blanc);
+	//drawFilledCircle(63,63,9,blanc);
 
 
-	drawLine( x1-2, y1-9,  x2, y2, couleur);
-	drawLine( x1-1, y1-9,  x2, y2, couleur);
-	drawLine( x1,   y1-9,  x2, y2, couleur);
-	drawLine( x1+1, y1-9,  x2, y2, couleur);
-	drawLine( x1+2, y1-9,  x2, y2, couleur);
+	// drawLine( x1-2, y1-9,  x2, y2, couleur);
+	// drawLine( x1-1, y1-9,  x2, y2, couleur);
+	// drawLine( x1,   y1-9,  x2, y2, couleur);
+	// drawLine( x1+1, y1-9,  x2, y2, couleur);
+	// drawLine( x1+2, y1-9,  x2, y2, couleur);
 
-	drawLine( x1+9, y1+2,  x2, y2, couleur);
-	drawLine( x1+9, y1+1,  x2, y2, couleur);
-	drawLine( x1+9, y1,    x2, y2, couleur);
-	drawLine( x1+9, y1-1,  x2, y2, couleur);
-	drawLine( x1+9, y1-2,  x2, y2, couleur);
+	// drawLine( x1+9, y1+2,  x2, y2, couleur);
+	// drawLine( x1+9, y1+1,  x2, y2, couleur);
+	// drawLine( x1+9, y1,    x2, y2, couleur);
+	// drawLine( x1+9, y1-1,  x2, y2, couleur);
+	// drawLine( x1+9, y1-2,  x2, y2, couleur);
 
-	drawLine( x1-2, y1+9,  x2, y2, couleur);
-	drawLine( x1-1, y1+9,  x2, y2, couleur);
-	drawLine( x1,   y1+9,  x2, y2, couleur);
-	drawLine( x1+1, y1+9,  x2, y2, couleur);
-	drawLine( x1+2, y1+9,  x2, y2, couleur);
+	// drawLine( x1-2, y1+9,  x2, y2, couleur);
+	// drawLine( x1-1, y1+9,  x2, y2, couleur);
+	// drawLine( x1,   y1+9,  x2, y2, couleur);
+	// drawLine( x1+1, y1+9,  x2, y2, couleur);
+	// drawLine( x1+2, y1+9,  x2, y2, couleur);
 
-	drawLine( x1-9, y1+2,  x2, y2, couleur);
-	drawLine( x1-9, y1+1,  x2, y2, couleur);
-	drawLine( x1-9, y1,    x2, y2, couleur);
-	drawLine( x1-9, y1-1,  x2, y2, couleur);
-	drawLine( x1-9, y1-2,  x2, y2, couleur);
+	// drawLine( x1-9, y1+2,  x2, y2, couleur);
+	// drawLine( x1-9, y1+1,  x2, y2, couleur);
+	// drawLine( x1-9, y1,    x2, y2, couleur);
+	// drawLine( x1-9, y1-1,  x2, y2, couleur);
+	// drawLine( x1-9, y1-2,  x2, y2, couleur);
 
-	drawLine( x1-3, y1-8,  x2, y2, couleur);
-	drawLine( x1-4, y1-8,  x2, y2, couleur);
-	drawLine( x1-5, y1-7,  x2, y2, couleur);
-	drawLine( x1-6, y1-7,  x2, y2, couleur);
-	drawLine( x1-7, y1-6,  x2, y2, couleur);
-	drawLine( x1-7, y1-5,  x2, y2, couleur);
-	drawLine( x1-8, y1-4,  x2, y2, couleur);
-	drawLine( x1-8, y1-3,  x2, y2, couleur);
-
-
-	drawLine( x1+3, y1-8,  x2, y2, couleur);
-	drawLine( x1+4, y1-8,  x2, y2, couleur);
-	drawLine( x1+5, y1-7,  x2, y2, couleur);
-	drawLine( x1+6, y1-7,  x2, y2, couleur);
-	drawLine( x1+7, y1-6,  x2, y2, couleur);
-	drawLine( x1+7, y1-5,  x2, y2, couleur);
-	drawLine( x1+8, y1-4,  x2, y2, couleur);
-	drawLine( x1+8, y1-3,  x2, y2, couleur);
-
-	drawLine( x1-3, y1+8,  x2, y2, couleur);
-	drawLine( x1-4, y1+8,  x2, y2, couleur);
-	drawLine( x1-5, y1+7,  x2, y2, couleur);
-	drawLine( x1-6, y1+7,  x2, y2, couleur);
-	drawLine( x1-7, y1+6,  x2, y2, couleur);
-	drawLine( x1-7, y1+5,  x2, y2, couleur);
-	drawLine( x1-8, y1+4,  x2, y2, couleur);
-	drawLine( x1-8, y1+3,  x2, y2, couleur);
+	// drawLine( x1-3, y1-8,  x2, y2, couleur);
+	// drawLine( x1-4, y1-8,  x2, y2, couleur);
+	// drawLine( x1-5, y1-7,  x2, y2, couleur);
+	// drawLine( x1-6, y1-7,  x2, y2, couleur);
+	// drawLine( x1-7, y1-6,  x2, y2, couleur);
+	// drawLine( x1-7, y1-5,  x2, y2, couleur);
+	// drawLine( x1-8, y1-4,  x2, y2, couleur);
+	// drawLine( x1-8, y1-3,  x2, y2, couleur);
 
 
-	drawLine( x1+3, y1+8,  x2, y2, couleur);
-	drawLine( x1+4, y1+8,  x2, y2, couleur);
-	drawLine( x1+5, y1+7,  x2, y2, couleur);
-	drawLine( x1+6, y1+7,  x2, y2, couleur);
-	drawLine( x1+7, y1+6,  x2, y2, couleur);
-	drawLine( x1+7, y1+5,  x2, y2, couleur);
-	drawLine( x1+8, y1+4,  x2, y2, couleur);
-	drawLine( x1+8, y1+3,  x2, y2, couleur);
+	// drawLine( x1+3, y1-8,  x2, y2, couleur);
+	// drawLine( x1+4, y1-8,  x2, y2, couleur);
+	// drawLine( x1+5, y1-7,  x2, y2, couleur);
+	// drawLine( x1+6, y1-7,  x2, y2, couleur);
+	// drawLine( x1+7, y1-6,  x2, y2, couleur);
+	// drawLine( x1+7, y1-5,  x2, y2, couleur);
+	// drawLine( x1+8, y1-4,  x2, y2, couleur);
+	// drawLine( x1+8, y1-3,  x2, y2, couleur);
+
+	// drawLine( x1-3, y1+8,  x2, y2, couleur);
+	// drawLine( x1-4, y1+8,  x2, y2, couleur);
+	// drawLine( x1-5, y1+7,  x2, y2, couleur);
+	// drawLine( x1-6, y1+7,  x2, y2, couleur);
+	// drawLine( x1-7, y1+6,  x2, y2, couleur);
+	// drawLine( x1-7, y1+5,  x2, y2, couleur);
+	// drawLine( x1-8, y1+4,  x2, y2, couleur);
+	// drawLine( x1-8, y1+3,  x2, y2, couleur);
+
+
+	// drawLine( x1+3, y1+8,  x2, y2, couleur);
+	// drawLine( x1+4, y1+8,  x2, y2, couleur);
+	// drawLine( x1+5, y1+7,  x2, y2, couleur);
+	// drawLine( x1+6, y1+7,  x2, y2, couleur);
+	// drawLine( x1+7, y1+6,  x2, y2, couleur);
+	// drawLine( x1+7, y1+5,  x2, y2, couleur);
+	// drawLine( x1+8, y1+4,  x2, y2, couleur);
+	// drawLine( x1+8, y1+3,  x2, y2, couleur);
+
+
+	drawFilledCircle(63,63,4,rouge);
+	drawLine( x1+1, y1, x2,y2,couleur);
+	drawLine( x1-1, y1, x2,y2,couleur);
+	drawLine( x1, y1+1, x2,y2,couleur);
+	drawLine( x1, y1-1, x2,y2,couleur);
+
+	printe(getOrientation(),12,2,noir,tourorange);
 }
 
 void drawRectangle(char x1,char y1,char x2, char y2, char *couleur){
@@ -595,15 +606,17 @@ void majaffichageNavigation(void){
 	printe("soon",7,12,noir,tourorange);
 	printe(getSpeed(),11,12,noir,tourorange);
 
-	tailleText(2);
-	printe("100m",5,1,noir,tourorange);
-	tailleText(1);
+	
+	printe(getStrDistanceToDest(),11,2,noir,tourorange);
+	printe(getOrientation(),12,2,noir,tourorange);
+	printe(getStrCapToDest(),13,2,noir,tourorange);
+	
 
 	drawFilledRectangle(4,4,79,79,noir);
-	arrow(40,40,0.8,-getFloatOrientation()-getCapToDest(),fondorange);
+	arrow(40,40,0.8,-getFloatOrientation()+getCapToDest(),fondorange);
 
 
-	progression = ((distanceTotale-getDistanceToDest())/distanceTotale)*119+5;
+	progression = ((distanceTotale-getDistanceToDest())/distanceTotale)*119+4;
 	drawFilledRectangle(4,113,progression,123,rouge);
 	drawFilledRectangle(progression+1,113,123,123,noir);
 }

@@ -223,6 +223,7 @@ char* getOrientation(void){
 	int i = 0;
 	while(gps_CourseOverGround[i] && i<16){
 		temp[i] = gps_CourseOverGround[i];
+		i++;
 	}
 	temp[i] = 0;
 	return temp;
