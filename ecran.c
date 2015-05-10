@@ -632,10 +632,10 @@ void menuNavigation(void){
 	drawRectangle(3,35,124,60,tourorange);  
 	drawRectangle(3,67,124,92,tourorange);  
 	drawRectangle(3,99,124,124,tourorange);  
-	printe("Destination 1",2,1,fondorange,blanc);  
-	printe("Destination 2",6,1,fondorange,blanc);
-	printe("Destination 3",10,1,fondorange,blanc);  
-	printe("Destination 4",14,1,fondorange,blanc); 
+	printe("Nantes",2,1,fondorange,blanc);  
+	printe("Polytech",6,1,fondorange,blanc);
+	printe("Vaufrege",10,1,fondorange,blanc);  
+	printe("Crous studio B",14,1,fondorange,blanc); 
 
 }
 
@@ -722,10 +722,29 @@ void boutonDroit(void){
 		PassageSerial_TODO = 1;
 		etat=41;
 	}
-	else if (etat == 21 || etat == 22 || etat == 23 || etat == 24){		
+	else if (etat == 21){		
 		AffichageNavigation_TODO = 1;
 		MajNavigation_TODO =1;
 		etat=20;
+		destination =1;
+	}
+	else if (etat == 22){		
+		AffichageNavigation_TODO = 1;
+		MajNavigation_TODO =1;
+		etat=20;
+		destination =2;
+	}
+	else if (etat == 23){		
+		AffichageNavigation_TODO = 1;
+		MajNavigation_TODO =1;
+		etat=20;
+		destination =3;
+	}
+	else if (etat == 24){		
+		AffichageNavigation_TODO = 1;
+		MajNavigation_TODO =1;
+		etat=20;
+		destination =4;
 	}
 
 	eteindreLedDroite();
