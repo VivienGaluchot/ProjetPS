@@ -227,7 +227,7 @@ char* getSpeed(void){
 
 char* getOrientation(void){
 	int i = 0;
-	if(coordValid){
+	if(coordValid()){
 		while(gps_CourseOverGround[i] && i<16){
 			temp[i] = gps_CourseOverGround[i];
 			i++;
@@ -243,7 +243,7 @@ char* getOrientation(void){
 
 float getFloatOrientation(void){
 	float res;
-	if(coordValid){
+	if(coordValid()){
 		res = strToFloat(gps_CourseOverGround,16);
 	}
 	else
@@ -262,7 +262,7 @@ int coordValid(void){
 float getDistanceToDest(void){
 	gpsCoord current;
 	float res;
-	if(coordValid){
+	if(coordValid()){
 		coordConv(&current,gps_Latitude,gps_NSind,gps_Longitude,gps_EWind);
 		res = distance(&current,&destCoord[destination]);
 	}
@@ -286,7 +286,7 @@ char* getStrDistanceToDest(void){
 float getCapToDest(void){
 	gpsCoord current;
 	float res;
-	if(coordValid){
+	if(coordValid()){
 		coordConv(&current,gps_Latitude,gps_NSind,gps_Longitude,gps_EWind);
 		res = cap(&current,&destCoord[destination]);
 	}
