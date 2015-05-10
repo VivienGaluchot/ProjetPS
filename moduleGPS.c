@@ -221,11 +221,17 @@ char* getSpeed(void){
 
 char* getOrientation(void){
 	int i = 0;
-	while(gps_CourseOverGround[i] && i<16){
-		temp[i] = gps_CourseOverGround[i];
-		i++;
+	if(coordValid){
+		while(gps_CourseOverGround[i] && i<16){
+			temp[i] = gps_CourseOverGround[i];
+			i++;
+		}
+		temp[i] = 0;
 	}
-	temp[i] = 0;
+	else
+	{
+		temp[0] = 0;
+	}
 	return temp;
 }
 
@@ -239,11 +245,21 @@ char* getDate(void){
 	return gps_Date;
 }
 
+int coordValid(void){
+	return gps_Status[0] == 'A' && (gps_PosFixInd[0] == '1' || gps_PosFixInd[0] == '2' || gps_PosFixInd[0] =='3');
+}
+
 float getDistanceToDest(void){
 	gpsCoord current;
-	coordConv(&current,gps_Latitude,gps_NSind,gps_Longitude,gps_EWind);
-	coordConv(&destCoord,"4851.0000","N","00221.0000","E"); // paris comme dest pour test
-	return distance(&current,&destCoord);
+	float res;
+	if(coordValid){
+		coordConv(&current,gps_Latitude,gps_NSind,gps_Longitude,gps_EWind);
+		coordConv(&destCoord,"4713.0000","N","00133.0000","W"); // nates comme dest pour test
+		res = distance(&current,&destCoord);
+	}
+	else
+		res = 0;
+	return res;
 }
 
 char* getStrDistanceToDest(void){
@@ -252,13 +268,30 @@ char* getStrDistanceToDest(void){
 	temp[i++] = ' ';
 	temp[i++] = 'k';
 	temp[i++] = 'm';
+	while(i<9)
+		temp[i++] = ' ';
 	temp[i] = 0;
 	return temp;
 }
 
 float getCapToDest(void){
 	gpsCoord current;
-	coordConv(&current,gps_Latitude,gps_NSind,gps_Longitude,gps_EWind);
-	coordConv(&destCoord,"4851.0000","N","00221.0000","E"); // paris comme dest pour test
-	return cap(&current,&destCoord);
+	float res;
+	if(coordValid){
+		coordConv(&current,gps_Latitude,gps_NSind,gps_Longitude,gps_EWind);
+		coordConv(&destCoord,"4713.0000","N","00133.0000","W"); // nates comme dest pour test
+		res = cap(&current,&destCoord);
+	}
+	else
+		res = 0;
+	return res;
+}
+
+char* getStrCapToDest(void){
+	int i = 0;
+	i += floatToStr(getCapToDest(),temp,3,0);
+	while(i<3)
+		temp[i++] = ' ';
+	temp[i] = 0;
+	return temp;
 }
