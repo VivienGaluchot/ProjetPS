@@ -248,6 +248,8 @@ float getFloatOrientation(void){
 	}
 	else
 		res = 0;
+	while(res<0)
+		res += 360;
 	return res;
 }
 

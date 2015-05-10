@@ -201,17 +201,7 @@ float cap(gpsCoord* A, gpsCoord* B){
 	res = atan(1/res);
 	// rad -> deg
 	res = (res)*180/PI;
+	while(res<0)
+		res += 360;
 	return res;
 }
-
-/*void test(void){
-	gpsCoord A;
-	gpsCoord B;
-	float vdistance;
-	float vcap;
-	coordConv(&A,"4851,0000","N","00221,0000","E"); // paris
-	coordConv(&B,"4043,0000","N","07400,0000","W"); // newyork
-
-	vdistance = distance(A,B);
-	vcap = cap(A,B);
-}*/
