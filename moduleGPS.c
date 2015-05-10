@@ -242,9 +242,13 @@ char* getOrientation(void){
 }
 
 float getFloatOrientation(void){
-	float result;
-	result = strToFloat(gps_CourseOverGround,16);
-	return result;
+	float res;
+	if(coordValid){
+		res = strToFloat(gps_CourseOverGround,16);
+	}
+	else
+		res = 0;
+	return res;
 }
 
 char* getDate(void){
