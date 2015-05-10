@@ -43,11 +43,12 @@ char gps_Date[6];
 char gps_Status[1];
 char gps_PosFixInd[1];
 
-char temp[17];
-
 float getDistanceToDest(void);
+char* getStrDistanceToDest(void);
 float getCapToDest(void);
 gpsCoord destCoord;
+
+char temp[17];
 
 // Buffer de reception GPS
 #define BUFF_SIZE 512

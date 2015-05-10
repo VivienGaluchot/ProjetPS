@@ -245,6 +245,16 @@ float getDistanceToDest(void){
 	return distance(&current,&destCoord);
 }
 
+char* getStrDistanceToDest(void){
+	int i = 0;
+	i += floatToStr(getDistanceToDest(),temp,10,1);
+	temp[i++] = ' ';
+	temp[i++] = 'k';
+	temp[i++] = 'm';
+	temp[i] = 0;
+	return temp;
+}
+
 float getCapToDest(void){
 	gpsCoord current;
 	coordConv(&current,gps_Latitude,gps_NSind,gps_Longitude,gps_EWind);
