@@ -23,26 +23,7 @@ void initScreen(void){
 	prevMenu1Item = 0;
 	distanceTotale = 0;
 
-	ClearScreen_TODO = 0;
-	
-	Menu1_TODO = 0;
-	MajMenu1_TODO = 0;
-
-	AffichageNavigation_TODO =0;
-	MajNavigation_TODO = 0;
-	MenuNavigation_TODO =0;
-	MajMenuNavigation_TODO =0;
-	
-	AffichageEnregistrement_TODO = 0;
-	MajEnregistrement_TODO = 0;
-
-	AffichageBoussole_TODO = 0;
-
-	PassageSerial_TODO = 0;
-	RetourSerial_TODO = 0;
-
-	
-	
+	resetTODO();
 
 	// Interruptions
 	bindBoutonLed();
@@ -70,11 +51,25 @@ void initScreen(void){
 	majmenu1();
 }
 
+void resetTODO(){
+	ClearScreen_TODO = 0;
+	Menu1_TODO = 0;
+	MajMenu1_TODO = 0;
+	AffichageNavigation_TODO =0;
+	MajNavigation_TODO = 0;
+	MenuNavigation_TODO =0;
+	MajMenuNavigation_TODO =0;
+	AffichageEnregistrement_TODO = 0;
+	MajEnregistrement_TODO = 0;
+	AffichageBoussole_TODO = 0;
+	PassageSerial_TODO = 0;
+	RetourSerial_TODO = 0;
+}
+
 void majScreen(void){
 	char ResOrbit[2];
 	char done = 0;
 
-	setItP2(0);
 	if(RetourSerial_TODO){
 		done = 1;
 		connectUsbToScreen(0);
@@ -152,9 +147,6 @@ void majScreen(void){
 		eteindreLedBas();
 		eteindreLedGauche();
 	}
-
-	//initItP2();
-	setItP2(1);
 }
 
 void printe( char *phrase,char ligne,char colonne,char *BGcolor, char *FGcolor)
@@ -680,11 +672,13 @@ void tailleText(char x){
 
 // Fonctions interruptions
 void boutonMilieu(void){
+	resetTODO();
 	ClearScreen_TODO = 1;
 	eteindreLedMilieu();
 }
 
 void boutonHaut(void){
+	resetTODO();
 	if(etat==1 || etat==2 || etat==3 || etat==4){
 		menu1Item--;
 		menu1Item = (menu1Item+8)%4;
@@ -701,6 +695,7 @@ void boutonHaut(void){
 }
 
 void boutonDroit(void){
+	resetTODO();
 	if (menu1Item==0 && etat == 1){
 		AffichageEnregistrement_TODO = 1;
 		MajEnregistrement_TODO =1;
@@ -752,6 +747,7 @@ void boutonDroit(void){
 }
 
 void boutonBas(void){
+	resetTODO();
 	if(etat==1 || etat==2 || etat==3 || etat==4 ){
 		menu1Item++;
 		menu1Item = menu1Item%4;
@@ -768,6 +764,7 @@ void boutonBas(void){
 }
 
 void boutonGauche(void){
+	resetTODO();
 	if(etat == 11){
 		ClearScreen_TODO = 1;
 		etat = 1;

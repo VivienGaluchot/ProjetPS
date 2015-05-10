@@ -44,6 +44,7 @@ static int boussoleAngle;
 static float distanceTotale;
 
 // Choses a faire lors de la majScreen
+void resetTODO();
 static int ClearScreen_TODO;
 static int MajMenu1_TODO;
 static int Menu1_TODO;
