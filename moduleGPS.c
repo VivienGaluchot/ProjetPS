@@ -297,8 +297,8 @@ float getCapToDest(void){
 
 char* getStrCapToDest(void){
 	int i = 0;
-	i += floatToStr(getCapToDest(),temp,3,0);
-	while(i<3)
+	i += floatToStr(getCapToDest(),temp,3,1);
+	while(i<4)
 		temp[i++] = ' ';
 	temp[i] = 0;
 	return temp;
