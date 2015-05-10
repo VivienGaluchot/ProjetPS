@@ -48,7 +48,8 @@ float getDistanceToDest(void);
 char* getStrDistanceToDest(void);
 float getCapToDest(void);
 gpsCoord destCoord[4];
-int destination;
+void setDestination(int dest);
+static int destination;
 
 char temp[17];
 

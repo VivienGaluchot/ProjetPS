@@ -299,3 +299,7 @@ char* getStrCapToDest(void){
 	temp[i] = 0;
 	return temp;
 }
+
+void setDestination(int dest){
+	destination = dest;
+}
