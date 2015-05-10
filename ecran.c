@@ -606,7 +606,7 @@ void majaffichageNavigation(void){
 	
 
 	drawFilledRectangle(4,4,79,79,noir);
-	arrow(40,40,0.8,-getFloatOrientation()+getCapToDest(),fondorange);
+	arrow(40,40,0.8,-getFloatOrientation()-getCapToDest(),fondorange);
 
 
 	progression = ((distanceTotale-getDistanceToDest())/distanceTotale)*119+4;
