@@ -66,8 +66,10 @@ void resetTODO(){
 	AffichageEnregistrement_TODO = 0;
 	MajEnregistrement_TODO = 0;
 	AffichageBoussole_TODO = 0;
+	MajBoussole_TODO = 0;
 	PassageSerial_TODO = 0;
 	RetourSerial_TODO = 0;
+
 }
 
 void majScreen(void){
@@ -103,7 +105,13 @@ void majScreen(void){
 	}
 	if(AffichageBoussole_TODO && !reset_TODO){
 		fondBoussole();
+		AffichageBoussole_TODO =0;
+	}
+	if(MajBoussole_TODO && !reset_TODO){
+		drawFilledCircle(63,63,45,noir);
 		orbit(63,63,45,-getFloatOrientation(),ResOrbit);
+		boussole(63,63,ResOrbit[0],ResOrbit[1],rouge);
+		orbit(63,63,45,-getFloatOrientation()+180,ResOrbit);
 		boussole(63,63,ResOrbit[0],ResOrbit[1],blanc);
 	}
 	if(PassageSerial_TODO && !reset_TODO){
@@ -245,16 +253,16 @@ void fondBoussole(void){
 	drawCircle(64,64,63,fondviolet);
 	drawCircle(64,63,63,fondviolet);
 
-	drawTriangle(0,63,63,72,63,54,tourviolet);
-	drawTriangle(127,63,63,72,63,54,tourviolet);
-	drawTriangle(63,0,72,63,54,63,tourviolet);
-	drawTriangle(63,127,72,63,54,63,tourviolet);
+	// drawTriangle(0,63,63,72,63,54,tourviolet);
+	// drawTriangle(127,63,63,72,63,54,tourviolet);
+	// drawTriangle(63,0,72,63,54,63,tourviolet);
+	// drawTriangle(63,127,72,63,54,63,tourviolet);
 
-	drawTriangle(63-32,63-32,63+5,63-5,63-5,63+5,tourviolet);
-	drawTriangle(63+32,63+32,63+5,63-5,63-5,63+5,tourviolet);
+	// drawTriangle(63-32,63-32,63+5,63-5,63-5,63+5,tourviolet);
+	// drawTriangle(63+32,63+32,63+5,63-5,63-5,63+5,tourviolet);
 
-	drawTriangle(63+32,63-32,63+5,63+5,63-5,63-5,tourviolet);
-	drawTriangle(63-32,63+32,63+5,63+5,63-5,63-5,tourviolet);
+	// drawTriangle(63+32,63-32,63+5,63+5,63-5,63-5,tourviolet);
+	// drawTriangle(63-32,63+32,63+5,63+5,63-5,63-5,tourviolet);
 	
 
 
@@ -333,14 +341,13 @@ void boussole(char x1,char y1,char x2, char y2,char *couleur){
 	// drawLine( x1+8, y1+4,  x2, y2, couleur);
 	// drawLine( x1+8, y1+3,  x2, y2, couleur);
 
-
 	drawFilledCircle(63,63,4,rouge);
 	drawLine( x1+1, y1, x2,y2,couleur);
 	drawLine( x1-1, y1, x2,y2,couleur);
 	drawLine( x1, y1+1, x2,y2,couleur);
 	drawLine( x1, y1-1, x2,y2,couleur);
 
-	printe(getOrientation(),12,2,noir,tourorange);
+	// printe(getOrientation(),12,2,noir,tourorange);
 }
 
 void drawRectangle(char x1,char y1,char x2, char y2, char *couleur){
@@ -569,7 +576,7 @@ void affichageNavigation(void){
 	underline();
 	printe("Heure",1,12,noir,fondorange);
 	underline();
-	printe("Arrive",5,12,noir,fondorange);
+	printe("Date",5,12,noir,fondorange);
 	underline();
 	printe("Vitesse",9,12,noir,fondorange);
 
@@ -580,20 +587,22 @@ void majaffichageNavigation(void){
 	float progression, distToDest, capToDest;
 
 	printe(getHeure(),3,12,noir,tourorange);
-	printe("soon",7,12,noir,tourorange);
+	printe(getDate(),7,12,noir,tourorange);
 	printe(getSpeed(),11,12,noir,tourorange);
+
 
 	// calculs de distance et de cap, réutilisés plusieurs fois
 	distToDest = getDistanceToDest();
-	capToDest = getCapToDest(distToDest);
+	capToDest = getCapToDest(distToDest)-getFloatOrientation();
 
 	printe(getStrDistanceToDest(distToDest),11,2,noir,tourorange);
-	printe(getOrientation(),12,2,noir,tourorange);
-	printe(getStrCapToDest(capToDest),13,2,noir,tourorange);
+	// printe(getStrCapToDest(capToDest),12,3,noir,tourorange);
+	// printe(getOrientation(),13,2,noir,tourorange);
+	
 	
 
 	drawFilledRectangle(4,4,79,79,noir);
-	arrow(40,40,0.8,-getFloatOrientation()+capToDest,fondorange);
+	arrow(40,40,0.8,capToDest,fondorange);
 
 
 	progression = ((distanceTotale-distToDest)/distanceTotale)*119+4;
@@ -675,7 +684,7 @@ void boutonMilieu(void){
 		else if(etat == 23){MenuNavigation_TODO = 1;MajMenuNavigation_TODO = 1;}
 		else if(etat == 24){MenuNavigation_TODO = 1;MajMenuNavigation_TODO = 1;}
 		else if(etat == 20){AffichageNavigation_TODO = 1;MajNavigation_TODO =1;}
-		else if(etat == 31){AffichageBoussole_TODO = 1;}
+		else if(etat == 31){AffichageBoussole_TODO = 1;MajBoussole_TODO = 1;}
 		else if(etat == 41){PassageSerial_TODO = 1;}
 		ecranStop =0;
 	}
@@ -723,6 +732,7 @@ void boutonDroit(void){
 	else if (menu1Item==2 && etat == 3){
 		resetTODO();
 		AffichageBoussole_TODO = 1;
+		MajBoussole_TODO = 1;
 		etat=31;
 	}
 	else if (menu1Item==3 && etat == 4){
@@ -810,7 +820,7 @@ void boutonGauche(void){
 		etat = 3;
 		Menu1_TODO = 1;
 		MajMenu1_TODO = 1;
-		AffichageBoussole_TODO = 0;
+		MajBoussole_TODO = 0;
 	}
 	else if(etat == 41){
 		ClearScreen_TODO = 1;

@@ -52,6 +52,7 @@ static int Menu1_TODO;
 static int AffichageNavigation_TODO;
 static int AffichageEnregistrement_TODO;
 static int AffichageBoussole_TODO;
+static int MajBoussole_TODO;
 static int PassageSerial_TODO;
 static int RetourSerial_TODO;
 static int MajEnregistrement_TODO;
