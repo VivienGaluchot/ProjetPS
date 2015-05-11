@@ -576,9 +576,9 @@ void affichageNavigation(void){
 	underline();
 	printe("Heure",1,12,noir,fondorange);
 	underline();
-	printe("Date",5,12,noir,fondorange);
+	printe("nbSat",5,12,noir,fondorange);
 	underline();
-	printe("Vitesse",9,12,noir,fondorange);
+	printe("Speed",9,12,noir,fondorange);
 
 	distanceTotale = getDistanceToDest();
 }
@@ -587,7 +587,7 @@ void majaffichageNavigation(void){
 	float progression, distToDest, capToDest;
 
 	printe(getHeure(),3,12,noir,tourorange);
-	printe(getDate(),7,12,noir,tourorange);
+	printe(getSatUsed(),7,12,noir,tourorange);
 	printe(getSpeed(),11,12,noir,tourorange);
 
 
