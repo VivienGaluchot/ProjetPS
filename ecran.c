@@ -83,10 +83,6 @@ void majScreen(void){
 	}
 	if(ClearScreen_TODO && !reset_TODO){
 		clearScreen();
-		// arrow(32,32,0.8,0,fondorange);
-		// arrow(90,90,0.8,90,tourorange);
-		// arrow(90,32,0.8,200,fondbleu);
-		// arrow(32,90,0.5,250,blert);
 		ClearScreen_TODO = 0;
 	}
 	if(Menu1_TODO && !reset_TODO){
@@ -498,6 +494,7 @@ void menu1(void){
 
 void majmenu1(void){
 	char color[2] ;
+	int fixedItem = menu1Item; // menu1Item pouvant changer avec les interruptions au cours de cette fonction
 
 	if(prevMenu1Item==0) { color[0] = fondbleu[0];	color[1] = fondbleu[1]; }
 	else if(prevMenu1Item==1) { color[0] = fondorange[0];color[1] = fondorange[1]; }
@@ -509,17 +506,17 @@ void majmenu1(void){
 	drawRectangle(1,32*prevMenu1Item+1,126,32*prevMenu1Item+30,noir); 
 	drawRectangle(0,32*prevMenu1Item,127,32*prevMenu1Item+31,noir); 
 
-	if(menu1Item==0) { color[0] = tourbleu[0];	color[1] = tourbleu[1]; }
-	else if(menu1Item==1) { color[0] = tourorange[0];color[1] = tourorange[1]; }
-	else if(menu1Item==2) { color[0] = tourviolet[0];color[1] = tourviolet[1]; }
-	else if(menu1Item==3) { color[0] = tourgris[0];	color[1] = tourgris[1]; }
+	if(fixedItem==0) { color[0] = tourbleu[0];	color[1] = tourbleu[1]; }
+	else if(fixedItem==1) { color[0] = tourorange[0];color[1] = tourorange[1]; }
+	else if(fixedItem==2) { color[0] = tourviolet[0];color[1] = tourviolet[1]; }
+	else if(fixedItem==3) { color[0] = tourgris[0];	color[1] = tourgris[1]; }
 
-	drawRectangle(4,32*menu1Item+4,123,32*menu1Item+27,color); 
-	drawRectangle(2,32*menu1Item+2,125,32*menu1Item+29,color); 
-	drawRectangle(1,32*menu1Item+1,126,32*menu1Item+30,color); 
-	drawRectangle(0,32*menu1Item,127,32*menu1Item+31,color); 
+	drawRectangle(4,32*fixedItem+4,123,32*fixedItem+27,color); 
+	drawRectangle(2,32*fixedItem+2,125,32*fixedItem+29,color); 
+	drawRectangle(1,32*fixedItem+1,126,32*fixedItem+30,color); 
+	drawRectangle(0,32*fixedItem,127,32*fixedItem+31,color); 
 
-	prevMenu1Item = menu1Item;
+	prevMenu1Item = fixedItem;
 }
 
 void affichageEnregistrement(void){
@@ -623,18 +620,19 @@ void menuNavigation(void){
 }
 
 void majmenuNavigation(void){
+	int fixedItem = menu1Item;
 
 	drawRectangle(4,32*prevMenu1Item+4,123,32*prevMenu1Item+27,tourorange); 
 	drawRectangle(2,32*prevMenu1Item+2,125,32*prevMenu1Item+29,noir); 
 	drawRectangle(1,32*prevMenu1Item+1,126,32*prevMenu1Item+30,noir); 
 	drawRectangle(0,32*prevMenu1Item,127,32*prevMenu1Item+31,noir); 
 
-	drawRectangle(4,32*menu1Item+4,123,32*menu1Item+27,tourorange); 
-	drawRectangle(2,32*menu1Item+2,125,32*menu1Item+29,tourorange); 
-	drawRectangle(1,32*menu1Item+1,126,32*menu1Item+30,tourorange); 
-	drawRectangle(0,32*menu1Item,127,32*menu1Item+31,tourorange); 
+	drawRectangle(4,32*fixedItem+4,123,32*fixedItem+27,tourorange); 
+	drawRectangle(2,32*fixedItem+2,125,32*fixedItem+29,tourorange); 
+	drawRectangle(1,32*fixedItem+1,126,32*fixedItem+30,tourorange); 
+	drawRectangle(0,32*fixedItem,127,32*fixedItem+31,tourorange); 
 
-	prevMenu1Item = menu1Item;
+	prevMenu1Item = fixedItem;
 }
 
 void underline(void){

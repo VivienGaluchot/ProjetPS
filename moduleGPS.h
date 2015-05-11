@@ -52,7 +52,7 @@ static int destination;
 float getDistanceToDest(void);
 char* getStrDistanceToDest(float distToDest);
 float getCapToDest(float distToDest);
-char* getStrCapToDest(float capToDest, float distToDest);
+char* getStrCapToDest(float capToDest);
 
 char temp[17];
 

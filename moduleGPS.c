@@ -320,7 +320,7 @@ float getCapToDest(float distToDest){
 	return res;
 }
 
-char* getStrCapToDest(float capToDest, float distToDest){
+char* getStrCapToDest(float capToDest){
 	int i = 0;
 	i += floatToStr(capToDest,temp,10,1);
 	while(i<4)
