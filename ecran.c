@@ -11,9 +11,9 @@ char* getOrientation(void);
 float getFloatOrientation(void);
 char* getDate(void);
 float getDistanceToDest(void);
-float getCapToDest(void);
-char* getStrDistanceToDest(void);
-char* getStrCapToDest(void);
+char* getStrDistanceToDest(float distToDest);
+float getCapToDest(float distToDest);
+char* getStrCapToDest(float capToDest);
 void setDestination(int);
 
 
@@ -580,23 +580,26 @@ void affichageNavigation(void){
 }
 
 void majaffichageNavigation(void){
-	float progression;
+	float progression, distToDest, capToDest;
 
 	printe(getHeure(),3,12,noir,tourorange);
 	printe("soon",7,12,noir,tourorange);
 	printe(getSpeed(),11,12,noir,tourorange);
 
-	
-	printe(getStrDistanceToDest(),11,2,noir,tourorange);
+	// calculs de distance et de cap, réutilisés plusieurs fois
+	distToDest = getDistanceToDest();
+	capToDest = getCapToDest(distToDest);
+
+	printe(getStrDistanceToDest(distToDest),11,2,noir,tourorange);
 	printe(getOrientation(),12,2,noir,tourorange);
-	printe(getStrCapToDest(),13,2,noir,tourorange);
+	printe(getStrCapToDest(capToDest),13,2,noir,tourorange);
 	
 
 	drawFilledRectangle(4,4,79,79,noir);
-	arrow(40,40,0.8,-getFloatOrientation()+getCapToDest(),fondorange);
+	arrow(40,40,0.8,-getFloatOrientation()+capToDest,fondorange);
 
 
-	progression = ((distanceTotale-getDistanceToDest())/distanceTotale)*119+4;
+	progression = ((distanceTotale-distToDest)/distanceTotale)*119+4;
 	drawFilledRectangle(4,113,progression,123,rouge);
 	drawFilledRectangle(progression+1,113,123,123,noir);
 }
@@ -820,4 +823,3 @@ void boutonGauche(void){
 	}
 	eteindreLedGauche();
 }
-
