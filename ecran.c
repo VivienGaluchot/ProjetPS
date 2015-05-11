@@ -22,6 +22,7 @@ void initScreen(void){
 	menu1Item = 0;
 	prevMenu1Item = 0;
 	distanceTotale = 0;
+	ecranStop = 0;
 
 	inMajScreen = 0;
 	resetTODO();
@@ -108,7 +109,6 @@ void majScreen(void){
 		fondBoussole();
 		orbit(63,63,45,-getFloatOrientation(),ResOrbit);
 		boussole(63,63,ResOrbit[0],ResOrbit[1],blanc);
-		AffichageBoussole_TODO = 0;
 	}
 	if(PassageSerial_TODO && !reset_TODO){
 		setENABLE_GPS(0);
@@ -660,19 +660,39 @@ void tailleText(char x){
 // Fonctions interruptions
 void boutonMilieu(void){
 	resetTODO();
-	ClearScreen_TODO = 1;
+	if(ecranStop == 0){
+		ClearScreen_TODO = 1;
+		ecranStop = 1;
+	}else{
+		if(etat == 1){Menu1_TODO = 1;MajMenu1_TODO = 1;}
+		else if(etat == 2){Menu1_TODO = 1;MajMenu1_TODO = 1;}
+		else if(etat == 3){Menu1_TODO = 1;MajMenu1_TODO = 1;}
+		else if(etat == 4){Menu1_TODO = 1;MajMenu1_TODO = 1;}
+		else if(etat == 11){AffichageEnregistrement_TODO = 1;MajEnregistrement_TODO =1;}
+		else if(etat == 21){MenuNavigation_TODO = 1;MajMenuNavigation_TODO = 1;}		
+		else if(etat == 22){MenuNavigation_TODO = 1;MajMenuNavigation_TODO = 1;}
+		else if(etat == 23){MenuNavigation_TODO = 1;MajMenuNavigation_TODO = 1;}
+		else if(etat == 24){MenuNavigation_TODO = 1;MajMenuNavigation_TODO = 1;}
+		else if(etat == 20){AffichageNavigation_TODO = 1;MajNavigation_TODO =1;}
+		else if(etat == 31){AffichageBoussole_TODO = 1;}
+		else if(etat == 41){PassageSerial_TODO = 1;}
+		ecranStop =0;
+	}
 	eteindreLedMilieu();
+	
 }
 
 void boutonHaut(void){
-	resetTODO();
+	
 	if(etat==1 || etat==2 || etat==3 || etat==4){
+		resetTODO();
 		menu1Item--;
 		menu1Item = (menu1Item+8)%4;
 		etat= menu1Item+1;
 		MajMenu1_TODO = 1;
 	}
 	else if(etat==21 || etat==22 || etat==23 || etat==24 ){
+		resetTODO();
 		menu1Item--;
 		menu1Item = (menu1Item+8)%4;
 		etat= menu1Item+21;
@@ -682,13 +702,15 @@ void boutonHaut(void){
 }
 
 void boutonDroit(void){
-	resetTODO();
+	
 	if (menu1Item==0 && etat == 1){
+		resetTODO();
 		AffichageEnregistrement_TODO = 1;
 		MajEnregistrement_TODO =1;
 		etat=11;
 	}
 	else if (menu1Item==1 && etat == 2){
+		resetTODO();
 		ClearScreen_TODO = 1;
 		MenuNavigation_TODO = 1;
 		menu1Item = 0;
@@ -698,32 +720,38 @@ void boutonDroit(void){
 		etat = 21;
 	}
 	else if (menu1Item==2 && etat == 3){
+		resetTODO();
 		AffichageBoussole_TODO = 1;
 		etat=31;
 	}
 	else if (menu1Item==3 && etat == 4){
+		resetTODO();
 		PassageSerial_TODO = 1;
 		etat=41;
 	}
-	else if (etat == 21){		
+	else if (etat == 21){
+		resetTODO();		
 		AffichageNavigation_TODO = 1;
 		MajNavigation_TODO =1;
 		etat=20;
 		setDestination(1);
 	}
-	else if (etat == 22){		
+	else if (etat == 22){
+		resetTODO();		
 		AffichageNavigation_TODO = 1;
 		MajNavigation_TODO =1;
 		etat=20;
 		setDestination(2);
 	}
-	else if (etat == 23){		
+	else if (etat == 23){
+		resetTODO();		
 		AffichageNavigation_TODO = 1;
 		MajNavigation_TODO =1;
 		etat=20;
 		setDestination(3);
 	}
-	else if (etat == 24){		
+	else if (etat == 24){
+		resetTODO();		
 		AffichageNavigation_TODO = 1;
 		MajNavigation_TODO =1;
 		etat=20;
@@ -734,14 +762,16 @@ void boutonDroit(void){
 }
 
 void boutonBas(void){
-	resetTODO();
+	
 	if(etat==1 || etat==2 || etat==3 || etat==4 ){
+		resetTODO();
 		menu1Item++;
 		menu1Item = menu1Item%4;
 		etat= menu1Item+1;
 		MajMenu1_TODO = 1;
 	}
 	else if(etat==21 || etat==22 || etat==23 || etat==24 ){
+		resetTODO();
 		menu1Item++;
 		menu1Item = menu1Item%4;
 		etat= menu1Item+21;
@@ -779,6 +809,7 @@ void boutonGauche(void){
 		etat = 3;
 		Menu1_TODO = 1;
 		MajMenu1_TODO = 1;
+		AffichageBoussole_TODO = 0;
 	}
 	else if(etat == 41){
 		ClearScreen_TODO = 1;
