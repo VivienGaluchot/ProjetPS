@@ -157,7 +157,7 @@ void coordConv(gpsCoord *A, char* lat, char *NSind, char* lon, char*EWind){
 
 	//latitude en degrès
 	t = decToInt(lat+5,4);
-	t = t/1000;
+	t = t/10000;
 	t = t + decToInt(lat+2,2);
 	t = t/60;
 	t = t + decToInt(lat,2);
@@ -195,12 +195,37 @@ float distance(gpsCoord* A, gpsCoord* B){
 	return res;
 }
 
-float cap(gpsCoord* A, gpsCoord* B){
-	float res;
-	res = (cos(A->lat)*tan(B->lat)) / (sin(B->lon - A->lon)) - sin(A->lat)/(tan(B->lon - A->lon));
-	res = atan(1/res);
+float cap(gpsCoord* A, gpsCoord* B, float distAB){
+	float res1,res2,res;
+	// calcul 1
+	res1 = (cos(A->lat)*tan(B->lat)) / (sin(B->lon - A->lon)) - sin(A->lat)/(tan(B->lon - A->lon));
+	res1 = atan(1/res1);
 	// rad -> deg
-	res = (res)*180/PI;
+	res1 = (res1)*180/PI;
+	
+	// calcul 2
+	res2 = (cos(B->lat)*sin(B->lon - A->lon))/(sin(distAB/6371.0));
+	res2 = asin(res2);
+	// rad -> deg
+	res2 = (res2)*180/PI;
+
+	if(res1>=0 && res2>=0){
+		// res entre 0 et 90
+		res = (res1+res2) / 2;
+	}
+	else if(res1<=0 && res2>=0){
+		// res entre 90 et 180
+		res = 180 - (res2-res1)/2;
+	}
+	else if(res1>=0 && res2<=0){
+		// res entre -180 et -90
+		res = -180 - (res2-res1)/2;
+	}
+	else if(res1<=0 && res2<=0){
+		// res entre -90 et 0
+		res = (res1+res2) / 2;
+	}
+
 	while(res<0)
 		res += 360;
 	return res;

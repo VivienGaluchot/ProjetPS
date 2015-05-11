@@ -44,12 +44,15 @@ int coordValid(void);
 char gps_Status[1];
 char gps_PosFixInd[1];
 
-float getDistanceToDest(void);
-char* getStrDistanceToDest(void);
-float getCapToDest(void);
+// Destination
 gpsCoord destCoord[4];
 void setDestination(int dest);
 static int destination;
+
+float getDistanceToDest(void);
+char* getStrDistanceToDest(float distToDest);
+float getCapToDest(float distToDest);
+char* getStrCapToDest(float capToDest, float distToDest);
 
 char temp[17];
 
