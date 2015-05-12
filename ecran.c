@@ -694,9 +694,10 @@ void boutonMilieu(void){
 			else if(etat == 41){PassageSerial_TODO = 1;}
 			ecranStop =0;
 		}
-		eteindreLedMilieu();
+		
 		pushedButton = 1;
 	}
+	eteindreLedMilieu();
 }
 
 void boutonHaut(void){
@@ -715,9 +716,10 @@ void boutonHaut(void){
 			etat= menu1Item+21;
 			MajMenuNavigation_TODO = 1;
 		}
-		eteindreLedHaut();
+		
 		pushedButton = 2;
 	}
+	eteindreLedHaut();
 }
 
 void boutonDroit(void){
@@ -778,9 +780,10 @@ void boutonDroit(void){
 			setDestination(4);
 		}
 
-		eteindreLedDroite();
+		
 		pushedButton = 3;
 	}
+	eteindreLedDroite();
 }
 
 void boutonBas(void){
@@ -799,9 +802,10 @@ void boutonBas(void){
 			etat= menu1Item+21;
 			MajMenuNavigation_TODO = 1;
 		}
-		eteindreLedBas();
+		
 		pushedButton = 4;
 	}
+	eteindreLedBas();
 }
 
 void boutonGauche(void){
@@ -843,7 +847,8 @@ void boutonGauche(void){
 			MajMenu1_TODO = 1;
 			RetourSerial_TODO = 1;
 		}
-		eteindreLedGauche();
+		
 		pushedButton = 5;
 	}
+	eteindreLedGauche();
 }
