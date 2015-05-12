@@ -26,7 +26,7 @@ void initGPS(void){
 	lengthWaitBuffer = 0;
 
 	destination = 0;
-	coordConv(destCoord,"4713,0000","N","00133,0000","W"); // Nantes
+	coordConv(destCoord,"4713,0000","N","00133,0000","W");   // Nantes
 	coordConv(destCoord+1,"4313,9450","N","00526,6233","E"); // Polytech luminy
 /*	coordConv(destCoord+2,"4314,9500","N","00526,9633","E"); // Vaufrege*/
 	coordConv(destCoord+2,"4422,0000","N","00856,0000","E"); // Genova
@@ -165,7 +165,8 @@ char* getHeure(void){
 char* getLatitude(void){
 	int tconv;
 	char tchar[2];
-	if(gps_Latitude[0] != '-'){
+	int i;
+	if(coordValid()){
 		temp[0] = '0';
 		temp[1] = gps_Latitude[0];
 		temp[2] = gps_Latitude[1];
@@ -182,29 +183,39 @@ char* getLatitude(void){
 		temp[11] = 0;
 	}
 	else{
-		temp[0] = '-';
-		temp[1] = 0;
+		i = 0;
+		while(i<11)
+			temp[i++] = ' ';
+		temp[i] = 0;
 	}
 	return temp;
 }
 
 char* getLongitude(void){
-	int tconv;
+	int tconv, i;
 	char tchar[2];
-	temp[0] = gps_Longitude[0];
-	temp[1] = gps_Longitude[1];
-	temp[2] = gps_Longitude[2];
-	temp[3] = ' ';
-	temp[4] = gps_Longitude[3];
-	temp[5] = gps_Longitude[4];
-	temp[6] = '\'';
-	tconv = decToInt(gps_Longitude+6,4) * 0.6 / 100.0;
-	intToDec(tconv,tchar,2);
-	temp[7] = tchar[0];
-	temp[8] = tchar[1];
-	temp[9] = '\"';
-	temp[10] = gps_EWind[0];
-	temp[11] = 0;
+	if(coordValid()){
+		temp[0] = gps_Longitude[0];
+		temp[1] = gps_Longitude[1];
+		temp[2] = gps_Longitude[2];
+		temp[3] = ' ';
+		temp[4] = gps_Longitude[3];
+		temp[5] = gps_Longitude[4];
+		temp[6] = '\'';
+		tconv = decToInt(gps_Longitude+6,4) * 0.6 / 100.0;
+		intToDec(tconv,tchar,2);
+		temp[7] = tchar[0];
+		temp[8] = tchar[1];
+		temp[9] = '\"';
+		temp[10] = gps_EWind[0];
+		temp[11] = 0;
+	}
+	else{
+		i = 0;
+		while(i<11)
+			temp[i++] = ' ';
+		temp[i] = 0;
+	}
 	return temp;
 }
 
@@ -218,18 +229,21 @@ char* getSatUsed(void){
 char* getAltitude(void){
 	int i = 0;
 	int j = 0;
-	while(gps_Altitude[i]!=0 && i<16){
-		temp[i] = gps_Altitude[i];
+	if(coordValid()){
+		while(gps_Altitude[i]!=0 && i<16){
+			temp[i] = gps_Altitude[i];
+			i++;
+		}
+		temp[i] = ' ';
 		i++;
+		while(gps_AltUnit[j]!=0 && i<16){
+			temp[i] = gps_AltUnit[j];
+			i++;
+			j++;
+		}
 	}
-	temp[i] = ' ';
-	i++;
-	while(gps_AltUnit[j]!=0 && i<16){
-		temp[i] = gps_AltUnit[j];
-		i++;
-		j++;
-	}
-	while(i<10) temp[i++] = ' ';
+	while(i<10)
+		temp[i++] = ' ';
 	temp[i] = 0;
 	return temp;
 }
@@ -237,15 +251,18 @@ char* getAltitude(void){
 char* getSpeed(void){
 	int i = 0;
 	float tconv;
-	tconv = strToFloat(gps_SpeedOverGround,16);
-	tconv = tconv  * 1.852;
-	i = floatToStr(tconv,temp+i,10,1);
-	temp[i++] = ' ';
-	temp[i++] = 'k';
-	temp[i++] = 'm';
-	temp[i++] = '/';
-	temp[i++] = 'h';
-	while(i<10) temp[i++] = ' ';
+	if(coordValid()){
+		tconv = strToFloat(gps_SpeedOverGround,16);
+		tconv = tconv  * 1.852;
+		i = floatToStr(tconv,temp+i,10,1);
+		temp[i++] = ' ';
+		temp[i++] = 'k';
+		temp[i++] = 'm';
+		temp[i++] = '/';
+		temp[i++] = 'h';
+	}
+	while(i<10)
+		temp[i++] = ' ';
 	temp[i] = 0;
 	return temp;
 }
@@ -257,12 +274,8 @@ char* getOrientation(void){
 			temp[i] = gps_CourseOverGround[i];
 			i++;
 		}
-		temp[i] = 0;
 	}
-	else
-	{
-		temp[0] = 0;
-	}
+	temp[i] = 0;
 	return temp;
 }
 
@@ -270,11 +283,11 @@ float getFloatOrientation(void){
 	float res;
 	if(coordValid()){
 		res = strToFloat(gps_CourseOverGround,16);
+		while(res<0)
+			res += 360;
 	}
 	else
 		res = 0;
-	while(res<0)
-		res += 360;
 	return res;
 }
 
@@ -295,12 +308,13 @@ float getDistanceToDest(void){
 	}
 	else
 		res = 0;
+
 	return res;
 }
 
 char* getStrDistanceToDest(float distToDest){
 	int i = 0;
-	i += floatToStr(distToDest,temp,10,1);
+	i += floatToStr(distToDest,temp,10,2);
 	temp[i++] = ' ';
 	temp[i++] = 'k';
 	temp[i++] = 'm';
