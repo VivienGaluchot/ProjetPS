@@ -196,7 +196,8 @@ float distance(gpsCoord* A, gpsCoord* B){
 }
 
 float cap(gpsCoord* A, gpsCoord* B, float distAB){
-	float res1,res2,res;
+	double res1,res2;
+	float res;
 	// calcul 1
 	res1 = (cos(A->lat)*tan(B->lat)) / (sin(B->lon - A->lon)) - sin(A->lat)/(tan(B->lon - A->lon));
 	res1 = atan(1/res1);
