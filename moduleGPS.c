@@ -27,11 +27,11 @@ void initGPS(void){
 
 	destination = 0;
 	coordConv(destCoord,"4713,0000","N","00133,0000","W"); // Nantes
-	coordConv(destCoord+1,"4313,9433","N","00526,5883","E"); // Polytech luminy
-	coordConv(destCoord+2,"4314,9500","N","00526,9633","E"); // Vaufrege
-/*	coordConv(destCoord+2,"4422,0000","N","00856,0000","E"); // Genova*/
-	coordConv(destCoord+3,"4313,6316","N","00526,3333","E"); // Crous
-/*	coordConv(destCoord+3,"4122,0000","N","00211,0000","E"); // Barcelone*/
+	coordConv(destCoord+1,"4313,9433","N","00526,5333","E"); // Polytech luminy
+/*	coordConv(destCoord+2,"4314,9500","N","00526,9633","E"); // Vaufrege*/
+	coordConv(destCoord+2,"4422,0000","N","00856,0000","E"); // Genova
+/*	coordConv(destCoord+3,"4313,6316","N","00526,3333","E"); // Crous*/
+	coordConv(destCoord+3,"4122,0000","N","00211,0000","E"); // Barcelone
 
 	setENABLE_GPS(1);
 	initTimer_A();
@@ -41,7 +41,9 @@ void initGPS(void){
 	setFuncRx0(&RxBuff0);
 	connectGPS(1);
 
-/*	// Nantes -> Marseille 		128
+/*	dist = distance(destCoord+1, destCoord+1);
+
+	// Nantes -> Marseille 		128
 	dist = distance(destCoord, destCoord+1);
 	x = cap2(destCoord, destCoord+1,dist);
 	
