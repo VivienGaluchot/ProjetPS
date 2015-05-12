@@ -185,14 +185,14 @@ void coordConv(gpsCoord *A, char* lat, char *NSind, char* lon, char*EWind){
 }
 
 float distance(gpsCoord* A, gpsCoord* B){
-	float res;
+	double res;
 	res = sin(A->lat)*sin(B->lat) + cos(A->lat)*cos(B->lat)*cos(B->lon - A->lon);
 	res = 60*acos(res);
 	// rad -> deg
 	res = (res)*180/PI;
 	// miles -> km
 	res = (res)*1.852;
-	return res;
+	return (float)res;
 }
 
 float cap(gpsCoord* A, gpsCoord* B, float distAB){
