@@ -289,7 +289,7 @@ float getDistanceToDest(void){
 	float res;
 	if(coordValid()){
 		coordConv(&current,gps_Latitude,gps_NSind,gps_Longitude,gps_EWind);
-		res = distance(&current,&destCoord[destination]);
+		res = distance(&current,destCoord+destination);
 	}
 	else
 		res = 0;

@@ -104,7 +104,7 @@ void connectScreen(int etat){
 void waitACK_RX_1(void){
 	unsigned long i = 0;
 	IT_R1_ACK = 0;
-	while(i<0xffff && IT_R1_ACK==0) i++;
+while(i<0xffff && IT_R1_ACK==0) i++;
 }
 
 void sendStrTX0(char* str){
