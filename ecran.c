@@ -585,7 +585,7 @@ void affichageNavigation(void){
 	underline();
 	printe("Speed",9,12,noir,fondorange);
 
-	distanceTotale = getDistanceToDest();
+	distanceTotale = 1;
 }
 
 void majaffichageNavigation(void){
