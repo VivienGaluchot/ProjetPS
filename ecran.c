@@ -609,10 +609,11 @@ void majaffichageNavigation(void){
 	drawFilledRectangle(4,4,79,79,noir);
 	arrow(40,40,0.8,capToDest,fondorange);
 
-
-	// progression = ((distanceTotale-distToDest)/distanceTotale)*119+4;
-	// drawFilledRectangle(4,113,progression,123,rouge);
-	// drawFilledRectangle(progression+1,113,123,123,noir);
+	if(distanceTotale>distToDest)
+		distanceTotale = distToDest;
+	progression = ((distanceTotale-distToDest)/distanceTotale)*119+4;
+	drawFilledRectangle(4,113,progression,123,rouge);
+	drawFilledRectangle(progression+1,113,123,123,noir);
 }
 
 void menuNavigation(void){
