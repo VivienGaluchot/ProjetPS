@@ -756,28 +756,28 @@ void boutonDroit(void){
 			AffichageNavigation_TODO = 1;
 			MajNavigation_TODO =1;
 			etat=20;
-			setDestination(1);
+			setDestination(0);
 		}
 		else if (etat == 22){
 			resetTODO();		
 			AffichageNavigation_TODO = 1;
 			MajNavigation_TODO =1;
 			etat=20;
-			setDestination(2);
+			setDestination(1);
 		}
 		else if (etat == 23){
 			resetTODO();		
 			AffichageNavigation_TODO = 1;
 			MajNavigation_TODO =1;
 			etat=20;
-			setDestination(3);
+			setDestination(2);
 		}
 		else if (etat == 24){
 			resetTODO();		
 			AffichageNavigation_TODO = 1;
 			MajNavigation_TODO =1;
 			etat=20;
-			setDestination(4);
+			setDestination(3);
 		}
 
 		
