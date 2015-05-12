@@ -610,9 +610,9 @@ void majaffichageNavigation(void){
 	arrow(40,40,0.8,capToDest,fondorange);
 
 
-	progression = ((distanceTotale-distToDest)/distanceTotale)*119+4;
-	drawFilledRectangle(4,113,progression,123,rouge);
-	drawFilledRectangle(progression+1,113,123,123,noir);
+	// progression = ((distanceTotale-distToDest)/distanceTotale)*119+4;
+	// drawFilledRectangle(4,113,progression,123,rouge);
+	// drawFilledRectangle(progression+1,113,123,123,noir);
 }
 
 void menuNavigation(void){
@@ -628,8 +628,8 @@ void menuNavigation(void){
 	drawRectangle(3,99,124,124,tourorange);  
 	printe("Nantes",2,1,fondorange,blanc);  
 	printe("Polytech",6,1,fondorange,blanc);
-	printe("Vaufrege",10,1,fondorange,blanc);  
-	printe("Crous studio B",14,1,fondorange,blanc); 
+	printe("Genova",10,1,fondorange,blanc);  
+	printe("Barcelone",14,1,fondorange,blanc); 
 
 }
 
