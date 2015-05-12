@@ -62,6 +62,7 @@ static int MenuNavigation_TODO;
 static int inMajScreen;
 static int ecranStop ;
 
+static int pushedButton;
 
 void majScreen(void);
 

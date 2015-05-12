@@ -24,6 +24,8 @@ void initScreen(void){
 	distanceTotale = 0;
 	ecranStop = 0;
 
+	pushedButton = 0;
+
 	inMajScreen = 0;
 	resetTODO();
 
@@ -134,6 +136,9 @@ void majScreen(void){
 	if(MajMenuNavigation_TODO && !reset_TODO){
 		majmenuNavigation();
 		MajMenuNavigation_TODO =0;
+	}
+	if(!reset_TODO){
+		pushedButton = 0;
 	}
 
 	inMajScreen = 0;
@@ -669,165 +674,176 @@ void tailleText(char x){
 
 // Fonctions interruptions
 void boutonMilieu(void){
-	resetTODO();
-	if(ecranStop == 0){
-		ClearScreen_TODO = 1;
-		ecranStop = 1;
-	}else{
-		if(etat == 1){Menu1_TODO = 1;MajMenu1_TODO = 1;}
-		else if(etat == 2){Menu1_TODO = 1;MajMenu1_TODO = 1;}
-		else if(etat == 3){Menu1_TODO = 1;MajMenu1_TODO = 1;}
-		else if(etat == 4){Menu1_TODO = 1;MajMenu1_TODO = 1;}
-		else if(etat == 11){AffichageEnregistrement_TODO = 1;MajEnregistrement_TODO =1;}
-		else if(etat == 21){MenuNavigation_TODO = 1;MajMenuNavigation_TODO = 1;}		
-		else if(etat == 22){MenuNavigation_TODO = 1;MajMenuNavigation_TODO = 1;}
-		else if(etat == 23){MenuNavigation_TODO = 1;MajMenuNavigation_TODO = 1;}
-		else if(etat == 24){MenuNavigation_TODO = 1;MajMenuNavigation_TODO = 1;}
-		else if(etat == 20){AffichageNavigation_TODO = 1;MajNavigation_TODO =1;}
-		else if(etat == 31){AffichageBoussole_TODO = 1;MajBoussole_TODO = 1;}
-		else if(etat == 41){PassageSerial_TODO = 1;}
-		ecranStop =0;
+	if(pushedButton != 1){
+		resetTODO();
+		if(ecranStop == 0){
+			ClearScreen_TODO = 1;
+			ecranStop = 1;
+		}else{
+			if(etat == 1){Menu1_TODO = 1;MajMenu1_TODO = 1;}
+			else if(etat == 2){Menu1_TODO = 1;MajMenu1_TODO = 1;}
+			else if(etat == 3){Menu1_TODO = 1;MajMenu1_TODO = 1;}
+			else if(etat == 4){Menu1_TODO = 1;MajMenu1_TODO = 1;}
+			else if(etat == 11){AffichageEnregistrement_TODO = 1;MajEnregistrement_TODO =1;}
+			else if(etat == 21){MenuNavigation_TODO = 1;MajMenuNavigation_TODO = 1;}		
+			else if(etat == 22){MenuNavigation_TODO = 1;MajMenuNavigation_TODO = 1;}
+			else if(etat == 23){MenuNavigation_TODO = 1;MajMenuNavigation_TODO = 1;}
+			else if(etat == 24){MenuNavigation_TODO = 1;MajMenuNavigation_TODO = 1;}
+			else if(etat == 20){AffichageNavigation_TODO = 1;MajNavigation_TODO =1;}
+			else if(etat == 31){AffichageBoussole_TODO = 1;MajBoussole_TODO = 1;}
+			else if(etat == 41){PassageSerial_TODO = 1;}
+			ecranStop =0;
+		}
+		eteindreLedMilieu();
+		pushedButton = 1;
 	}
-	eteindreLedMilieu();
-	
 }
 
 void boutonHaut(void){
-	
-	if(etat==1 || etat==2 || etat==3 || etat==4){
-		resetTODO();
-		menu1Item--;
-		menu1Item = (menu1Item+8)%4;
-		etat= menu1Item+1;
-		MajMenu1_TODO = 1;
+	if(pushedButton != 2){
+		if(etat==1 || etat==2 || etat==3 || etat==4){
+			resetTODO();
+			menu1Item--;
+			menu1Item = (menu1Item+8)%4;
+			etat= menu1Item+1;
+			MajMenu1_TODO = 1;
+		}
+		else if(etat==21 || etat==22 || etat==23 || etat==24 ){
+			resetTODO();
+			menu1Item--;
+			menu1Item = (menu1Item+8)%4;
+			etat= menu1Item+21;
+			MajMenuNavigation_TODO = 1;
+		}
+		eteindreLedHaut();
+		pushedButton = 2;
 	}
-	else if(etat==21 || etat==22 || etat==23 || etat==24 ){
-		resetTODO();
-		menu1Item--;
-		menu1Item = (menu1Item+8)%4;
-		etat= menu1Item+21;
-		MajMenuNavigation_TODO = 1;
-	}
-	eteindreLedHaut();
 }
 
 void boutonDroit(void){
-	
-	if (menu1Item==0 && etat == 1){
-		resetTODO();
-		AffichageEnregistrement_TODO = 1;
-		MajEnregistrement_TODO =1;
-		etat=11;
-	}
-	else if (menu1Item==1 && etat == 2){
-		resetTODO();
-		ClearScreen_TODO = 1;
-		MenuNavigation_TODO = 1;
-		menu1Item = 0;
-		prevMenu1Item =0;
+	if(pushedButton != 3){
+		if (menu1Item==0 && etat == 1){
+			resetTODO();
+			AffichageEnregistrement_TODO = 1;
+			MajEnregistrement_TODO =1;
+			etat=11;
+		}
+		else if (menu1Item==1 && etat == 2){
+			resetTODO();
+			ClearScreen_TODO = 1;
+			MenuNavigation_TODO = 1;
+			menu1Item = 0;
+			prevMenu1Item =0;
 
-		MajMenuNavigation_TODO = 1;
-		etat = 21;
-	}
-	else if (menu1Item==2 && etat == 3){
-		resetTODO();
-		AffichageBoussole_TODO = 1;
-		MajBoussole_TODO = 1;
-		etat=31;
-	}
-	else if (menu1Item==3 && etat == 4){
-		resetTODO();
-		PassageSerial_TODO = 1;
-		etat=41;
-	}
-	else if (etat == 21){
-		resetTODO();		
-		AffichageNavigation_TODO = 1;
-		MajNavigation_TODO =1;
-		etat=20;
-		setDestination(1);
-	}
-	else if (etat == 22){
-		resetTODO();		
-		AffichageNavigation_TODO = 1;
-		MajNavigation_TODO =1;
-		etat=20;
-		setDestination(2);
-	}
-	else if (etat == 23){
-		resetTODO();		
-		AffichageNavigation_TODO = 1;
-		MajNavigation_TODO =1;
-		etat=20;
-		setDestination(3);
-	}
-	else if (etat == 24){
-		resetTODO();		
-		AffichageNavigation_TODO = 1;
-		MajNavigation_TODO =1;
-		etat=20;
-		setDestination(4);
-	}
+			MajMenuNavigation_TODO = 1;
+			etat = 21;
+		}
+		else if (menu1Item==2 && etat == 3){
+			resetTODO();
+			AffichageBoussole_TODO = 1;
+			MajBoussole_TODO = 1;
+			etat=31;
+		}
+		else if (menu1Item==3 && etat == 4){
+			resetTODO();
+			PassageSerial_TODO = 1;
+			etat=41;
+		}
+		else if (etat == 21){
+			resetTODO();		
+			AffichageNavigation_TODO = 1;
+			MajNavigation_TODO =1;
+			etat=20;
+			setDestination(1);
+		}
+		else if (etat == 22){
+			resetTODO();		
+			AffichageNavigation_TODO = 1;
+			MajNavigation_TODO =1;
+			etat=20;
+			setDestination(2);
+		}
+		else if (etat == 23){
+			resetTODO();		
+			AffichageNavigation_TODO = 1;
+			MajNavigation_TODO =1;
+			etat=20;
+			setDestination(3);
+		}
+		else if (etat == 24){
+			resetTODO();		
+			AffichageNavigation_TODO = 1;
+			MajNavigation_TODO =1;
+			etat=20;
+			setDestination(4);
+		}
 
-	eteindreLedDroite();
+		eteindreLedDroite();
+		pushedButton = 3;
+	}
 }
 
 void boutonBas(void){
-	
-	if(etat==1 || etat==2 || etat==3 || etat==4 ){
-		resetTODO();
-		menu1Item++;
-		menu1Item = menu1Item%4;
-		etat= menu1Item+1;
-		MajMenu1_TODO = 1;
+	if(pushedButton != 4){
+		if(etat==1 || etat==2 || etat==3 || etat==4 ){
+			resetTODO();
+			menu1Item++;
+			menu1Item = menu1Item%4;
+			etat= menu1Item+1;
+			MajMenu1_TODO = 1;
+		}
+		else if(etat==21 || etat==22 || etat==23 || etat==24 ){
+			resetTODO();
+			menu1Item++;
+			menu1Item = menu1Item%4;
+			etat= menu1Item+21;
+			MajMenuNavigation_TODO = 1;
+		}
+		eteindreLedBas();
+		pushedButton = 4;
 	}
-	else if(etat==21 || etat==22 || etat==23 || etat==24 ){
-		resetTODO();
-		menu1Item++;
-		menu1Item = menu1Item%4;
-		etat= menu1Item+21;
-		MajMenuNavigation_TODO = 1;
-	}
-	eteindreLedBas();
 }
 
 void boutonGauche(void){
-	resetTODO();
-	if(etat == 11){
-		ClearScreen_TODO = 1;
-		etat = 1;
-		Menu1_TODO = 1;
-		MajMenu1_TODO = 1;
-		MajEnregistrement_TODO =0;
+	if(pushedButton != 5){
+		resetTODO();
+		if(etat == 11){
+			ClearScreen_TODO = 1;
+			etat = 1;
+			Menu1_TODO = 1;
+			MajMenu1_TODO = 1;
+			MajEnregistrement_TODO =0;
+		}
+		else if(etat == 20){
+			ClearScreen_TODO = 1;
+			etat = menu1Item+21;
+			MenuNavigation_TODO = 1;
+			MajMenuNavigation_TODO = 1;
+			MajNavigation_TODO =0;
+		}
+		else if(etat == 21 || etat == 22 || etat == 23 || etat == 24){
+			ClearScreen_TODO = 1;
+			menu1Item = 1;
+			prevMenu1Item =1;
+			etat = 2;
+			Menu1_TODO = 1;
+			MajMenu1_TODO = 1;
+		}
+		else if(etat == 31){
+			ClearScreen_TODO = 1;
+			etat = 3;
+			Menu1_TODO = 1;
+			MajMenu1_TODO = 1;
+			MajBoussole_TODO = 0;
+		}
+		else if(etat == 41){
+			ClearScreen_TODO = 1;
+			etat = 4;
+			Menu1_TODO = 1;
+			MajMenu1_TODO = 1;
+			RetourSerial_TODO = 1;
+		}
+		eteindreLedGauche();
+		pushedButton = 5;
 	}
-	else if(etat == 20){
-		ClearScreen_TODO = 1;
-		etat = menu1Item+21;
-		MenuNavigation_TODO = 1;
-		MajMenuNavigation_TODO = 1;
-		MajNavigation_TODO =0;
-	}
-	else if(etat == 21 || etat == 22 || etat == 23 || etat == 24){
-		ClearScreen_TODO = 1;
-		menu1Item = 1;
-		prevMenu1Item =1;
-		etat = 2;
-		Menu1_TODO = 1;
-		MajMenu1_TODO = 1;
-	}
-	else if(etat == 31){
-		ClearScreen_TODO = 1;
-		etat = 3;
-		Menu1_TODO = 1;
-		MajMenu1_TODO = 1;
-		MajBoussole_TODO = 0;
-	}
-	else if(etat == 41){
-		ClearScreen_TODO = 1;
-		etat = 4;
-		Menu1_TODO = 1;
-		MajMenu1_TODO = 1;
-		RetourSerial_TODO = 1;
-	}
-	eteindreLedGauche();
 }
